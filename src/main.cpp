@@ -72,10 +72,8 @@ void pre_auton(void) {
 /*----------------------------- ----------------------------------------------*/
 
 
-
-
 double kp = 0.175;
-double ki = 0;
+double ki = 1;
 double kd = 0;
 
 void pid(double targetDistance) {
@@ -116,6 +114,12 @@ void pid(double targetDistance) {
     lastError = error;
     wait(15, msec);
   }
+}
+//Dahlia Did dis cuz she is just slaurrrr like that yuh
+#define INCHES_TO_DEGREES 270/12
+void pid_inches (double DistanceInInches) {
+  double degrees = DistanceInInches * INCHES_TO_DEGREES;
+  pid(degrees);
 }
 
  void stopWheels() {
@@ -249,7 +253,22 @@ void print(std::string text) {
   controller1.Screen.print(text.c_str());
 }
 
-void auton1() {
+void intakeInAuton() {
+  intake.spin(reverse, 300, rpm);
+  intake2.spin(forward, 330, rpm);
+}
+
+void outtakeInAuton() {
+  intake.spin(forward, 300, rpm);
+  intake2.spin(reverse, 330, rpm);
+}
+
+void stopIntaking() {
+  intake.stop(coast);
+  intake2.stop(coast);
+}
+
+void auton4() {
   pid(-170);
   clamp();
   pid(-30);
@@ -322,7 +341,7 @@ void auton2() {
 }
 
 void auton3() {
-  kp = 0.1;
+  kp = 0.15;
   pid(-170);
   clamp();
   pid(-30);
@@ -340,15 +359,50 @@ void auton3() {
   intake2.spin(forward, 330, rpm);
   pid(600);
   wait(1, sec);
+}
+
+  void auton1() {
+    kp = 0.175;
+    outtakeInAuton();
+    wait(0.1, sec);
+    stopIntaking();
+    pid_inches(-28);
+    clamp();
+    kp = 0.14;
+    pid_inches(-3);
+    wait(0.5, sec);
+    turnLeft(75);
+    intakeInAuton();
+    pid_inches(19);
+    wait(2, sec);
+    stopIntaking();
+    pid_inches(5);
+    turnLeft(70);
+    intakeInAuton();
+    pid_inches(16);
+    wait(2, sec);
+    stopIntaking();
+    pid_inches(-16);
+    turnLeft(90);
+    kp = 1.85;
+    pid_inches(20);
+    // pid_inches(-5);
+    // turnLeft(10);
+    // intakeInAuton();
+    // pid_inches(10);
+    // wait(2, sec);
+    // stopIntaking();
+    unclamp();
+  }
 
 
   
-}
+
 
 int auton = 1;
 
 void autonselector() {
-  int numofautons = 3;
+  int numofautons = 4;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -368,6 +422,8 @@ void autonselector() {
     print("Auton 2");
   } else if (auton == 3) {
     print("Auton 3");
+  } else if (auton == 4) {
+    print ("Auton 4");
   }
 }
 
@@ -378,6 +434,8 @@ void autonomous(void) {
     auton2();
   } else if (auton == 3) {
     auton3();
+  } else if (auton == 4) {
+    auton4();
   }
 }
 
@@ -390,6 +448,7 @@ void autonomous(void) {
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
+//Dahlia also did dis to cuz again she is just cool and slaurrrr like that yuh
 void old_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
