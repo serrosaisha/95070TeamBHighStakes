@@ -249,7 +249,7 @@ void setVelocity(double vel) {
 
 void print(std::string text) {
   controller1.Screen.clearScreen();
-  controller1.Screen.setCursor(2,10);
+  controller1.Screen.setCursor(2,5);
   controller1.Screen.print(text.c_str());
 }
 
@@ -362,13 +362,13 @@ void auton3() {
 }
 
   void auton1() {
-    kp = 0.175;
+    kp = 0.2;
     outtakeInAuton();
     wait(0.1, sec);
     stopIntaking();
     pid_inches(-28);
     clamp();
-    kp = 0.14;
+    kp = 0.9;
     pid_inches(-3);
     wait(0.5, sec);
     turnLeft(75);
@@ -384,8 +384,7 @@ void auton3() {
     stopIntaking();
     pid_inches(-16);
     turnLeft(90);
-    kp = 1.85;
-    pid_inches(20);
+    pid_inches(10);
     // pid_inches(-5);
     // turnLeft(10);
     // intakeInAuton();
@@ -393,6 +392,18 @@ void auton3() {
     // wait(2, sec);
     // stopIntaking();
     unclamp();
+    pid_inches(2);
+    stopWheels();
+  }
+
+  void auton5() {
+    pid_inches(-5);
+    clamp();
+    pid_inches(15);
+    intakeInAuton();
+    pid_inches(5);
+    wait(2, sec);
+    stopIntaking();
   }
 
 
@@ -402,7 +413,7 @@ void auton3() {
 int auton = 1;
 
 void autonselector() {
-  int numofautons = 4;
+  int numofautons = 5;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -417,13 +428,15 @@ void autonselector() {
   }
 
   if (auton == 1) {
-    print("Auton 1");
+    print("Autton 1");
   } else if (auton == 2) {
     print("Auton 2");
   } else if (auton == 3) {
     print("Auton 3");
   } else if (auton == 4) {
     print ("Auton 4");
+  } else if (auton == 5) {
+    print ("Auton 5");
   }
 }
 
