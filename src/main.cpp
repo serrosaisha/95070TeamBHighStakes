@@ -249,13 +249,13 @@ void setVelocity(double vel) {
 
 void print(std::string text) {
   controller1.Screen.clearScreen();
-  controller1.Screen.setCursor(2,5);
+  controller1.Screen.setCursor(2,10);
   controller1.Screen.print(text.c_str());
 }
 
 void intakeInAuton() {
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 330, rpm);
+  intake.spin(reverse, 270, rpm);
+  intake2.spin(forward, 300, rpm);
 }
 
 void outtakeInAuton() {
@@ -268,107 +268,15 @@ void stopIntaking() {
   intake2.stop(coast);
 }
 
-void auton4() {
-  pid(-170);
-  clamp();
-  pid(-30);
-  wait(50, msec);
-  pid(50);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 330, rpm);
-  pid(500);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-  turnLeft(75);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 325, rpm);
-  pid(500);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-  turnRight(86.5);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 325, rpm);
-  pid(500);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-  turnLeft(75);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 325, rpm);
-  pid(500);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-}
 
-void auton2() {
-//LOOKHERE
-  pid(-170);
-  clamp();
-  pid(-30);
-  wait(50, msec);
-  pid(50);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 330, rpm);
-  pid(740);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-  pid(100);
-  turnRight(85);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 325, rpm);
-  pid(500);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-  turnLeft(75);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 325, rpm);
-  pid(600);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-  turnRight(85);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 325, rpm);
-  pid(600);
-  wait(1.5, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-}
-
-void auton3() {
-  kp = 0.15;
-  pid(-170);
-  clamp();
-  pid(-30);
-  wait(50, msec);
-  pid(40);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 330, rpm);
-  pid(740);
-  wait(1, sec);
-  intake.stop(coast);
-  intake2.stop(coast);
-  pid(50);
-  turnRight(40);
-  intake.spin(reverse, 300, rpm);
-  intake2.spin(forward, 330, rpm);
-  pid(600);
-  wait(1, sec);
-}
-
-  void auton1() {
-    kp = 0.2;
+  void auton2() {
+    kp = 0.3;
     outtakeInAuton();
     wait(0.1, sec);
     stopIntaking();
     pid_inches(-28);
     clamp();
-    kp = 0.9;
+    kp = 0.7;
     pid_inches(-3);
     wait(0.5, sec);
     turnLeft(75);
@@ -396,16 +304,94 @@ void auton3() {
     stopWheels();
   }
 
-  void auton5() {
-    pid_inches(-5);
+  void auton1() {
+    kp = 0.2;
+    outtakeInAuton();
+    wait(0.1, sec);
+    stopIntaking();
+    pid_inches(-30.5);
     clamp();
-    pid_inches(15);
     intakeInAuton();
-    pid_inches(5);
+    kp = 0.4;
+    pid_inches(-1);
+    wait(0.75,sec);
+    stopIntaking();
+    turnLeft(75);
+    intakeInAuton();
+    pid_inches(19);
+    wait(1.1, sec);
+    stopIntaking();
+    pid_inches(8);
+    turnLeft(85);
+    intakeInAuton();
+    kp = 0.15;
+    pid_inches(8);
     wait(2, sec);
     stopIntaking();
+    turnLeft(10);
+    pid_inches(1);
+    intakeInAuton();
+    wait(1.5, sec);
+    stopIntaking();
+    kp = 0.4;
+    pid_inches(-7);
+    // pid_inches(-16);
+    // turnLeft(90);
+    // pid_inches(10);
+    //
+    // pid_inches(-5);
+    // turnLeft(10);
+    // intakeInAuton();
+    // pid_inches(10);
+    // wait(2, sec);
+    // stopIntaking();
+    //
+    // unclamp();
+    // pid_inches(2);
+    // stopWheels();
   }
 
+void auton3BadOne() {
+    kp = 0.1;
+    ki = 0.08;
+  
+    outtakeInAuton();
+    wait(0.1, sec);
+    stopIntaking();
+    pid_inches(-30.5);
+    clamp();
+    // intakeInAuton();
+    // kp = 0.4;
+    // pid_inches(-1);
+    // wait(0.75,sec);
+    // stopIntaking();
+    // turnLeft(75);
+    // intakeInAuton();
+    // pid_inches(19);
+    // wait(1.1, sec);
+    // stopIntaking();
+    // pid_inches(5);
+    // turnLeft(90);
+    //
+    // intakeInAuton();
+    // pid_inches(8);
+    // wait(1, sec);
+    // stopIntaking();
+    // pid_inches(-16);
+    // turnLeft(90);
+    // pid_inches(10);
+    //
+    // pid_inches(-5);
+    // turnLeft(10);
+    // intakeInAuton();
+    // pid_inches(10);
+    // wait(2, sec);
+    // stopIntaking();
+    //
+    // unclamp();
+    // pid_inches(2);
+    // stopWheels();
+  }
 
   
 
@@ -413,7 +399,7 @@ void auton3() {
 int auton = 1;
 
 void autonselector() {
-  int numofautons = 5;
+  int numofautons = 3;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -428,16 +414,12 @@ void autonselector() {
   }
 
   if (auton == 1) {
-    print("Autton 1");
+    print("Auton 1");
   } else if (auton == 2) {
     print("Auton 2");
   } else if (auton == 3) {
-    print("Auton 3");
-  } else if (auton == 4) {
-    print ("Auton 4");
-  } else if (auton == 5) {
-    print ("Auton 5");
-  }
+    print("Bad One");
+  } 
 }
 
 void autonomous(void) {
@@ -446,9 +428,7 @@ void autonomous(void) {
   } else if (auton == 2) {
     auton2();
   } else if (auton == 3) {
-    auton3();
-  } else if (auton == 4) {
-    auton4();
+    auton3BadOne();
   }
 }
 
