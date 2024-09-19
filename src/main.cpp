@@ -247,11 +247,6 @@ void setVelocity(double vel) {
  br.setVelocity(vel, percent);
 }
 
-void print(std::string text) {
-  controller1.Screen.clearScreen();
-  controller1.Screen.setCursor(2,10);
-  controller1.Screen.print(text.c_str());
-}
 
 void intakeInAuton() {
   intake.spin(reverse, 270, rpm);
@@ -269,137 +264,71 @@ void stopIntaking() {
 }
 
 
-  void auton2() {
+
+
+  void blueright() {
+    kp = 0.175;
+    outtakeInAuton();
+    wait(0.1, sec);
+    stopIntaking();
+    pid_inches(-30.5);
+    clamp();
+    kp = 0.2;
+    intakeInAuton();
+    wait(0.9, sec);
+    stopIntaking();
+    turnLeft(125);
+    kp = 0.15;
+    pid_inches(16);
+    intakeInAuton();
+    pid_inches(3);
+    wait(1.2, sec);
+    pid_inches(-5); 
+    turnRight(75);
+    pid_inches(3);
+    intakeInAuton();
+    pid_inches(4);
+    wait(2, sec);
+    stopIntaking();
     kp = 0.3;
+    turnRight(180);
+    pid_inches(7);
+  }
+
+  void bluegoalrush() {
+    kp = 0.3;
+    pid_inches(-34);
+    turnRight(23);
+    kp = 0.15;
+    pid_inches(-12);
+    clamp();
+  }
+
+  void redleft() {
+    kp = 0.19;
     outtakeInAuton();
     wait(0.1, sec);
     stopIntaking();
     pid_inches(-28);
     clamp();
-    kp = 0.7;
+    kp = 0.14;
     pid_inches(-3);
-    wait(0.5, sec);
-    turnLeft(75);
     intakeInAuton();
-    pid_inches(19);
-    wait(2, sec);
+    turnRight(125);
+    wait(0.75, sec);
     stopIntaking();
-    pid_inches(5);
-    turnLeft(70);
-    intakeInAuton();
-    pid_inches(16);
-    wait(2, sec);
-    stopIntaking();
-    pid_inches(-16);
-    turnLeft(90);
-    pid_inches(10);
-    // pid_inches(-5);
-    // turnLeft(10);
-    // intakeInAuton();
-    // pid_inches(10);
-    // wait(2, sec);
-    // stopIntaking();
-    unclamp();
-    pid_inches(2);
-    stopWheels();
   }
 
-  void auton1() {
-    kp = 0.2;
-    outtakeInAuton();
-    wait(0.1, sec);
-    stopIntaking();
-    pid_inches(-30.5);
-    clamp();
-    intakeInAuton();
-    kp = 0.4;
-    pid_inches(-1);
-    wait(0.75,sec);
-    stopIntaking();
-    turnLeft(75);
-    intakeInAuton();
-    pid_inches(19);
-    wait(1.1, sec);
-    stopIntaking();
-    pid_inches(8);
-    turnLeft(85);
-    intakeInAuton();
-    kp = 0.15;
-    pid_inches(8);
-    wait(2, sec);
-    stopIntaking();
-    turnLeft(10);
-    pid_inches(1);
-    intakeInAuton();
-    wait(1.5, sec);
-    stopIntaking();
-    kp = 0.4;
-    pid_inches(-7);
-    // pid_inches(-16);
-    // turnLeft(90);
-    // pid_inches(10);
-    //
-    // pid_inches(-5);
-    // turnLeft(10);
-    // intakeInAuton();
-    // pid_inches(10);
-    // wait(2, sec);
-    // stopIntaking();
-    //
-    // unclamp();
-    // pid_inches(2);
-    // stopWheels();
-  }
+  void redgoalrush() {
 
-void auton3BadOne() {
-    kp = 0.1;
-    ki = 0.08;
-  
-    outtakeInAuton();
-    wait(0.1, sec);
-    stopIntaking();
-    pid_inches(-30.5);
-    clamp();
-    // intakeInAuton();
-    // kp = 0.4;
-    // pid_inches(-1);
-    // wait(0.75,sec);
-    // stopIntaking();
-    // turnLeft(75);
-    // intakeInAuton();
-    // pid_inches(19);
-    // wait(1.1, sec);
-    // stopIntaking();
-    // pid_inches(5);
-    // turnLeft(90);
-    //
-    // intakeInAuton();
-    // pid_inches(8);
-    // wait(1, sec);
-    // stopIntaking();
-    // pid_inches(-16);
-    // turnLeft(90);
-    // pid_inches(10);
-    //
-    // pid_inches(-5);
-    // turnLeft(10);
-    // intakeInAuton();
-    // pid_inches(10);
-    // wait(2, sec);
-    // stopIntaking();
-    //
-    // unclamp();
-    // pid_inches(2);
-    // stopWheels();
   }
-
   
 
 
 int auton = 1;
 
 void autonselector() {
-  int numofautons = 3;
+  int numofautons = 4;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -414,23 +343,43 @@ void autonselector() {
   }
 
   if (auton == 1) {
-    print("Auton 1");
+      controller1.Screen.clearScreen();
+      controller1.Screen.setCursor(2,9);
+    controller1.Screen.print("Blue Right");
   } else if (auton == 2) {
-    print("Auton 2");
+      controller1.Screen.clearScreen();
+            controller1.Screen.setCursor(2,6);
+    controller1.Screen.print("Blue Goal Rush");
   } else if (auton == 3) {
-    print("Bad One");
-  } 
+      controller1.Screen.clearScreen();
+            controller1.Screen.setCursor(2,10);
+    controller1.Screen.print("Red Left");
+  } else if (auton == 4) {
+      controller1.Screen.clearScreen();
+            controller1.Screen.setCursor(2,6);
+    controller1.Screen.print("Red Goal Rush");
+  }
 }
+
+
 
 void autonomous(void) {
   if (auton == 1) {
-    auton1();
-  } else if (auton == 2) {
-    auton2();
+    bluegoalrush();
+  } else if (auton == 2){
+    blueright();
   } else if (auton == 3) {
-    auton3BadOne();
+    redleft();
+  } else if (auton == 4) {
+    redgoalrush();
   }
 }
+
+
+
+
+
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
