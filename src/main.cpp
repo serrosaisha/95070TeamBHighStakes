@@ -271,7 +271,7 @@ void stopIntaking() {
     outtakeInAuton();
     wait(0.1, sec);
     stopIntaking();
-    pid_inches(-30.5);
+    pid_inches(-30.5); 
     clamp();
     kp = 0.2;
     intakeInAuton();
@@ -317,10 +317,29 @@ void stopIntaking() {
     turnRight(125);
     wait(0.75, sec);
     stopIntaking();
+    pid_inches(16);
+    intakeInAuton();
+    pid_inches(3);
+    wait(1.2, sec);
+    pid_inches(-5);
+    turnLeft(75);
+    pid_inches(3);
+    intakeInAuton();
+    pid_inches(4);
+    wait(2, sec);
+    stopIntaking();
+    kp = 0.3;
+    turnLeft(180);
+    pid_inches(7);
   }
 
   void redgoalrush() {
-
+     kp = 0.3;
+    pid_inches(-34);
+    turnLeft(23);
+    kp = 0.15;
+    pid_inches(12);
+    clamp();
   }
   
 
