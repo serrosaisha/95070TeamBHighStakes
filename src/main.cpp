@@ -116,6 +116,7 @@ void pid(double targetDistance) {
   }
 }
 
+
 #define INCHES_TO_DEGREES 270/12
 void pid_inches (double DistanceInInches) {
   double degrees = DistanceInInches * INCHES_TO_DEGREES;
@@ -407,6 +408,7 @@ void autonomous(void) {
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
+
 void old_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
