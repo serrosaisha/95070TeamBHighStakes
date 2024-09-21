@@ -338,11 +338,11 @@ void stopIntaking() {
   }
 
   void redgoalrush() {
-     kp = 0.3;
+    kp = 0.3;
     pid_inches(-34);
-    turnLeft(27);
+    turnLeft(23);
     kp = 0.15;
-    pid_inches(-12);
+    pid_inches(-14.2);
     clamp();
   }
   
@@ -389,7 +389,7 @@ void autonomous(void) {
   if (auton == 1) {
     blueright();
   } else if (auton == 2){
-    bluegoalrush();
+    blueGoalRush();
   } else if (auton == 3) {
     redleft();
   } else if (auton == 4) {
