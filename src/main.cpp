@@ -115,7 +115,7 @@ void pid(double targetDistance) {
     wait(15, msec);
   }
 }
-//Dahlia Did dis cuz she is just slaurrrr like that yuh
+
 #define INCHES_TO_DEGREES 270/12
 void pid_inches (double DistanceInInches) {
   double degrees = DistanceInInches * INCHES_TO_DEGREES;
@@ -300,8 +300,11 @@ void stopIntaking() {
     pid_inches(-34);
     turnRight(23);
     kp = 0.15;
-    pid_inches(-12);
+    pid_inches(-14.2);
     clamp();
+    intakeInAuton();
+    wait(1, sec);
+    stopIntaking();
   }
 
   void redleft() {
@@ -336,9 +339,9 @@ void stopIntaking() {
   void redgoalrush() {
      kp = 0.3;
     pid_inches(-34);
-    turnLeft(23);
+    turnLeft(27);
     kp = 0.15;
-    pid_inches(12);
+    pid_inches(-12);
     clamp();
   }
   
@@ -381,22 +384,17 @@ void autonselector() {
 }
 
 
-
 void autonomous(void) {
   if (auton == 1) {
-    bluegoalrush();
-  } else if (auton == 2){
     blueright();
+  } else if (auton == 2){
+    bluegoalrush();
   } else if (auton == 3) {
     redleft();
   } else if (auton == 4) {
     redgoalrush();
   }
 }
-
-
-
-
 
 
 
@@ -409,7 +407,6 @@ void autonomous(void) {
 /*                                                                           */
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
-//Dahlia also did dis to cuz again she is just cool and slaurrrr like that yuh
 void old_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
@@ -427,6 +424,33 @@ void old_arcade() {
  fr.spin(reverse, speedright, percent);
  mr.spin(reverse, speedright, percent);
  br.spin(reverse, speedright, percent);
+}
+
+void slow_arcade() {
+ //Slower
+ // int speedleft = controller1.Axis1.value()/2;
+ // int speedright = controller1.Axis3.value()/2;
+ // search up the ebot pilons turning curves(or something like that) desmos
+
+ double speedleft = controller1.Axis1.value()/2 + controller1.Axis3.value();
+ double speedright = controller1.Axis1.value() - controller1.Axis3.value()/2;
+
+ fl.spin(forward, speedleft, percent);
+ ml.spin(forward, speedleft, percent);
+ bl.spin(forward, speedleft, percent);
+
+ // RIGHT MOTORS ARE REVERSED SO FORWARD = REVERSE!!!!!!!!!
+ fr.spin(reverse, speedright, percent);
+ mr.spin(reverse, speedright, percent);
+ br.spin(reverse, speedright, percent);
+}
+
+void useSlowArcade() {
+  if (controller1.ButtonL2.pressing()) {
+    slow_arcade();
+  } else {
+    old_arcade();
+  }
 }
 
 
