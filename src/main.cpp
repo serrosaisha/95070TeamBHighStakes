@@ -301,11 +301,27 @@ void stopIntaking() {
     pid_inches(-34);
     turnRight(23);
     kp = 0.15;
-    pid_inches(-14.2);
+    pid_inches(-14);
     clamp();
     intakeInAuton();
     wait(1, sec);
     stopIntaking();
+    turnLeft(35);
+    pid_inches(15);
+    intakeInAuton();
+    wait(1, sec);
+    stopIntaking();
+    pid_inches(23);
+    unclamp();
+    pid_inches(6);
+    turnRight(41.1234567);
+    pid_inches(-21);
+    clamp();
+    pid_inches(-3);
+    intakeInAuton();
+    wait(1.5, sec);
+    stopIntaking();
+    unclamp();
   }
 
   void redleft() {
@@ -389,7 +405,7 @@ void autonomous(void) {
   if (auton == 1) {
     blueright();
   } else if (auton == 2){
-    blueGoalRush();
+    bluegoalrush();
   } else if (auton == 3) {
     redleft();
   } else if (auton == 4) {
