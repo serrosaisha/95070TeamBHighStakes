@@ -13,6 +13,7 @@ extern motor intake;
 extern motor intake2;
 extern pneumatics mogo;
 extern pneumatics mogo2;
+extern pneumatics doinker;
 extern inertial inertialSensor;
 
 

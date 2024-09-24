@@ -425,6 +425,25 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+bool prevdoinker = false;
+bool doinkerdown = false;
+
+void doinkeroinker() {
+  if (controller1.ButtonY.pressing()) {
+    if (prevdoinker == false) {
+      doinkerdown = !doinkerdown;
+      prevdoinker == true;
+    }
+  } else {
+    if (prevdoinker == true) {
+      prevdoinker == false;
+    }
+  }
+  if (doinkerdown == true) { 
+    doinker.set(true);
+  }
+}
+
 void old_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;

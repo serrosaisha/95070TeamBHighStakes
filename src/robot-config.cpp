@@ -10,6 +10,7 @@ using code = vision::code;
 brain  Brain;
 pneumatics mogo = pneumatics(Brain.ThreeWirePort.A);
 pneumatics mogo2 = pneumatics(Brain.ThreeWirePort.B);
+pneumatics doinker = pneumatics(Brain.ThreeWirePort.C);
 controller controller1 = controller(primary);
 motor fr = motor(PORT1, ratio18_1, false);
 motor fl = motor(PORT7, ratio18_1, true);
