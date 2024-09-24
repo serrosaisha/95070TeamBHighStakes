@@ -23,14 +23,20 @@
 #include "functions.hpp"
 #include <string>
 
+using namespace std::chrono;
 using namespace vex;
-
 
 // A global instance of competition
 competition Competition;
 
 bool clamptrue = false;
 bool prevclamp = false;
+
+bool doinkertrue = false;
+bool prevdoinker = false;
+
+steady_clock::time_point lastClamp;
+steady_clock::time_point lastDoinker;
 // define your global instances of motors and other devices here
 
 
@@ -144,18 +150,6 @@ void unclamp() {
  mogo2.set(false);
 }
 
-void useMogo() {
-    if (controller1.ButtonL1.pressing()) {
-      clamp();
-    } else if (controller1.ButtonL2.pressing()) {
-      unclamp();
-    }
-}
-
-using namespace std::chrono;
-
-steady_clock::time_point lastClamp;
-
 void mogoControl() {
   if (clamptrue) {
       clamp();
@@ -172,6 +166,33 @@ void clamping() {
     mogoControl();
     clamptrue = !clamptrue;
     lastClamp = now;
+  }
+}
+
+// Doinker code
+void doinkerUp() {
+ doinker.set(false);
+}
+
+void doinkerDown() {
+ doinker.set(true);
+}
+
+void doinkerControl() {
+  if (doinkertrue) {
+      doinkerDown();
+  } else {
+     doinkerUp();
+  }
+} 
+
+void doinkeroinker() {
+  auto now = steady_clock::now();
+  auto durLastDoinker = duration_cast<milliseconds>(now-lastDoinker).count();
+  if (durLastDoinker > 200) {
+    doinkerControl();
+    doinkertrue = !doinkertrue;
+    lastDoinker = now;
   }
 }
 
@@ -423,25 +444,6 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
-bool prevdoinker = false;
-bool doinkerdown = false;
-
-void doinkeroinker() {
-  if (controller1.ButtonY.pressing()) {
-    if (prevdoinker == false) {
-      doinkerdown = !doinkerdown;
-      prevdoinker == true;
-    }
-  } else {
-    if (prevdoinker == true) {
-      prevdoinker == false;
-    }
-  }
-  if (doinkerdown == true) { 
-    doinker.set(true);
-  }
-}
-
 void old_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
@@ -502,6 +504,8 @@ void usercontrol() {
     //mogoControl();
     controller1.ButtonL1.pressed(mogoControl);
     controller1.ButtonL1.released(clamping);
+    controller1.ButtonL2.pressed(doinkerControl);
+    controller1.ButtonL2.released(doinkeroinker);
     wait(10,msec);
   }
 }
