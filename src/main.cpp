@@ -265,102 +265,100 @@ void stopIntaking() {
 }
 
 
+void blueRight() {
+  kp = 0.175;
+  outtakeInAuton();
+  wait(0.1, sec);
+  stopIntaking();
+  pid_inches(-30.5); 
+  clamp();
+  kp = 0.2;
+  intakeInAuton();
+  wait(0.9, sec);
+  stopIntaking();
+  turnLeft(125);
+  kp = 0.15;
+  pid_inches(16);
+  intakeInAuton();
+  pid_inches(3);
+  wait(1.2, sec);
+  pid_inches(-5); 
+  turnRight(75);
+  pid_inches(3);
+  intakeInAuton();
+  pid_inches(4);
+  wait(2, sec);
+  stopIntaking();
+  kp = 0.3;
+  turnRight(180);
+  pid_inches(7);
+}
 
+void blueGoalRush() {
+  kp = 0.3;
+  pid_inches(-34);
+  turnRight(23);
+  kp = 0.15;
+  pid_inches(-14);
+  clamp();
+  intakeInAuton();
+  wait(1, sec);
+  stopIntaking();
+  turnLeft(35);
+  pid_inches(15);
+  intakeInAuton();
+  wait(1, sec);
+  stopIntaking();
+  pid_inches(23);
+  unclamp();
+  pid_inches(6);
+  turnRight(41.1234567);
+  pid_inches(-21);
+  clamp();
+  pid_inches(-3);
+  intakeInAuton();
+  wait(1.5, sec);
+  stopIntaking();
+  unclamp();
+}
 
-  void blueright() {
-    kp = 0.175;
-    outtakeInAuton();
-    wait(0.1, sec);
-    stopIntaking();
-    pid_inches(-30.5); 
-    clamp();
-    kp = 0.2;
-    intakeInAuton();
-    wait(0.9, sec);
-    stopIntaking();
-    turnLeft(125);
-    kp = 0.15;
-    pid_inches(16);
-    intakeInAuton();
-    pid_inches(3);
-    wait(1.2, sec);
-    pid_inches(-5); 
-    turnRight(75);
-    pid_inches(3);
-    intakeInAuton();
-    pid_inches(4);
-    wait(2, sec);
-    stopIntaking();
-    kp = 0.3;
-    turnRight(180);
-    pid_inches(7);
-  }
+void redLeft() {
+  kp = 0.19;
+  outtakeInAuton();
+  wait(0.1, sec);
+  stopIntaking();
+  pid_inches(-28);
+  clamp();
+  kp = 0.14;
+  pid_inches(-3);
+  intakeInAuton();
+  turnRight(125);
+  wait(0.75, sec);
+  stopIntaking();
+  pid_inches(16);
+  intakeInAuton();
+  pid_inches(3);
+  wait(1.2, sec);
+  pid_inches(-5);
+  turnLeft(75);
+  pid_inches(3);
+  intakeInAuton();
+  pid_inches(4);
+  wait(2, sec);
+  stopIntaking();
+  kp = 0.3;
+  turnLeft(180);
+  pid_inches(7);
+}
 
-  void bluegoalrush() {
-    kp = 0.3;
-    pid_inches(-34);
-    turnRight(23);
-    kp = 0.15;
-    pid_inches(-14);
-    clamp();
-    intakeInAuton();
-    wait(1, sec);
-    stopIntaking();
-    turnLeft(35);
-    pid_inches(15);
-    intakeInAuton();
-    wait(1, sec);
-    stopIntaking();
-    pid_inches(23);
-    unclamp();
-    pid_inches(6);
-    turnRight(41.1234567);
-    pid_inches(-21);
-    clamp();
-    pid_inches(-3);
-    intakeInAuton();
-    wait(1.5, sec);
-    stopIntaking();
-    unclamp();
-  }
-
-  void redleft() {
-    kp = 0.19;
-    outtakeInAuton();
-    wait(0.1, sec);
-    stopIntaking();
-    pid_inches(-28);
-    clamp();
-    kp = 0.14;
-    pid_inches(-3);
-    intakeInAuton();
-    turnRight(125);
-    wait(0.75, sec);
-    stopIntaking();
-    pid_inches(16);
-    intakeInAuton();
-    pid_inches(3);
-    wait(1.2, sec);
-    pid_inches(-5);
-    turnLeft(75);
-    pid_inches(3);
-    intakeInAuton();
-    pid_inches(4);
-    wait(2, sec);
-    stopIntaking();
-    kp = 0.3;
-    turnLeft(180);
-    pid_inches(7);
-  }
-
-  void redgoalrush() {
-    kp = 0.3;
-    pid_inches(-34);
-    turnLeft(23);
-    kp = 0.15;
-    pid_inches(-14.2);
-    clamp();
-  }
+void redGoalRush() {
+  kp = 0.3;
+  pid_inches(-34);
+  turnLeft(23);
+  kp = 0.15;
+  pid_inches(-14.2);
+  clamp();
+}
   
 
 
@@ -403,13 +401,13 @@ void autonselector() {
 
 void autonomous(void) {
   if (auton == 1) {
-    blueright();
+    blueRight();
   } else if (auton == 2){
-    bluegoalrush();
+    blueGoalRush();
   } else if (auton == 3) {
-    redleft();
+    redLeft();
   } else if (auton == 4) {
-    redgoalrush();
+    redGoalRush();
   }
 }
 
