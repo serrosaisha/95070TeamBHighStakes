@@ -77,7 +77,7 @@ void pre_auton(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*----------------------------- ----------------------------------------------*/
 
-
+// PID
 double kp = 0.175;
 double ki = 1;
 double kd = 0;
@@ -122,13 +122,13 @@ void pid(double targetDistance) {
   }
 }
 
-
+// PID to inches
 #define INCHES_TO_DEGREES 270/12
 void pid_inches (double DistanceInInches) {
   double degrees = DistanceInInches * INCHES_TO_DEGREES;
   pid(degrees);
 }
-
+//stop moving (good)
  void stopWheels() {
  // stop all motors in brake
  fl.stop(brake);
@@ -140,16 +140,19 @@ void pid_inches (double DistanceInInches) {
  br.stop(brake);
 }
 
+//clamp
 void clamp() {
  mogo.set(true);
  mogo2.set(true);
 }
 
+//unclamp
 void unclamp() {
  mogo.set(false);
  mogo2.set(false);
 }
 
+//use mogo mech
 void mogoControl() {
   if (clamptrue) {
       clamp();
@@ -158,7 +161,7 @@ void mogoControl() {
   }
 }
 
-
+// clamp using one button
 void clamping() {
   auto now = steady_clock::now();
   auto durLastClamp = duration_cast<milliseconds>(now-lastClamp).count();
@@ -169,15 +172,17 @@ void clamping() {
   }
 }
 
-// Doinker code
+// Doinker up
 void doinkerUp() {
  doinker.set(false);
 }
 
+//doinker down
 void doinkerDown() {
  doinker.set(true);
 }
 
+//use the doinker
 void doinkerControl() {
   if (doinkertrue) {
       doinkerDown();
@@ -186,6 +191,7 @@ void doinkerControl() {
   }
 } 
 
+//use the doinker using one button
 void doinkeroinker() {
   auto now = steady_clock::now();
   auto durLastDoinker = duration_cast<milliseconds>(now-lastDoinker).count();
@@ -196,6 +202,7 @@ void doinkeroinker() {
   }
 }
 
+//littereally move all wheels
 void moveAllWheels(int SpeedLeft, int SpeedRight, int ) {
  fl.spin(forward, SpeedLeft + SpeedRight, percent);
  ml.spin(forward, SpeedLeft + SpeedRight, percent);
@@ -207,7 +214,7 @@ void moveAllWheels(int SpeedLeft, int SpeedRight, int ) {
  br.spin(reverse, SpeedLeft - SpeedRight, percent);
 }
 
-
+// turn left
 void turnLeft(double angle) {
  // basically the same as right except left motor spins reverse and right is forward
  inertialSensor.setRotation(0, degrees);
@@ -229,6 +236,7 @@ void turnLeft(double angle) {
  stopWheels();
 }
 
+// intaking in driver control
 void intaking() {
  if (controller1.ButtonR2.pressing()) {
    intake.spin(forward, 350, rpm);
@@ -242,6 +250,7 @@ void intaking() {
  }
 }
 
+//turn right
 void turnRight(double angle) {
  // set inertial rotation to 0 degrees
  inertialSensor.setRotation(0, degrees);
@@ -259,6 +268,7 @@ void turnRight(double angle) {
  stopWheels();
 }
 
+//set velocity
 void setVelocity(double vel) {
  // set all motors to velocity value of 'vel'
  fl.setVelocity(vel, percent);
@@ -269,23 +279,25 @@ void setVelocity(double vel) {
  br.setVelocity(vel, percent);
 }
 
-
+//intake in auton
 void intakeInAuton() {
   intake.spin(reverse, 270, rpm);
   intake2.spin(forward, 300, rpm);
 }
 
+// outake in auton 
 void outtakeInAuton() {
   intake.spin(forward, 300, rpm);
   intake2.spin(reverse, 330, rpm);
 }
 
+// stop intaking
 void stopIntaking() {
   intake.stop(coast);
   intake2.stop(coast);
 }
 
-
+//blue right auton
 void blueRight() {
   kp = 0.175;
   outtakeInAuton();
@@ -315,6 +327,7 @@ void blueRight() {
   pid_inches(7);
 }
 
+//blue goal rush auton
 void blueGoalRush() {
   kp = 0.3;
   pid_inches(-34);
@@ -343,6 +356,7 @@ void blueGoalRush() {
   unclamp();
 }
 
+// red left auton
 void redLeft() {
   kp = 0.19;
   outtakeInAuton();
@@ -372,6 +386,7 @@ void redLeft() {
   pid_inches(7);
 }
 
+// red goal rush auton
 void redGoalRush() {
   kp = 0.3;
   pid_inches(-34);
@@ -385,6 +400,8 @@ void redGoalRush() {
 
 int auton = 1;
 
+
+//auton selector
 void autonselector() {
   int numofautons = 4;
   if (controller1.ButtonRight.pressing()) {
@@ -419,7 +436,7 @@ void autonselector() {
   }
 }
 
-
+// auton
 void autonomous(void) {
   if (auton == 1) {
     blueRight();
@@ -444,6 +461,7 @@ void autonomous(void) {
 /*  You must modify the code to add your own robot specific commands here.   */
 /*---------------------------------------------------------------------------*/
 
+// driving
 void old_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
@@ -463,6 +481,7 @@ void old_arcade() {
  br.spin(reverse, speedright, percent);
 }
 
+// slow arcade
 void slow_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
