@@ -240,10 +240,10 @@ void turnLeft(double angle) {
 void intaking() {
  if (controller1.ButtonR2.pressing()) {
    intake.spin(forward, 350, rpm);
-   intake2.spin(reverse, 395, rpm);
+   intake2.spin(forward, 395, rpm);
  } else if (controller1.ButtonR1.pressing()) {
    intake.spin(reverse, 80, pct);
-   intake2.spin(fwd, 90, percent);
+   intake2.spin(reverse, 90, percent);
  } else {
    intake.stop(coast);
    intake2.stop(coast);
@@ -282,13 +282,13 @@ void setVelocity(double vel) {
 //intake in auton
 void intakeInAuton() {
   intake.spin(reverse, 270, rpm);
-  intake2.spin(forward, 300, rpm);
+  intake2.spin(reverse, 300, rpm);
 }
 
 // outake in auton 
 void outtakeInAuton() {
   intake.spin(forward, 300, rpm);
-  intake2.spin(reverse, 330, rpm);
+  intake2.spin(forward, 330, rpm);
 }
 
 // stop intaking
@@ -392,8 +392,27 @@ void redGoalRush() {
   pid_inches(-34);
   turnLeft(23);
   kp = 0.15;
-  pid_inches(-14.2);
+  pid_inches(-14);
   clamp();
+  intakeInAuton();
+  wait(1, sec);
+  stopIntaking();
+  turnRight(35);
+  pid_inches(15);
+  intakeInAuton();
+  wait(1, sec);
+  stopIntaking();
+  pid_inches(23);
+  unclamp();
+  pid_inches(6);
+  turnLeft(41.1234567);
+  pid_inches(-21);
+  clamp();
+  pid_inches(-3);
+  intakeInAuton();
+  wait(1.5, sec);
+  stopIntaking();
+  unclamp();
 }
   
 
