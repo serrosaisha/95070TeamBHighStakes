@@ -130,14 +130,14 @@ void pid_inches (double DistanceInInches) {
 }
 //stop moving (good)
  void stopWheels() {
- // stop all motors in brake
- fl.stop(brake);
- ml.stop(brake);
- bl.stop(brake);
+  // stop all motors in brake
+  fl.stop(brake);
+  ml.stop(brake);
+  bl.stop(brake);
 
- fr.stop(brake);
- mr.stop(brake);
- br.stop(brake);
+  fr.stop(brake);
+  mr.stop(brake);
+  br.stop(brake);
 }
 
 //clamp
@@ -155,9 +155,9 @@ void unclamp() {
 //use mogo mech
 void mogoControl() {
   if (clamptrue) {
-      clamp();
+    clamp();
   } else {
-     unclamp();
+    unclamp();
   }
 }
 
@@ -270,13 +270,13 @@ void turnRight(double angle) {
 
 //set velocity
 void setVelocity(double vel) {
- // set all motors to velocity value of 'vel'
- fl.setVelocity(vel, percent);
- ml.setVelocity(vel, percent);
- bl.setVelocity(vel, percent);
- fr.setVelocity(vel, percent);
- mr.setVelocity(vel, percent);
- br.setVelocity(vel, percent);
+  // set all motors to velocity value of 'vel'
+  fl.setVelocity(vel, percent);
+  ml.setVelocity(vel, percent);
+  bl.setVelocity(vel, percent);
+  fr.setVelocity(vel, percent);
+  mr.setVelocity(vel, percent);
+  br.setVelocity(vel, percent);
 }
 
 //intake in auton
@@ -405,7 +405,7 @@ void redGoalRush() {
   pid_inches(23);
   unclamp();
   pid_inches(6);
-  turnLeft(41.1234567);
+  turnLeft(41);
   pid_inches(-21);
   clamp();
   pid_inches(-3);
@@ -437,20 +437,20 @@ void autonselector() {
   }
 
   if (auton == 1) {
-      controller1.Screen.clearScreen();
-      controller1.Screen.setCursor(2,9);
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,9);
     controller1.Screen.print("Blue Right");
   } else if (auton == 2) {
-      controller1.Screen.clearScreen();
-            controller1.Screen.setCursor(2,6);
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Blue Goal Rush");
   } else if (auton == 3) {
-      controller1.Screen.clearScreen();
-            controller1.Screen.setCursor(2,10);
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,10);
     controller1.Screen.print("Red Left");
   } else if (auton == 4) {
-      controller1.Screen.clearScreen();
-            controller1.Screen.setCursor(2,6);
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Red Goal Rush");
   }
 }
