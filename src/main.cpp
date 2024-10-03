@@ -313,7 +313,7 @@ void blueRight() {
   kp = 0.15;
   pid_inches(16);
   intakeInAuton();
-  pid_inches(3);
+  pid_inches(6);
   wait(1.2, sec);
   pid_inches(-5); 
   turnRight(75);
@@ -324,7 +324,7 @@ void blueRight() {
   stopIntaking();
   kp = 0.3;
   turnRight(180);
-  pid_inches(7);
+  pid_inches(11);
 }
 
 //blue goal rush auton
@@ -338,22 +338,24 @@ void blueGoalRush() {
   intakeInAuton();
   wait(1, sec);
   stopIntaking();
-  turnLeft(35);
-  pid_inches(15);
+  turnLeft(34);
+  pid_inches(17);
   intakeInAuton();
   wait(1, sec);
   stopIntaking();
   pid_inches(23);
   unclamp();
-  pid_inches(6);
+  pid_inches(4);
+  stopWheels();
+  pid_inches(2);
   turnRight(41.1234567);
   pid_inches(-21);
   clamp();
+  pid_inches(-2);
   pid_inches(-3);
   intakeInAuton();
   wait(1.5, sec);
   stopIntaking();
-  unclamp();
 }
 
 // red left auton
@@ -362,51 +364,54 @@ void redLeft() {
   outtakeInAuton();
   wait(0.1, sec);
   stopIntaking();
-  pid_inches(-28);
+  pid_inches(-30);
   clamp();
   kp = 0.14;
   pid_inches(-3);
   intakeInAuton();
-  turnRight(125);
+  turnRight(127.5);
   wait(0.75, sec);
   stopIntaking();
-  pid_inches(16);
+  pid_inches(18);
   intakeInAuton();
   pid_inches(3);
   wait(1.2, sec);
   pid_inches(-5);
-  turnLeft(75);
-  pid_inches(3);
+  turnLeft(75.1);
+  pid_inches(10);
   intakeInAuton();
   pid_inches(4);
   wait(2, sec);
   stopIntaking();
+  // intake2.spin(reverse, 450, rpm);
   kp = 0.3;
   turnLeft(180);
-  pid_inches(7);
+  pid_inches(18);
 }
 
 // red goal rush auton
 void redGoalRush() {
   kp = 0.3;
-  pid_inches(-34);
-  turnLeft(23);
+  pid_inches(-33);
+  turnLeft(21.5);
   kp = 0.15;
   pid_inches(-14);
   clamp();
   intakeInAuton();
   wait(1, sec);
   stopIntaking();
-  turnRight(35);
-  pid_inches(15);
+  turnRight(43);
+  pid_inches(18);
   intakeInAuton();
   wait(1, sec);
   stopIntaking();
+  intake.spin(reverse, 450, rpm);
   pid_inches(23);
   unclamp();
   pid_inches(6);
-  turnLeft(41);
-  pid_inches(-21);
+  turnLeft(35);
+  stopIntaking();
+  pid_inches(-24);
   clamp();
   pid_inches(-3);
   intakeInAuton();
