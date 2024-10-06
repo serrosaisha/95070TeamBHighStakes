@@ -331,24 +331,24 @@ void blueRight() {
 void blueGoalRush() {
   kp = 0.3;
   pid_inches(-34);
-  turnRight(23);
+  turnRight(30);
   kp = 0.15;
   pid_inches(-14);
   clamp();
   intakeInAuton();
   wait(1, sec);
   stopIntaking();
-  turnLeft(34);
-  pid_inches(17);
-  intakeInAuton();
+  turnLeft(45);
+  intake.spin(reverse, 450, rpm);
+  pid_inches(23);
   wait(1, sec);
   stopIntaking();
-  pid_inches(23);
+  pid_inches(20);
   unclamp();
   pid_inches(4);
   stopWheels();
   pid_inches(2);
-  turnRight(41.1234567);
+  turnRight(30);
   pid_inches(-21);
   clamp();
   pid_inches(-2);
@@ -420,14 +420,80 @@ void redGoalRush() {
   unclamp();
 }
   
-
+void progskills() {
+  kp = 0.3;
+  intakeInAuton();
+  wait(0.71, sec);
+  stopIntaking();
+  pid_inches(12);
+  turnLeft(75);
+  kp = 0.16;
+  pid_inches(-16);
+  clamp();
+  wait(20, msec);
+  kp = 0.24;
+  // turnRight(95.3);
+  // intake.spin(reverse, 450, rpm);
+  // intake2.spin(reverse, 450, rpm);
+  // pid_inches(23);
+  // wait(1, sec);
+  // turnRight(63.27); 
+  // pid_inches(17);
+  // stopIntaking();
+  // intakeInAuton();
+  // pid_inches(7);
+  // wait(1.5, sec);
+  // stopIntaking();
+  // pid_inches(5.7);
+  // turnLeft(87);
+  // intake.spin(reverse, 450, rpm);
+  // pid_inches(24);
+  // intake2.spin(reverse, 450, rpm);
+  // wait(1, sec);
+  // stopIntaking();
+  // turnRight(186);
+  // intake.spin(reverse, 450, rpm);
+  // intake2.spin(reverse, 450, rpm);
+  // pid_inches(40);
+  // stopWheels();
+  // wait(1, sec);
+  // stopIntaking();
+  // pid_inches(7);
+  // intakeInAuton();
+  // turnLeft(15);
+  // pid_inches(7);
+  // turnLeft(93);
+  // pid_inches(11);
+  // wait(2, sec);
+  // stopIntaking();
+  // turnLeft(85);
+  // pid_inches(-13);
+  // unclamp();
+  turnRight(170);
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
+  pid_inches(30);
+  stopWheels();
+  pid_inches(7);
+  wait(1, sec);
+  pid_inches(-9);
+  turnRight(80);
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
+  pid_inches(10);
+  wait(1.5, sec);
+  stopIntaking();
+  turnRight(125);
+  pid_inches(-7);
+  unclamp();
+  }
 
 int auton = 1;
 
 
 //auton selector
 void autonselector() {
-  int numofautons = 4;
+  int numofautons = 5;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -457,7 +523,11 @@ void autonselector() {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Red Goal Rush");
-  }
+  } else if (auton == 5) {
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,9);
+    controller1.Screen.print("Prog Skills");
+  } 
 }
 
 // auton
@@ -470,6 +540,8 @@ void autonomous(void) {
     redLeft();
   } else if (auton == 4) {
     redGoalRush();
+  } else if (auton == 5) {
+    progskills();
   }
 }
 
