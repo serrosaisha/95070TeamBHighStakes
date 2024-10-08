@@ -36,6 +36,7 @@ bool doinkertrue = false;
 bool prevdoinker = false;
 
 steady_clock::time_point lastClamp;
+steady_clock::time_point lastToggle;
 steady_clock::time_point lastDoinker;
 // define your global instances of motors and other devices here
 
@@ -195,7 +196,7 @@ void doinkerControl() {
 void doinkeroinker() {
   auto now = steady_clock::now();
   auto durLastDoinker = duration_cast<milliseconds>(now-lastDoinker).count();
-  if (durLastDoinker > 200) {
+  if (durLastDoinker > 100) {
     doinkerControl();
     doinkertrue = !doinkertrue;
     lastDoinker = now;
@@ -360,13 +361,13 @@ void blueGoalRush() {
 
 // red left auton
 void redLeft() {
-  kp = 0.19;
+  kp = 0.14;
   outtakeInAuton();
   wait(0.1, sec);
   stopIntaking();
   pid_inches(-30);
   clamp();
-  kp = 0.14;
+  kp = 0.17;
   pid_inches(-3);
   intakeInAuton();
   turnRight(127.5);
@@ -386,7 +387,7 @@ void redLeft() {
   // intake2.spin(reverse, 450, rpm);
   kp = 0.3;
   turnLeft(180);
-  pid_inches(18);
+  pid_inches(25);
 }
 
 // red goal rush auton
@@ -432,6 +433,7 @@ void progskills() {
   clamp();
   wait(20, msec);
   kp = 0.24;
+  // this part was for a 6 ring part of prog skills but we ended up switching to get more points
   // turnRight(95.3);
   // intake.spin(reverse, 450, rpm);
   // intake2.spin(reverse, 450, rpm);
@@ -486,6 +488,19 @@ void progskills() {
   turnRight(125);
   pid_inches(-7);
   unclamp();
+  pid_inches(10);
+  turnLeft(25);
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
+  pid_inches(100);
+  stopWheels();
+  wait(1, sec);
+  pid_inches(20);
+  wait (1, sec);
+  turnLeft(75);
+  pid_inches(16);
+  wait(1, sec);
+  turnLeft(1);
   }
 
 int auton = 1;
@@ -564,8 +579,8 @@ void old_arcade() {
  // int speedright = controller1.Axis3.value()/2;
  // search up the ebot pilons turning curves(or something like that) desmos
 
- double speedleft = controller1.Axis1.value() * 0.75 + controller1.Axis3.value();
- double speedright = controller1.Axis1.value() * 0.75 - controller1.Axis3.value();
+ double speedleft = controller1.Axis1.value() * 0.6 + controller1.Axis3.value();
+ double speedright = controller1.Axis1.value() * 0.6 - controller1.Axis3.value();
 
  fl.spin(forward, speedleft, percent);
  ml.spin(forward, speedleft, percent);
@@ -582,29 +597,40 @@ void slow_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
  // int speedright = controller1.Axis3.value()/2;
- // search up the ebot pilons turning curves(or something like that) desmos
+ // search up the ebot pilons tur`ning curves(or something like that) desmos
 
- double speedleft = controller1.Axis1.value()/2 + controller1.Axis3.value();
- double speedright = controller1.Axis1.value() - controller1.Axis3.value()/2;
+ double speedleft = controller1.Axis1.value() + controller1.Axis3.value();
+ double speedright = controller1.Axis1.value() - controller1.Axis3.value();
 
- fl.spin(forward, speedleft, percent);
- ml.spin(forward, speedleft, percent);
- bl.spin(forward, speedleft, percent);
+ fl.spin(forward, speedleft/2, percent);
+ ml.spin(forward, speedleft/2, percent);
+ bl.spin(forward, speedleft/2, percent);
 
  // RIGHT MOTORS ARE REVERSED SO FORWARD = REVERSE!!!!!!!!!
- fr.spin(reverse, speedright, percent);
- mr.spin(reverse, speedright, percent);
- br.spin(reverse, speedright, percent);
+ fr.spin(reverse, speedright/2, percent);
+ mr.spin(reverse, speedright/2, percent);
+ br.spin(reverse, speedright/2, percent);
 }
 
 void useSlowArcade() {
-  if (controller1.ButtonL2.pressing()) {
+  if (controller1.ButtonX.pressing()) {
     slow_arcade();
   } else {
     old_arcade();
   }
 }
 
+// toggle slow arcade
+bool toggleArcade = 0;
+
+void slowmode() {
+  auto now = steady_clock::now();
+  auto durLastToggle = duration_cast<milliseconds>(now-lastToggle).count();
+  if (durLastToggle > 200) {
+    toggleArcade = !toggleArcade;
+    lastToggle = now;
+  }
+}
 
 bool selecting = 1;
 void usercontrol() {
@@ -616,6 +642,14 @@ void usercontrol() {
   while (!selecting) {
     intaking();
     old_arcade();
+    if (toggleArcade) {
+      slow_arcade();
+    } else {
+      old_arcade();
+    }
+
+    controller1.ButtonX.pressed(useSlowArcade);
+    controller1.ButtonX.released(slowmode);
     //mogoControl();
     controller1.ButtonL1.pressed(mogoControl);
     controller1.ButtonL1.released(clamping);
