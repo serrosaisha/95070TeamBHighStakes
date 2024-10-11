@@ -331,6 +331,7 @@ void blueRight() {
 //blue goal rush auton
 void blueGoalRush() {
   kp = 0.3;
+  intake.spin(forward, 450, rpm);
   pid_inches(-34);
   turnRight(30);
   kp = 0.15;
@@ -384,19 +385,21 @@ void redLeft() {
   pid_inches(4);
   wait(2, sec);
   stopIntaking();
-  // intake2.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
   kp = 0.3;
-  turnLeft(180);
+  turnLeft(175);
   pid_inches(25);
 }
 
 // red goal rush auton
 void redGoalRush() {
   kp = 0.3;
+  intake.spin(forward, 450, rpm);
   pid_inches(-33);
-  turnLeft(21.5);
+  stopIntaking();
+  turnLeft(24);
   kp = 0.15;
-  pid_inches(-14);
+  pid_inches(-16);
   clamp();
   intakeInAuton();
   wait(1, sec);
@@ -410,7 +413,7 @@ void redGoalRush() {
   pid_inches(23);
   unclamp();
   pid_inches(6);
-  turnLeft(35);
+  turnLeft(38.1);
   stopIntaking();
   pid_inches(-24);
   clamp();
@@ -418,16 +421,18 @@ void redGoalRush() {
   intakeInAuton();
   wait(1.5, sec);
   stopIntaking();
-  unclamp();
+  turnRight(120);
+  pid_inches(16); 
 }
   
 void progskills() {
   kp = 0.3;
-  intakeInAuton();
+  intake.spin(forward, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
   wait(0.71, sec);
   stopIntaking();
   pid_inches(12);
-  turnLeft(75);
+  turnLeft(80.9);
   kp = 0.16;
   pid_inches(-16);
   clamp();
@@ -476,31 +481,26 @@ void progskills() {
   intake2.spin(reverse, 450, rpm);
   pid_inches(30);
   stopWheels();
-  pid_inches(7);
+  turnRight(7);
+  wait(1, sec);
+  pid_inches(9);
   wait(1, sec);
   pid_inches(-9);
-  turnRight(80);
+  turnRight(68);
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
   pid_inches(10);
   wait(1.5, sec);
   stopIntaking();
-  turnRight(125);
-  pid_inches(-7);
+  turnRight(120);
+  pid_inches(-10);
   unclamp();
-  pid_inches(10);
-  turnLeft(25);
-  intake.spin(reverse, 450, rpm);
-  intake2.spin(reverse, 450, rpm);
-  pid_inches(100);
-  stopWheels();
-  wait(1, sec);
   pid_inches(20);
-  wait (1, sec);
-  turnLeft(75);
-  pid_inches(16);
-  wait(1, sec);
-  turnLeft(1);
+  turnRight(130);
+  pid_inches(-40);
+  kp = 0.1;
+  pid_inches(-10);
+  clamp();
   }
 
 int auton = 1;
