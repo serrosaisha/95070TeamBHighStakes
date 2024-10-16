@@ -333,10 +333,10 @@ void blueGoalRush() {
   kp = 0.3;
   intake.spin(forward, 450, rpm);
   pid_inches(-34);
-  turnRight(30);
+  turnRight(22);
   kp = 0.15;
   pid_inches(-14);
-  clamp();
+  clamp();   
   intakeInAuton();
   wait(1, sec);
   stopIntaking();
@@ -399,7 +399,7 @@ void redGoalRush() {
   stopIntaking();
   turnLeft(24);
   kp = 0.15;
-  pid_inches(-16);
+  pid_inches(-14.7);
   clamp();
   intakeInAuton();
   wait(1, sec);
@@ -431,11 +431,12 @@ void progskills() {
   intake2.spin(reverse, 450, rpm);
   wait(0.71, sec);
   stopIntaking();
-  pid_inches(12);
+  pid_inches(9);
   turnLeft(80.9);
   kp = 0.16;
   pid_inches(-16);
   clamp();
+  //This clamps onto the first mogo (right side red)
   wait(20, msec);
   kp = 0.24;
   // this part was for a 6 ring part of prog skills but we ended up switching to get more points
@@ -477,11 +478,13 @@ void progskills() {
   // pid_inches(-13);
   // unclamp();
   turnRight(170);
+  // this part turns, then gets the first ring
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
   pid_inches(30);
   stopWheels();
   turnRight(7);
+  // the second ring (right side red)
   wait(1, sec);
   pid_inches(9);
   wait(1, sec);
@@ -495,12 +498,35 @@ void progskills() {
   turnRight(120);
   pid_inches(-10);
   unclamp();
+  //unclamps first mogo into corner 
   pid_inches(20);
-  turnRight(130);
+  kp = 0.2;
+  turnRight(138);
   pid_inches(-40);
-  kp = 0.1;
-  pid_inches(-10);
+  kp = 0.14;
+  pid_inches(-14);
+  //this clamps the second mogo (left side red)
   clamp();
+  wait(0.5, sec);
+  turnRight(175);
+  //the first ring of the second quadrant
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
+  pid_inches(30);
+  wait(0.75, sec);
+  //the second ring of the second quadrant
+  turnRight(12);
+  pid_inches(19);
+   wait(1, sec);
+  pid_inches(-30);
+  // third ring of second quadrant
+  turnLeft(45);
+  pid_inches(15);
+  turnLeft(165);
+  pid_inches(-19);
+  stopIntaking();
+  unclamp();
+  pid_inches(6);
   }
 
 int auton = 1;
