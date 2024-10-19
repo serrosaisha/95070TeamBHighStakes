@@ -251,6 +251,16 @@ void intaking() {
  }
 }
 
+void wierdIntake() {
+ if (controller1.ButtonA.pressing()) {
+   intake.spin(forward, 400, rpm);
+   intake2.spin(reverse, 450, rpm);
+ } else {
+   intake.stop(coast);
+   intake2.stop(coast);
+ }
+}
+
 //turn right
 void turnRight(double angle) {
  // set inertial rotation to 0 degrees
@@ -336,21 +346,22 @@ void blueGoalRush() {
   turnRight(22);
   kp = 0.15;
   pid_inches(-14);
-  clamp();   
-  intakeInAuton();
-  wait(1, sec);
-  stopIntaking();
+  clamp(); 
+  wait(0.5, sec);  
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
   turnLeft(45);
+  stopIntaking();
   intake.spin(reverse, 450, rpm);
   pid_inches(23);
   wait(1, sec);
   stopIntaking();
-  pid_inches(20);
   unclamp();
+  pid_inches(20);
   pid_inches(4);
   stopWheels();
   pid_inches(2);
-  turnRight(30);
+  turnRight(33.5);
   pid_inches(-21);
   clamp();
   pid_inches(-2);
@@ -358,6 +369,8 @@ void blueGoalRush() {
   intakeInAuton();
   wait(1.5, sec);
   stopIntaking();
+  turnLeft(120);
+  pid_inches(18);
 }
 
 // red left auton
@@ -410,9 +423,9 @@ void redGoalRush() {
   wait(1, sec);
   stopIntaking();
   intake.spin(reverse, 450, rpm);
-  pid_inches(23);
+  pid_inches(14);
   unclamp();
-  pid_inches(6);
+  pid_inches(15);
   turnLeft(38.1);
   stopIntaking();
   pid_inches(-24);
@@ -434,7 +447,7 @@ void progskills() {
   pid_inches(9);
   turnLeft(80.9);
   kp = 0.16;
-  pid_inches(-16);
+  pid_inches(-20);
   clamp();
   //This clamps onto the first mogo (right side red)
   wait(20, msec);
@@ -478,45 +491,46 @@ void progskills() {
   // pid_inches(-13);
   // unclamp();
   turnRight(170);
-  // this part turns, then gets the first ring
+  // this part turns, then gets the first ring of the first quadrant
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
   pid_inches(30);
   stopWheels();
-  turnRight(7);
-  // the second ring (right side red)
+  // the second ring in the first quadrant
+  turnRight(4);
   wait(1, sec);
   pid_inches(9);
   wait(1, sec);
-  pid_inches(-9);
+  pid_inches(-13);
+  //3rd ring in first quadrant
   turnRight(68);
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
   pid_inches(10);
   wait(1.5, sec);
-  stopIntaking();
+  //unclamps first mogo into corner
   turnRight(120);
   pid_inches(-10);
   unclamp();
-  //unclamps first mogo into corner 
+  stopIntaking();
   pid_inches(20);
   kp = 0.2;
   turnRight(138);
   pid_inches(-40);
-  kp = 0.14;
-  pid_inches(-14);
-  //this clamps the second mogo (left side red)
+  kp = 0.12;
+  pid_inches(-18);
+  //this clamps the second mogo of the second quadrant
   clamp();
   wait(0.5, sec);
-  turnRight(175);
+  turnRight(183);
   //the first ring of the second quadrant
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
-  pid_inches(30);
+  pid_inches(26.7);
   wait(0.75, sec);
   //the second ring of the second quadrant
   turnRight(12);
-  pid_inches(19);
+  pid_inches(15);
    wait(1, sec);
   pid_inches(-30);
   // third ring of second quadrant
@@ -526,7 +540,10 @@ void progskills() {
   pid_inches(-19);
   stopIntaking();
   unclamp();
-  pid_inches(6);
+  //3rd quadrant slaaay
+  // pid_inches(10);
+  // turnLeft(45);
+  // pid_inches(72);
   }
 
 int auton = 1;
@@ -585,8 +602,6 @@ void autonomous(void) {
     progskills();
   }
 }
-
-
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -668,6 +683,7 @@ void usercontrol() {
   while (!selecting) {
     intaking();
     old_arcade();
+    // wierdIntake();
     if (toggleArcade) {
       slow_arcade();
     } else {
@@ -694,8 +710,6 @@ int main() {
  Competition.drivercontrol(usercontrol);
 
  // Run the pre-autonomous function.
- 
- 
  // Prevent main from exiting with an infinite loop.
  while (true) {
    wait(10, msec);
