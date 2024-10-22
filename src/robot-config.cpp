@@ -18,7 +18,7 @@ motor ml = motor(PORT10, ratio18_1, true);
 motor mr = motor(PORT5, ratio18_1, false);
 motor bl = motor(PORT11, ratio18_1, true);
 motor br = motor(PORT4, ratio18_1, false);
-motor intake = motor(PORT17, ratio18_1, false);
+motor intake = motor(PORT16, ratio18_1, false);
 motor intake2 = motor(PORT15, ratio18_1, false);
 inertial inertialSensor = inertial(PORT12);
 // VEXcode device constructors

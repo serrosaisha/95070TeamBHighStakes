@@ -618,8 +618,8 @@ void old_arcade() {
  br.spin(reverse, speedright, percent);
 }
 
-// slow arcade
-void slow_arcade() {
+// fast arcade
+void fast_arcade() {
  //Slower
  // int speedleft = controller1.Axis1.value()/2;
  // int speedright = controller1.Axis3.value()/2;
@@ -628,19 +628,19 @@ void slow_arcade() {
  double speedleft = controller1.Axis1.value() + controller1.Axis3.value();
  double speedright = controller1.Axis1.value() - controller1.Axis3.value();
 
- fl.spin(forward, speedleft/2, percent);
- ml.spin(forward, speedleft/2, percent);
- bl.spin(forward, speedleft/2, percent);
+ fl.spin(forward, speedleft, percent);
+ ml.spin(forward, speedleft, percent);
+ bl.spin(forward, speedleft, percent);
 
  // RIGHT MOTORS ARE REVERSED SO FORWARD = REVERSE!!!!!!!!!
- fr.spin(reverse, speedright/2, percent);
- mr.spin(reverse, speedright/2, percent);
- br.spin(reverse, speedright/2, percent);
+ fr.spin(reverse, speedright, percent);
+ mr.spin(reverse, speedright, percent);
+ br.spin(reverse, speedright, percent);
 }
 
-void useSlowArcade() {
-  if (controller1.ButtonX.pressing()) {
-    slow_arcade();
+void useFastArcade() {
+  if (controller1.ButtonUp.pressing()) {
+    fast_arcade();
   } else {
     old_arcade();
   }
@@ -649,14 +649,14 @@ void useSlowArcade() {
 // toggle slow arcade
 bool toggleArcade = 0;
 
-void slowmode() {
-  auto now = steady_clock::now();
-  auto durLastToggle = duration_cast<milliseconds>(now-lastToggle).count();
-  if (durLastToggle > 200) {
-    toggleArcade = !toggleArcade;
-    lastToggle = now;
-  }
-}
+// void slowmode() {
+//   auto now = steady_clock::now();
+//   auto durLastToggle = duration_cast<milliseconds>(now-lastToggle).count();
+//   if (durLastToggle > 200) {
+//     toggleArcade = !toggleArcade;
+//     lastToggle = now;
+//   }
+// }
 
 bool selecting = 1;
 void usercontrol() {
@@ -668,14 +668,7 @@ void usercontrol() {
   while (!selecting) {
     intaking();
     old_arcade();
-    if (toggleArcade) {
-      slow_arcade();
-    } else {
-      old_arcade();
-    }
-
-    controller1.ButtonX.pressed(useSlowArcade);
-    controller1.ButtonX.released(slowmode);
+    useFastArcade();
     //mogoControl();
     controller1.ButtonL1.pressed(mogoControl);
     controller1.ButtonL1.released(clamping);
