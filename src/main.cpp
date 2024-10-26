@@ -422,13 +422,16 @@ void redGoalRush() {
   stopIntaking();
   turnLeft(24);
   kp = 0.15;
+  // going backwards to get the goal ruh goal
   pid_inches(-14.7);
   clamp();
-  intakeInAuton();
-  wait(1, sec);
-  stopIntaking();
+  //scores preload
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
   turnRight(43);
-  pid_inches(18);
+  pid_inches(10);
+  stopIntaking();
+  pid_inches(8);
   intakeInAuton();
   wait(1, sec);
   stopIntaking();
