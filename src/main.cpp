@@ -279,6 +279,16 @@ void turnRight(double angle) {
  stopWheels();
 }
 
+ void stopwheels() {
+  fl.stop(coast);
+  ml.stop(coast);
+  bl.stop(coast);
+
+  fr.stop(coast);
+  mr.stop(coast);
+  br.stop(coast);
+ }
+
 //set velocity
 void setVelocity(double vel) {
   // set all motors to velocity value of 'vel'
@@ -529,7 +539,7 @@ void progskills() {
   pid_inches(26.7);
   wait(0.75, sec);
   //the second ring of the second quadrant
-  turnRight(12);
+  turnLeft(6);
   pid_inches(15);
    wait(1, sec);
   pid_inches(-30);
@@ -537,13 +547,87 @@ void progskills() {
   turnLeft(45);
   pid_inches(15);
   turnLeft(165);
-  pid_inches(-19);
+  pid_inches(-25);
   stopIntaking();
+  kp = 0.8;
   unclamp();
+  pid_inches(16);
   //3rd quadrant slaaay
   // pid_inches(10);
   // turnLeft(45);
   // pid_inches(72);
+  }
+
+  void FourRingBlueRight() {
+    kp = 0.175;
+  outtakeInAuton();
+  wait(0.1, sec);
+  stopIntaking();
+  pid_inches(-30.5); 
+  clamp();
+  kp = 0.2;
+  intakeInAuton();
+  wait(0.9, sec);
+  stopIntaking();
+  turnLeft(125);
+  kp = 0.15;
+  pid_inches(16);
+  intakeInAuton();
+  pid_inches(6);
+  wait(1.2, sec);
+  pid_inches(-5); 
+  turnRight(75);
+  pid_inches(3);
+  intakeInAuton();
+  pid_inches(4);
+  wait(2, sec);
+  turnLeft(75);
+  kp = 0.4;
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
+  pid_inches(8.6);
+  wait(2, sec);
+  pid_inches(-15);
+  stopIntaking();
+  turnLeft(76);
+  pid_inches(10);
+  stopwheels();
+  }
+
+  void FourRingRedLeft() {
+    kp = 0.14;
+  outtakeInAuton();
+  wait(0.1, sec);
+  stopIntaking();
+  pid_inches(-30);
+  clamp();
+  kp = 0.17;
+  pid_inches(-3);
+  intakeInAuton();
+  turnRight(127.5);
+  wait(0.75, sec);
+  stopIntaking();
+  pid_inches(18);
+  intakeInAuton();
+  pid_inches(3);
+  wait(1.2, sec);
+  pid_inches(-5);
+  turnLeft(75.1);
+  pid_inches(10);
+  intakeInAuton();
+  pid_inches(4);
+  wait(2, sec);
+  turnRight(90);
+  kp = 0.4;
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
+  pid_inches(8.6);
+  wait(2, sec);
+  pid_inches(-15);
+  stopIntaking();
+  turnRight(80);
+  pid_inches(10);
+  stopwheels();
   }
 
 int auton = 1;
@@ -551,7 +635,7 @@ int auton = 1;
 
 //auton selector
 void autonselector() {
-  int numofautons = 5;
+  int numofautons = 7;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -573,19 +657,27 @@ void autonselector() {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Blue Goal Rush");
-  } else if (auton == 3) {
+  } else if (auton == 4) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,10);
     controller1.Screen.print("Red Left");
-  } else if (auton == 4) {
+  } else if (auton == 5) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Red Goal Rush");
-  } else if (auton == 5) {
+  } else if (auton == 7) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,9);
     controller1.Screen.print("Prog Skills");
-  } 
+  } else if (auton == 3) {
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,3);
+    controller1.Screen.print("4 Ring Blue");
+  } else if (auton == 6) {
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,6);
+    controller1.Screen.print("4 Ring Red Left");
+}
 }
 
 // auton
@@ -595,10 +687,14 @@ void autonomous(void) {
   } else if (auton == 2){
     blueGoalRush();
   } else if (auton == 3) {
-    redLeft();
+    FourRingBlueRight();
   } else if (auton == 4) {
-    redGoalRush();
+    redLeft();
   } else if (auton == 5) {
+    redGoalRush();
+  } else if (auton == 6) {
+    FourRingRedLeft();
+  } else if (auton == 7) {
     progskills();
   }
 }
