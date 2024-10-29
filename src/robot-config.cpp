@@ -29,7 +29,8 @@ inertial inertialSensor = inertial(PORT12);
 // VEXcode generated functions
 
 
-
+//Bad Ports:
+// 8, 7, 
 
 
 

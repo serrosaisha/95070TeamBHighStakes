@@ -325,7 +325,8 @@ void blueRight() {
   wait(0.1, sec);
   stopIntaking();
   pid_inches(-30.5); 
-  clamp();
+  mogo.set(true);
+  mogo2.set(true);  
   kp = 0.2;
   intakeInAuton();
   wait(0.9, sec);
@@ -353,9 +354,9 @@ void blueGoalRush() {
   kp = 0.3;
   intake.spin(forward, 450, rpm);
   pid_inches(-34);
-  turnRight(22);
+  turnRight(25);
   kp = 0.15;
-  pid_inches(-14);
+  pid_inches(-14.5);
   clamp(); 
   wait(0.5, sec);  
   intake.spin(reverse, 450, rpm);
@@ -364,23 +365,27 @@ void blueGoalRush() {
   stopIntaking();
   intake.spin(reverse, 450, rpm);
   pid_inches(23);
-  wait(1, sec);
+  wait(0.5, sec);
   stopIntaking();
   unclamp();
-  pid_inches(20);
-  pid_inches(4);
+  kp = 0.3;
+  pid_inches(10);
+  kp = 0.15;
+  pid_inches(10);
   stopWheels();
-  pid_inches(2);
+  pid_inches(6);
   turnRight(33.5);
   pid_inches(-21);
-  clamp();
-  pid_inches(-2);
-  pid_inches(-3);
-  intakeInAuton();
-  wait(1.5, sec);
-  stopIntaking();
+  mogo.set(true);
+  mogo2.set(true);
+  pid_inches(-5);
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
   turnLeft(120);
+  kp = 0.2;
   pid_inches(18);
+  stopwheels();
+  stopIntaking();
 }
 
 // red left auton
@@ -390,7 +395,8 @@ void redLeft() {
   wait(0.1, sec);
   stopIntaking();
   pid_inches(-30);
-  clamp();
+  mogo.set(true);
+  mogo2.set(true);
   kp = 0.17;
   pid_inches(-3);
   intakeInAuton();
@@ -420,10 +426,10 @@ void redGoalRush() {
   intake.spin(forward, 450, rpm);
   pid_inches(-33);
   stopIntaking();
-  turnLeft(24);
+  turnLeft(20);
   kp = 0.15;
-  // going backwards to get the goal ruh goal
-  pid_inches(-14.7);
+  // going backwards to get the goal rush goal
+  pid_inches(-13);
   clamp();
   //scores preload
   intake.spin(reverse, 450, rpm);
@@ -431,23 +437,23 @@ void redGoalRush() {
   turnRight(43);
   pid_inches(10);
   stopIntaking();
+  intake.spin(reverse, 450, rpm);
   pid_inches(8);
-  intakeInAuton();
   wait(1, sec);
   stopIntaking();
-  intake.spin(reverse, 450, rpm);
   pid_inches(14);
   unclamp();
   pid_inches(15);
   turnLeft(38.1);
   stopIntaking();
   pid_inches(-24);
-  clamp();
+  mogo.set(true);
+  mogo2.set(true);
   pid_inches(-3);
-  intakeInAuton();
-  wait(1.5, sec);
-  stopIntaking();
+  intake.spin(reverse, 450, rpm);
+  intake2.spin(reverse, 450, rpm);
   turnRight(120);
+  kp = 0.2;
   pid_inches(16); 
 }
   
@@ -460,7 +466,7 @@ void progskills() {
   pid_inches(9);
   turnLeft(80.9);
   kp = 0.16;
-  pid_inches(-20);
+  pid_inches(-25);
   clamp();
   //This clamps onto the first mogo (right side red)
   wait(20, msec);
@@ -514,16 +520,16 @@ void progskills() {
   wait(1, sec);
   pid_inches(9);
   wait(1, sec);
-  pid_inches(-13);
+  pid_inches(-18);
   //3rd ring in first quadrant
-  turnRight(68);
+  turnRight(73);
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
-  pid_inches(10);
+  pid_inches(18);
   wait(1.5, sec);
   //unclamps first mogo into corner
   turnRight(120);
-  pid_inches(-10);
+  pid_inches(-3.5);
   unclamp();
   stopIntaking();
   pid_inches(20);
@@ -544,12 +550,12 @@ void progskills() {
   //the second ring of the second quadrant
   turnLeft(6);
   pid_inches(15);
-   wait(1, sec);
+  wait(1, sec);
   pid_inches(-30);
   // third ring of second quadrant
   turnLeft(45);
   pid_inches(15);
-  turnLeft(165);
+  turnLeft(157);
   pid_inches(-25);
   stopIntaking();
   kp = 0.8;
@@ -567,13 +573,14 @@ void progskills() {
   wait(0.1, sec);
   stopIntaking();
   pid_inches(-30.5); 
-  clamp();
+  mogo.set(true);
+  mogo2.set(true);
   kp = 0.2;
   intakeInAuton();
   wait(0.9, sec);
   stopIntaking();
-  turnLeft(125);
-  kp = 0.15;
+  turnLeft(120);
+  kp = 0.2;
   pid_inches(16);
   intakeInAuton();
   pid_inches(6);
@@ -585,29 +592,29 @@ void progskills() {
   pid_inches(4);
   wait(2, sec);
   turnLeft(75);
-  kp = 0.4;
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
   pid_inches(8.6);
   wait(2, sec);
+  kp = 0.45;
   pid_inches(-15);
-  stopIntaking();
-  turnLeft(76);
+  turnLeft(70);
   pid_inches(10);
   stopwheels();
   }
 
   void FourRingRedLeft() {
-    kp = 0.14;
+    kp = 0.13;
   outtakeInAuton();
   wait(0.1, sec);
   stopIntaking();
-  pid_inches(-30);
-  clamp();
+  pid_inches(-36);
+  mogo.set(true);
+  mogo2.set(true);
   kp = 0.17;
   pid_inches(-3);
   intakeInAuton();
-  turnRight(127.5);
+  turnRight(130);
   wait(0.75, sec);
   stopIntaking();
   pid_inches(18);
@@ -615,7 +622,7 @@ void progskills() {
   pid_inches(3);
   wait(1.2, sec);
   pid_inches(-5);
-  turnLeft(75.1);
+  turnLeft(70);
   pid_inches(10);
   intakeInAuton();
   pid_inches(4);
@@ -628,7 +635,7 @@ void progskills() {
   wait(2, sec);
   pid_inches(-15);
   stopIntaking();
-  turnRight(80);
+  turnRight(70);
   pid_inches(10);
   stopwheels();
   }
@@ -674,7 +681,7 @@ void autonselector() {
     controller1.Screen.print("Prog Skills");
   } else if (auton == 3) {
     controller1.Screen.clearScreen();
-    controller1.Screen.setCursor(2,3);
+    controller1.Screen.setCursor(2,6.3);
     controller1.Screen.print("4 Ring Blue");
   } else if (auton == 6) {
     controller1.Screen.clearScreen();
