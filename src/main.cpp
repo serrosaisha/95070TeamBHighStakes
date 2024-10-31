@@ -518,27 +518,27 @@ void progskills() {
   // the second ring in the first quadrant
   turnRight(4);
   wait(1, sec);
-  pid_inches(9);
+  pid_inches(5.346);
   wait(1, sec);
   pid_inches(-18);
   //3rd ring in first quadrant
   turnRight(73);
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
-  pid_inches(18);
+  pid_inches(16.5);
   wait(1.5, sec);
   //unclamps first mogo into corner
   turnRight(120);
-  pid_inches(-3.5);
+  pid_inches(-9);
   unclamp();
   stopIntaking();
-  pid_inches(20);
+  pid_inches(22.5);
   kp = 0.2;
-  turnRight(138);
+  turnRight(146.7);
   pid_inches(-40);
   kp = 0.12;
   pid_inches(-18);
-  //this clamps the second mogo of the second quadrant
+  //this clamps the second mogo of the second quadrent
   clamp();
   wait(0.5, sec);
   turnRight(183);
@@ -549,12 +549,14 @@ void progskills() {
   wait(0.75, sec);
   //the second ring of the second quadrant
   turnLeft(6);
-  pid_inches(15);
+  pid_inches(9);
   wait(1, sec);
   pid_inches(-30);
   // third ring of second quadrant
-  turnLeft(45);
+  turnLeft(30);
   pid_inches(15);
+  wait(1, sec);
+  pid_inches(3);
   turnLeft(157);
   pid_inches(-25);
   stopIntaking();
