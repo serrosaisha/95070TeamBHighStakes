@@ -63,9 +63,10 @@ void pre_auton(void) {
  inertialSensor.calibrate();
  wait(5, msec);
  waitUntil(!inertialSensor.isCalibrating());
+}
   // All activities that occur before the competition starts
  // Example: clearing encoders, setting servo positions, ...
-}
+
 
 
 /*---------------------------------------------------------------------------*/
@@ -156,9 +157,11 @@ void unclamp() {
 //use mogo mech
 void mogoControl() {
   if (clamptrue) {
-    clamp();
+  mogo.set(true);
+  mogo2.set(true);
   } else {
-    unclamp();
+  mogo.set(false);
+  mogo2.set(false);
   }
 }
 
@@ -453,9 +456,8 @@ void redGoalRush() {
   pid_inches(-3);
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
-  turnRight(120);
-  kp = 0.2;
-  pid_inches(16); 
+  kp = 0.4;
+  pid_inches(24); 
 }
   
 void progskills() {
@@ -575,7 +577,7 @@ void progskills() {
   outtakeInAuton();
   wait(0.1, sec);
   stopIntaking();
-  pid_inches(-30.5); 
+  pid_inches(-30.5); //you might have to change to less but we did not test it
   mogo.set(true);
   mogo2.set(true);
   kp = 0.2;
