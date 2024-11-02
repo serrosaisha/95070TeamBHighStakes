@@ -331,14 +331,14 @@ void blueRight() {
   intakeInAuton();
   wait(0.9, sec);
   stopIntaking();
-  turnLeft(125);
+  turnLeft(135);
   kp = 0.15;
-  pid_inches(16);
+  pid_inches(18);
   intakeInAuton();
   pid_inches(6);
   wait(1.2, sec);
   pid_inches(-5); 
-  turnRight(75);
+  turnRight(70);
   pid_inches(3);
   intakeInAuton();
   pid_inches(4);
@@ -353,7 +353,7 @@ void blueRight() {
 void blueGoalRush() {
   kp = 0.3;
   intake.spin(forward, 450, rpm);
-  pid_inches(-34);
+  pid_inches(-32);
   turnRight(25);
   kp = 0.15;
   pid_inches(-14.5);
@@ -404,10 +404,11 @@ void redLeft() {
   wait(0.75, sec);
   stopIntaking();
   pid_inches(18);
-  intakeInAuton();
+  intake.spin(reverse, 450, rpm);
   pid_inches(3);
   wait(1.2, sec);
   pid_inches(-5);
+  intake2.spin(reverse, 450, rpm);
   turnLeft(75.1);
   pid_inches(10);
   intakeInAuton();
@@ -610,11 +611,10 @@ void progskills() {
   outtakeInAuton();
   wait(0.1, sec);
   stopIntaking();
-  pid_inches(-36);
+  pid_inches(-34);
   mogo.set(true);
   mogo2.set(true);
   kp = 0.17;
-  pid_inches(-3);
   intakeInAuton();
   turnRight(130);
   wait(0.75, sec);
@@ -624,7 +624,7 @@ void progskills() {
   pid_inches(3);
   wait(1.2, sec);
   pid_inches(-5);
-  turnLeft(70);
+  turnLeft(61.9);
   pid_inches(10);
   intakeInAuton();
   pid_inches(4);
