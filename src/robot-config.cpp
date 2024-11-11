@@ -12,15 +12,15 @@ pneumatics mogo = pneumatics(Brain.ThreeWirePort.A);
 pneumatics mogo2 = pneumatics(Brain.ThreeWirePort.B);
 pneumatics doinker = pneumatics(Brain.ThreeWirePort.C);
 controller controller1 = controller(primary);
-motor fr = motor(PORT1, ratio18_1, false);
+motor fr = motor(PORT15, ratio18_1, false);
 motor fl = motor(PORT7, ratio18_1, true);
-motor ml = motor(PORT10, ratio18_1, true);
-motor mr = motor(PORT5, ratio18_1, false);
-motor bl = motor(PORT11, ratio18_1, true);
-motor br = motor(PORT4, ratio18_1, false);
+motor ml = motor(PORT2, ratio18_1, true);
+motor mr = motor(PORT12, ratio18_1, false);
+motor bl = motor(PORT1, ratio18_1, true);
+motor br = motor(PORT11, ratio18_1, false);
 motor intake = motor(PORT16, ratio18_1, false);
-motor intake2 = motor(PORT15, ratio18_1, false);
-inertial inertialSensor = inertial(PORT12);
+// motor intake2 = motor(PORT15, ratio18_1, false);
+inertial inertialSensor = inertial(PORT18);
 // VEXcode device constructors
 
 
