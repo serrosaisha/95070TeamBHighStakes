@@ -353,7 +353,7 @@ void blueRight() {
 void blueGoalRush() {
   kp = 0.3;
   intake.spin(forward, 450, rpm);
-  pid_inches(-32);
+  pid_inches(-33);
   turnRight(25);
   kp = 0.15;
   pid_inches(-14.5);
@@ -523,19 +523,19 @@ void progskills() {
   wait(1, sec);
   pid_inches(-18);
   //3rd ring in first quadrant
-  turnRight(73);
+  turnRight(64);
   intake.spin(reverse, 450, rpm);
   intake2.spin(reverse, 450, rpm);
   pid_inches(16.5);
   wait(1.5, sec);
-  //unclamps first mogo into corner
+  //unclamps first mogo into c 5654rrr r544 4444 55 33 4  4 3   47 orner
   turnRight(120);
   pid_inches(-9);
   unclamp();
   stopIntaking();
   pid_inches(22.5);
   kp = 0.2;
-  turnRight(146.7);
+  turnRight(157);
   pid_inches(-40);
   kp = 0.12;
   pid_inches(-18);
