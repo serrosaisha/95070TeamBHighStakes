@@ -321,37 +321,43 @@ void stopIntaking() {
   //intake2.stop(coast);
 }
 
-//blue right auton
+//blue right auton (4 ring)
 void blueRight() {
   kp = 0.11;
   outtakeInAuton();
   wait(0.1, sec);
   stopIntaking();
   pid_inches(-32.5); 
-  mogo.set(true);
-  mogo2.set(true);  
+  clamp();
   kp = 0.2;
   intakeInAuton();
   wait(0.9, sec);
   stopIntaking();
   turnLeft(115);
   kp = 0.12;
-  intake.spin(reverse, 450, rpm);
+  intakeInAuton();
   pid_inches(14);
-
-  // intakeInAuton();
+  // intakeInAuton();]]
   // pid_inches(6);
   wait(0.7, sec);
-  pid_inches(-5); 
-  turnRight(70);
-  pid_inches(11);
-  intakeInAuton();
-  pid_inches(4);
-  wait(2, sec);
   stopIntaking();
+  pid_inches(-5);
+  turnRight(70);
+  intakeInAuton();
+  pid_inches(14);
+  wait(1, sec);
+  stopIntaking();
+  kp = 0.2;
+  turnLeft(90);
+  intakeInAuton();
+  pid_inches(10);
+  wait(0.75, sec);
   kp = 0.3;
-  turnRight(160);
-  pid_inches(16);
+  pid_inches(-30);
+  turnLeft(90);
+  kp = 0.17;
+  pid_inches(12);
+
 }
 
 //blue goal rush auton
@@ -403,18 +409,17 @@ void redLeft() {
   mogo.set(true);
   mogo2.set(true);
   kp = 0.17;
-  pid_inches(-3);
   intakeInAuton();
-  turnRight(127.5);
+  turnRight(117);
   wait(0.75, sec);
   stopIntaking();
-  pid_inches(18);
+  pid_inches(15);
   intake.spin(reverse, 450, rpm);
   pid_inches(3);
   wait(1.2, sec);
   pid_inches(-5);
   //intake2.spin(reverse, 450, rpm);
-  turnLeft(75.1);
+  turnLeft(85.5);
   pid_inches(10);
   intakeInAuton();
   pid_inches(4);
@@ -422,8 +427,8 @@ void redLeft() {
   stopIntaking();
   //intake2.spin(reverse, 450, rpm);
   kp = 0.3;
-  turnLeft(175);
-  pid_inches(25);
+  turnLeft(60);
+  pid_inches(15);
 }
 
 // red goal rush auton
