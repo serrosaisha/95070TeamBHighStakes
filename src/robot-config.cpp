@@ -7,9 +7,9 @@ using code = vision::code;
 
 // A global instance of brain used for printing to the V5 Brain screen
 brain  Brain;
-pneumatics mogo = pneumatics(Brain.ThreeWirePort.A);
+pneumatics mogo = pneumatics(Brain.ThreeWirePort.C);
 pneumatics mogo2 = pneumatics(Brain.ThreeWirePort.B);
-pneumatics doinker = pneumatics(Brain.ThreeWirePort.C);
+pneumatics doinker = pneumatics(Brain.ThreeWirePort.A);
 controller controller1 = controller(primary);
 motor fr = motor(PORT15, ratio18_1, false);
 motor fl = motor(PORT7, ratio18_1, true);
