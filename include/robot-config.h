@@ -11,18 +11,15 @@ extern motor bl;
 extern motor br;
 extern motor intake;
 extern motor intake2;
+extern motor WallStakes;
 extern pneumatics mogo;
 extern pneumatics mogo2;
 extern pneumatics doinker;
 extern inertial inertialSensor;
+extern rotation rotationSensor;
 
 
 // VEXcode devices
 
 
-/**
-* Used to initialize code/tasks/devices added using tools in VEXcode Pro.
-*
-* This should be called at the start of your int main function.
-*/
 void  vexcodeInit();

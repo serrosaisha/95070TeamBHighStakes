@@ -633,6 +633,25 @@ void autonomous(void) {
   }
 }
 
+
+void wallstakes(){
+
+ WallStakes.setVelocity(20, percent);
+ if(controller1.ButtonUp.pressing()){
+
+ while (rotationSensor.angle(degrees)>130){
+ WallStakes.spin(reverse);
+
+ }
+ while (rotationSensor.angle(degrees)<130){
+ WallStakes.spin(forward);
+ }
+ while (rotationSensor.angle(degrees)==130){
+ WallStakes.stop(hold);
+ }
+ }
+}
+
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -714,6 +733,7 @@ void usercontrol() {
     intaking();
     old_arcade();
     useFastArcade();
+    wallstakes();
     //mogoControl();
     controller1.ButtonL1.pressed(mogoControl);
     controller1.ButtonL1.released(clamping);
