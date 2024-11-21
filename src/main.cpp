@@ -243,7 +243,7 @@ void turnLeft(double angle) {
 // intaking in driver control
 void intaking() {
  if (controller1.ButtonR2.pressing()) {
-   intake.spin(forward, 350, rpm);
+   intake.spin(forward, 400, rpm);
   //  intake2.spin(forward, 395, rpm);
  } else if (controller1.ButtonR1.pressing()) {
    intake.spin(reverse, 80, pct);
@@ -254,15 +254,15 @@ void intaking() {
  }
 }
 
-void wierdIntake() {
- if (controller1.ButtonA.pressing()) {
-   intake.spin(forward, 400, rpm);
-   //intake2.spin(reverse, 450, rpm);
- } else {
-   intake.stop(coast);
-   //intake2.stop(coast);
- }
-}
+// void wierdIntake() {
+//  if (controller1.ButtonA.pressing()) {
+//    intake.spin(forward, 400, rpm);
+//    //intake2.spin(reverse, 450, rpm);
+//  } else {
+//    intake.stop(coast);
+//    //intake2.stop(coast);
+//  }
+// }
 
 //turn right
 void turnRight(double angle) {
@@ -305,13 +305,13 @@ void setVelocity(double vel) {
 
 //intake in auton
 void intakeInAuton() {
-  intake.spin(reverse, 270, rpm);
+  intake.spin(reverse, 400, rpm);
   //intake2.spin(reverse, 300, rpm);
 }
 
 // outake in auton 
 void outtakeInAuton() {
-  intake.spin(forward, 300, rpm);
+  intake.spin(forward, 400, rpm);
   //intake2.spin(forward, 330, rpm);
 }
 
@@ -335,31 +335,34 @@ void blueRight() {
   stopIntaking();
   turnLeft(115);
   kp = 0.12;
+  //first ring
   intakeInAuton();
   pid_inches(14);
   // intakeInAuton();]]
   // pid_inches(6);
   wait(0.7, sec);
   stopIntaking();
-  outtakeInAuton();
   pid_inches(-5);
   turnRight(70);
   stopIntaking();
+  //second ring
   intakeInAuton();
   pid_inches(14);
-  wait(1, sec);
+  wait(0.4, sec);
   stopIntaking();
-  kp = 0.2;
-  turnLeft(90);
+  kp = 0.3;
+  turnLeft(20);
+  pid_inches(10);
+  turnLeft(110);
+  kp = 0.3;
   intakeInAuton();
   pid_inches(13);
   wait(0.75, sec);
-  kp = 0.3;
-  pid_inches(-30);
-  turnLeft(70);
-  kp = 0.17;
-  pid_inches(27);
-
+  pid_inches(-15);
+  turnLeft(45);
+  pid_inches(20);
+  turnRight(30);
+  pid_inches(10);
 }
 
 //blue goal rush auton
@@ -407,28 +410,31 @@ void redLeft() {
   pid_inches(-30);
   clamp();
   kp = 0.17;
+  //first ring
   intakeInAuton();
   turnRight(117);
   wait(0.75, sec);
   stopIntaking();
-  pid_inches(15);
-  intake.spin(reverse, 450, rpm);
+  pid_inches(14.5);
+  //second ring
+  intakeInAuton();
   pid_inches(3);
   wait(0.7, sec);
   pid_inches(-5);
   turnLeft(70);
   pid_inches(10);
+  //third ring
   intakeInAuton();
   pid_inches(4);
   wait(1, sec);
-  outtakeInAuton();
-  turnRight(87);
-  intakeInAuton();
+  stopIntaking();
   pid_inches(14);
+  turnRight(115);
+  //fourth ring
+  intakeInAuton();
+  pid_inches(16.187);
   wait(1, sec);
-  pid_inches(-20);
-  turnRight(90.1);
-  pid_inches(23);
+  pid_inches(-13);
 }
 
 // red goal rush auton
@@ -669,8 +675,8 @@ void old_arcade() {
  // int speedright = controller1.Axis3.value()/2;
  // search up the ebot pilons turning curves(or something like that) desmos
 
- double speedleft = controller1.Axis1.value() * 0.6 + controller1.Axis3.value();
- double speedright = controller1.Axis1.value() * 0.6 - controller1.Axis3.value();
+ double speedleft = controller1.Axis1.value() * 0.7 + controller1.Axis3.value();
+ double speedright = controller1.Axis1.value() * 0.7 - controller1.Axis3.value();
 
  fl.spin(forward, speedleft, percent);
  ml.spin(forward, speedleft, percent);
