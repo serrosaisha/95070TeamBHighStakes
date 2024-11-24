@@ -324,9 +324,6 @@ void stopIntaking() {
 //blue right auton (4 ring)
 void blueRight() {
   kp = 0.11;
-  outtakeInAuton();
-  wait(0.1, sec);
-  stopIntaking();
   pid_inches(-32.5); 
   clamp();
   kp = 0.2;
@@ -361,45 +358,45 @@ void blueRight() {
   pid_inches(-15);
   turnLeft(45);
   pid_inches(20);
-  turnRight(30);
-  pid_inches(10);
 }
 
 //blue goal rush auton
 void blueGoalRush() {
   kp = 0.3;
-  intake.spin(forward, 450, rpm);
   pid_inches(-33);
-  turnRight(25);
+  turnRight(20);
   kp = 0.15;
-  pid_inches(-14.5);
+  pid_inches(-10);
   clamp(); 
-  wait(0.5, sec);  
-  intake.spin(reverse, 450, rpm);
-  //intake2.spin(reverse, 450, rpm);
-  turnLeft(45);
+  wait(0.5, sec); 
+  //first ring 
+  intakeInAuton();
+  turnLeft(35);
+  pid_inches(12);
   stopIntaking();
-  intake.spin(reverse, 450, rpm);
-  pid_inches(23);
-  wait(0.5, sec);
-  stopIntaking();
+  //second ring
+  pid_inches(6);
   unclamp();
+  intakeInAuton();
+  pid_inches(5);
+  wait(0.3, sec);
+  stopIntaking();
   kp = 0.3;
   pid_inches(10);
   kp = 0.15;
   pid_inches(10);
   stopWheels();
   pid_inches(6);
-  turnRight(33.5);
-  pid_inches(-21);
-  mogo.set(true);
-  mogo2.set(true);
+  turnRight(26);
+  pid_inches(-28);
+  clamp();
   pid_inches(-5);
-  intake.spin(reverse, 450, rpm);
+  //2nd ring in goal
+  intakeInAuton();
   //intake2.spin(reverse, 450, rpm);
-  turnLeft(120);
+  turnLeft(160);
   kp = 0.2;
-  pid_inches(18);
+  pid_inches(10);
   stopwheels();
   stopIntaking();
 }
@@ -435,6 +432,8 @@ void redLeft() {
   pid_inches(16.187);
   wait(1, sec);
   pid_inches(-13);
+  turnRight(50);
+  pid_inches(23);
 }
 
 // red goal rush auton
@@ -473,12 +472,11 @@ void redGoalRush() {
   
 void progskills() {
   kp = 0.3;
-  intake.spin(forward, 450, rpm);
-  //intake2.spin(reverse, 450, rpm);
+  intakeInAuton();
   wait(0.71, sec);
   stopIntaking();
-  pid_inches(9);
-  turnLeft(80.9);
+  pid_inches(14);
+  turnLeft(86);
   kp = 0.16;
   pid_inches(-25);
   clamp();
@@ -525,21 +523,18 @@ void progskills() {
   // unclamp();
   turnRight(170);
   // this part turns, then gets the first ring of the first quadrant
-  intake.spin(reverse, 450, rpm);
-  //intake2.spin(reverse, 450, rpm);
-  pid_inches(30);
-  stopWheels();
+  kp = 2;
+  intakeInAuton();
+  pid_inches(20);
   // the second ring in the first quadrant
   turnRight(4);
-  wait(1, sec);
-  pid_inches(5.346);
-  wait(1, sec);
+  wait(0.5, sec);
   pid_inches(-18);
   //3rd ring in first quadrant
   turnRight(64);
-  intake.spin(reverse, 450, rpm);
+  intakeInAuton();  
   //intake2.spin(reverse, 450, rpm);
-  pid_inches(16.5);
+  pid_inches(10);
   wait(1.5, sec);
   //unclamps first mogo into c 5654rrr r544 4444 55 33 4  4 3   47 orner
   turnRight(120);
@@ -557,7 +552,7 @@ void progskills() {
   wait(0.5, sec);
   turnRight(183);
   //the first ring of the second quadrant
-  intake.spin(reverse, 450, rpm);
+  intakeInAuton();
   //intake2.spin(reverse, 450, rpm);
   pid_inches(26.7);
   wait(0.75, sec);
