@@ -324,7 +324,7 @@ void stopIntaking() {
 //blue right auton (4 ring)
 void blueRight() {
   kp = 0.11;
-  pid_inches(-32.5); 
+  pid_inches(-31.5); 
   clamp();
   kp = 0.2;
   intakeInAuton();
@@ -334,7 +334,7 @@ void blueRight() {
   kp = 0.12;
   //first ring
   intakeInAuton();
-  pid_inches(14);
+  pid_inches(12.5);
   // intakeInAuton();]]
   // pid_inches(6);
   wait(0.7, sec);
@@ -345,60 +345,90 @@ void blueRight() {
   //second ring
   intakeInAuton();
   pid_inches(14);
-  wait(0.4, sec);
+  wait(0.8, sec);
   stopIntaking();
   kp = 0.3;
   turnLeft(20);
   pid_inches(10);
-  turnLeft(110);
+  turnLeft(100);
   kp = 0.3;
   intakeInAuton();
   pid_inches(13);
   wait(0.75, sec);
   pid_inches(-15);
-  turnLeft(45);
-  pid_inches(20);
+  turnLeft(70);
+  pid_inches(23);
 }
 
 //blue goal rush auton
 void blueGoalRush() {
   kp = 0.3;
   pid_inches(-33);
-  turnRight(20);
+  turnRight(27);
   kp = 0.15;
-  pid_inches(-10);
+  pid_inches(-10.5);
   clamp(); 
   wait(0.5, sec); 
   //first ring 
-  intakeInAuton();
+  intake.spin(reverse, 80, pct);
   turnLeft(35);
   pid_inches(12);
   stopIntaking();
   //second ring
-  pid_inches(6);
+  intake.spin(reverse, 80, pct);
+  wait(0.1, sec);
+  stopIntaking();
   unclamp();
-  intakeInAuton();
   pid_inches(5);
   wait(0.3, sec);
   stopIntaking();
   kp = 0.3;
   pid_inches(10);
   kp = 0.15;
-  pid_inches(10);
-  stopWheels();
-  pid_inches(6);
-  turnRight(26);
+  pid_inches(16);
+  turnRight(43);
   pid_inches(-28);
   clamp();
   pid_inches(-5);
   //2nd ring in goal
   intakeInAuton();
+  wait(0.7, sec);
   //intake2.spin(reverse, 450, rpm);
   turnLeft(160);
   kp = 0.2;
-  pid_inches(10);
+  pid_inches(11);
   stopwheels();
   stopIntaking();
+}
+
+void redGoalRush() {
+  kp = 0.3;
+  pid_inches(-30);
+  turnLeft(35);
+  kp = 0.15;
+  // going backwards to get the goal rush goal
+  pid_inches(-13.5);
+  clamp();
+  //scores preload
+  intake.spin(reverse, 80, pct);
+  //intake2.spin(reverse, 450, rpm);
+  turnRight(43);
+  pid_inches(10);
+  stopIntaking();
+  intake.spin(reverse, 80, pct);
+  wait(0.08, sec);
+  stopIntaking();
+  pid_inches(22);
+  unclamp();
+  pid_inches(15);
+  turnLeft(29);
+  stopIntaking();
+  pid_inches(-32);
+  clamp();
+  intakeInAuton();
+  kp = 0.4;
+  turnRight(150.5);
+  pid_inches(7); 
 }
 
 // red left auton
@@ -409,6 +439,7 @@ void redLeft() {
   kp = 0.17;
   //first ring
   intakeInAuton();
+  // wait(0.4, sec);
   turnRight(117);
   wait(0.75, sec);
   stopIntaking();
@@ -432,43 +463,10 @@ void redLeft() {
   pid_inches(16.187);
   wait(1, sec);
   pid_inches(-13);
-  turnRight(50);
-  pid_inches(23);
+  turnRight(60);
+  pid_inches(25);
 }
 
-// red goal rush auton
-void redGoalRush() {
-  kp = 0.3;
-  pid_inches(-30);
-  turnLeft(20);
-  kp = 0.15;
-  // going backwards to get the goal rush goal
-  pid_inches(-12.75);
-  clamp();
-  //scores preload
-  intake.spin(reverse, 450, rpm);
-  //intake2.spin(reverse, 450, rpm);
-  turnRight(43);
-  pid_inches(10);
-  stopIntaking();
-  intake.spin(reverse, 450, rpm);
-  wait(0.1, sec);
-  stopIntaking();
-  pid_inches(8);
-  wait(1, sec);
-  pid_inches(14);
-  unclamp();
-  pid_inches(15);
-  turnLeft(38.1);
-  stopIntaking();
-  pid_inches(-24);
-  clamp();
-  pid_inches(-3);
-  intakeInAuton();
-  kp = 0.4;
-  turnRight(150.5);
-  pid_inches(7); 
-}
   
 void progskills() {
   kp = 0.3;
@@ -523,51 +521,56 @@ void progskills() {
   // unclamp();
   turnRight(170);
   // this part turns, then gets the first ring of the first quadrant
-  kp = 2;
+  kp = 1;
   intakeInAuton();
-  pid_inches(20);
+  pid_inches(15);
+  wait(1.3, sec);
   // the second ring in the first quadrant
-  turnRight(4);
-  wait(0.5, sec);
-  pid_inches(-18);
+  turnLeft(0.7);
+  intakeInAuton();
+  pid_inches(5);
+  wait(1, sec);
+  pid_inches(-6);
   //3rd ring in first quadrant
-  turnRight(64);
+  turnRight(87);
   intakeInAuton();  
   //intake2.spin(reverse, 450, rpm);
-  pid_inches(10);
+  pid_inches(6);
   wait(1.5, sec);
-  //unclamps first mogo into c 5654rrr r544 4444 55 33 4  4 3   47 orner
+  //unclamps first mogo into corner
   turnRight(120);
   pid_inches(-9);
   unclamp();
   stopIntaking();
-  pid_inches(22.5);
+  pid_inches(31);
   kp = 0.2;
-  turnRight(157);
-  pid_inches(-40);
-  kp = 0.12;
-  pid_inches(-18);
+  turnRight(158);
+  wait(0.6, sec);
+  kp = 0.17;
+  pid_inches(-20);
+  kp = 0.14;
+  pid_inches(-10);
   //this clamps the second mogo of the second quadrent
   clamp();
-  wait(0.5, sec);
-  turnRight(183);
+  wait(0.8, sec);
+  turnRight(176);
   //the first ring of the second quadrant
   intakeInAuton();
   //intake2.spin(reverse, 450, rpm);
-  pid_inches(26.7);
+  pid_inches(17);
   wait(0.75, sec);
   //the second ring of the second quadrant
-  turnLeft(6);
-  pid_inches(9);
+  turnLeft(1);
+  pid_inches(10);
   wait(1, sec);
-  pid_inches(-30);
+  pid_inches(-20);
   // third ring of second quadrant
-  turnLeft(30);
+  turnLeft(27);
   pid_inches(15);
   wait(1, sec);
   pid_inches(3);
   turnLeft(157);
-  pid_inches(-25);
+  pid_inches(-36);
   stopIntaking();
   kp = 0.8;
   unclamp();
@@ -634,22 +637,26 @@ void autonomous(void) {
   }
 }
 
+void wallstakessetposition(){
+ WallStakes.setVelocity(60, percent);
+ if (controller1.ButtonUp.pressing()){
+  while (rotationSensor.angle(degrees)<45) {
+    controller1.rumble("...");
+  WallStakes.spin(reverse);
+  } 
+ } else {
+    WallStakes.stop(hold);
+  }
+}
 
-void wallstakes(){
-
- WallStakes.setVelocity(20, percent);
- if(controller1.ButtonUp.pressing()){
-
- while (rotationSensor.angle(degrees)>130){
- WallStakes.spin(reverse);
-
- }
- while (rotationSensor.angle(degrees)<130){
- WallStakes.spin(forward);
- }
- while (rotationSensor.angle(degrees)==130){
- WallStakes.stop(hold);
- }
+void wallstakesscore() {
+  WallStakes.setVelocity(80, percent);
+ if (controller1.ButtonY.pressing()) {
+  WallStakes.spin(reverse, 80, pct);
+ } else if (controller1.ButtonA.pressing()) {
+  WallStakes.spin(forward, 80, pct);
+ } else {
+  WallStakes.stop(hold);
  }
 }
 
@@ -733,8 +740,8 @@ void usercontrol() {
   while (!selecting) {
     intaking();
     old_arcade();
-    useFastArcade();
-    wallstakes();
+    wallstakessetposition();
+    wallstakesscore();
     //mogoControl();
     controller1.ButtonL1.pressed(mogoControl);
     controller1.ButtonL1.released(clamping);
