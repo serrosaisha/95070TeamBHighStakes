@@ -1,8 +1,8 @@
 {
-    "C_Cpp.default.systemIncludePath": [
-		"${config:vexrobotics.vexcode.Cpp.Sdk.Home}\\V5\\V5_20240223_11_00_00\\vexv5\\gcc\\include\\sys"
+	"C_Cpp.default.systemIncludePath": [
+		"${config:vexrobotics.vexcode.Cpp.Sdk.Home}/V5/V5_20240223_11_00_00/vexv5/gcc/include/sys"
 	],
-    "files.associations": {
+	"files.associations": {
 		"algorithm": "cpp",
 		"array": "cpp",
 		"*.tcc": "cpp",
@@ -40,6 +40,6 @@
 		"utility": "cpp",
 		"typeinfo": "cpp",
 		"string": "cpp"
-    },
-    "C_Cpp.default.intelliSenseMode": "macos-clang-x86"
+	},
+	"C_Cpp.default.intelliSenseMode": "macos-clang-x86"
 }
