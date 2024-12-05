@@ -81,7 +81,7 @@ void pre_auton(void) {
 
 // PID
 double kp = 0.175;
-double ki = 1;
+double ki = 0;
 double kd = 0;
 
 void pid(double targetDistance) {
@@ -475,7 +475,7 @@ void progskills() {
   stopIntaking();
   pid_inches(14);
   turnLeft(86);
-  kp = 0.16;
+  kp = 0.115;
   pid_inches(-25);
   clamp();
   //This clamps onto the first mogo (right side red)
@@ -519,7 +519,7 @@ void progskills() {
   // turnLeft(85);
   // pid_inches(-13);
   // unclamp();
-  turnRight(170);
+  turnRight(163);
   // this part turns, then gets the first ring of the first quadrant
   kp = 1;
   intakeInAuton();
@@ -530,51 +530,52 @@ void progskills() {
   intakeInAuton();
   pid_inches(5);
   wait(1, sec);
-  pid_inches(-6);
+  pid_inches(-8);
   //3rd ring in first quadrant
-  turnRight(87);
+  turnRight(77.7);
   intakeInAuton();  
-  //intake2.spin(reverse, 450, rpm);
   pid_inches(6);
   wait(1.5, sec);
   //unclamps first mogo into corner
   turnRight(120);
-  pid_inches(-9);
-  unclamp();
+  kp = 0.5;
+  pid_inches(-7.4);
+  unclamp(); //ehehmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
   stopIntaking();
-  pid_inches(31);
+  pid_inches(28);
   kp = 0.2;
-  turnRight(158);
+  turnRight(151);
   wait(0.6, sec);
   kp = 0.17;
   pid_inches(-20);
   kp = 0.14;
-  pid_inches(-10);
+  pid_inches(-15);
   //this clamps the second mogo of the second quadrent
   clamp();
   wait(0.8, sec);
-  turnRight(176);
+  turnRight(166);
   //the first ring of the second quadrant
   intakeInAuton();
-  //intake2.spin(reverse, 450, rpm);
-  pid_inches(17);
+  pid_inches(21.5);
   wait(0.75, sec);
   //the second ring of the second quadrant
   turnLeft(1);
-  pid_inches(10);
+  pid_inches(14);
   wait(1, sec);
-  pid_inches(-20);
+  pid_inches(-15);
   // third ring of second quadrant
-  turnLeft(27);
+  turnLeft(32);
   pid_inches(15);
   wait(1, sec);
   pid_inches(3);
   turnLeft(157);
-  pid_inches(-36);
+  pid_inches(-30);
   stopIntaking();
   kp = 0.8;
   unclamp();
-  pid_inches(16);
+  outtakeInAuton();
+  wait(1, sec);
+  pid_inches(10.67);
   //3rd quadrant slaaay
   // pid_inches(10);
   // turnLeft(45);
