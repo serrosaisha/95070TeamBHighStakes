@@ -302,7 +302,6 @@ void setVelocity(double vel) {
   mr.setVelocity(vel, percent);
   br.setVelocity(vel, percent);
 }
-
 //intake in auton
 void intakeInAuton() {
   intake.spin(reverse, 400, rpm);
@@ -640,23 +639,30 @@ void autonomous(void) {
 
 void wallstakessetposition(){
  WallStakes.setVelocity(60, percent);
- if (controller1.ButtonUp.pressing()){
-  while (rotationSensor.angle(degrees)<45) {
+ WallStakes2.setVelocity(60, percent);
+ if (controller1.ButtonDown.pressing()){
+  while (rotationSensor.angle(degrees)<50) {
     controller1.rumble("...");
   WallStakes.spin(reverse);
+  WallStakes.spin(forward);
   } 
  } else {
+    WallStakes.stop(hold);
     WallStakes.stop(hold);
   }
 }
 
 void wallstakesscore() {
   WallStakes.setVelocity(80, percent);
+  WallStakes.setVelocity(80, percent);
  if (controller1.ButtonY.pressing()) {
   WallStakes.spin(reverse, 80, pct);
+  WallStakes.spin(forward, 80, pct);
  } else if (controller1.ButtonA.pressing()) {
   WallStakes.spin(forward, 80, pct);
+  WallStakes.spin(reverse, 80, pct);
  } else {
+  WallStakes.stop(hold);
   WallStakes.stop(hold);
  }
 }
