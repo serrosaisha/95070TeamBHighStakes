@@ -302,16 +302,15 @@ void setVelocity(double vel) {
   mr.setVelocity(vel, percent);
   br.setVelocity(vel, percent);
 }
-
 //intake in auton
 void intakeInAuton() {
-  intake.spin(reverse, 400, rpm);
+  intake.spin(reverse, 500, rpm);
   //intake2.spin(reverse, 300, rpm);
 }
 
 // outake in auton 
 void outtakeInAuton() {
-  intake.spin(forward, 400, rpm);
+  intake.spin(forward, 500, rpm);
   //intake2.spin(forward, 330, rpm);
 }
 
@@ -328,6 +327,47 @@ void blueRight() {
   clamp();
   kp = 0.2;
   intakeInAuton();
+  wait(1, sec);
+  stopIntaking();
+  turnLeft(115);
+  kp = 0.12;
+  //first ring
+  intakeInAuton();
+  pid_inches(12.5);
+  // intakeInAuton();
+  // pid_inches(6);
+  wait(1, sec);
+  stopIntaking();
+  pid_inches(-5);
+  turnRight(62);
+  stopIntaking();
+  //second ring
+  intakeInAuton();
+  pid_inches(14);
+  wait(0.8, sec);
+  stopIntaking();
+  kp = 0.3;
+  turnLeft(20);
+  pid_inches(10);
+  turnLeft(100);
+  kp = 0.3;
+  intakeInAuton();
+  pid_inches(8);
+  wait(0.75, sec);
+  pid_inches(-15);
+  turnLeft(40);
+  pid_inches(38);
+  WallStakes2.spin(reverse, 90, pct);
+  WallStakes.spin(forward, 90, pct);
+  wait(0.4, sec);
+}
+
+void blueRightElims() {
+  kp = 0.11;
+  pid_inches(-31.5); 
+  clamp();
+  kp = 0.2;
+  intakeInAuton();
   wait(0.9, sec);
   stopIntaking();
   turnLeft(115);
@@ -335,7 +375,7 @@ void blueRight() {
   //first ring
   intakeInAuton();
   pid_inches(12.5);
-  // intakeInAuton();]]
+  // intakeInAuton();
   // pid_inches(6);
   wait(0.7, sec);
   stopIntaking();
@@ -356,15 +396,20 @@ void blueRight() {
   pid_inches(13);
   wait(0.75, sec);
   pid_inches(-15);
-  turnLeft(70);
-  pid_inches(23);
+  turnLeft(180);
+  pid_inches(30);
+  intakeInAuton();
+  wait(0.5, sec);
+  pid_inches(-12);
+  stopIntaking();
 }
+
 
 //blue goal rush auton
 void blueGoalRush() {
   kp = 0.3;
   pid_inches(-33);
-  turnRight(27);
+  turnRight(20);
   kp = 0.15;
   pid_inches(-10.5);
   clamp(); 
@@ -386,7 +431,7 @@ void blueGoalRush() {
   pid_inches(10);
   kp = 0.15;
   pid_inches(16);
-  turnRight(43);
+  turnRight(47.5);
   pid_inches(-28);
   clamp();
   pid_inches(-5);
@@ -404,10 +449,10 @@ void blueGoalRush() {
 void redGoalRush() {
   kp = 0.3;
   pid_inches(-30);
-  turnLeft(35);
+  turnLeft(30);
   kp = 0.15;
   // going backwards to get the goal rush goal
-  pid_inches(-13.5);
+  pid_inches(-14);
   clamp();
   //scores preload
   intake.spin(reverse, 80, pct);
@@ -421,14 +466,14 @@ void redGoalRush() {
   pid_inches(22);
   unclamp();
   pid_inches(15);
-  turnLeft(29);
+  turnLeft(33);
   stopIntaking();
   pid_inches(-32);
   clamp();
   intakeInAuton();
   kp = 0.4;
-  turnRight(150.5);
-  pid_inches(7); 
+  // turnRight(150.5);
+  // pid_inches(8); 
 }
 
 // red left auton
@@ -464,7 +509,7 @@ void redLeft() {
   wait(1, sec);
   pid_inches(-13);
   turnRight(60);
-  pid_inches(30);
+  pid_inches(25);
 }
 
   
@@ -474,7 +519,7 @@ void progskills() {
   wait(0.71, sec);
   stopIntaking();
   pid_inches(14);
-  turnLeft(86);
+  turnLeft(82);
   kp = 0.115;
   pid_inches(-25);
   clamp();
@@ -526,13 +571,12 @@ void progskills() {
   pid_inches(15);
   wait(1.3, sec);
   // the second ring in the first quadrant
-  turnLeft(0.7);
   intakeInAuton();
   pid_inches(5);
   wait(1, sec);
   pid_inches(-8);
   //3rd ring in first quadrant
-  turnRight(77.7);
+  turnRight(74.5);
   intakeInAuton();  
   pid_inches(6);
   wait(1.5, sec);
@@ -542,40 +586,42 @@ void progskills() {
   pid_inches(-7.4);
   unclamp(); //ehehmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
   stopIntaking();
-  pid_inches(28);
+  pid_inches(18);
   kp = 0.2;
-  turnRight(151);
+  pid_inches(8);
+  wait(0.7, sec);
+  turnRight(140);
   wait(0.6, sec);
   kp = 0.17;
   pid_inches(-20);
   kp = 0.14;
-  pid_inches(-15);
+  pid_inches(-25);
   //this clamps the second mogo of the second quadrent
   clamp();
   wait(0.8, sec);
   turnRight(166);
   //the first ring of the second quadrant
   intakeInAuton();
-  pid_inches(21.5);
+  pid_inches(24);
   wait(0.75, sec);
   //the second ring of the second quadrant
-  turnLeft(1);
-  pid_inches(14);
+  pid_inches(6);
   wait(1, sec);
   pid_inches(-15);
   // third ring of second quadrant
-  turnLeft(32);
+  turnLeft(40.1415962);
   pid_inches(15);
   wait(1, sec);
   pid_inches(3);
-  turnLeft(157);
-  pid_inches(-30);
+  turnLeft(160);
+  pid_inches(-4);
   stopIntaking();
+  outtakeInAuton();
+  wait(0.1, sec);
   kp = 0.8;
   unclamp();
-  outtakeInAuton();
   wait(1, sec);
-  pid_inches(10.67);
+  pid_inches(10);
   //3rd quadrant slaaay
   // pid_inches(10);
   // turnLeft(45);
@@ -586,7 +632,7 @@ int auton = 1;
 
 //auton selector
 void autonselector() {
-  int numofautons = 5;
+  int numofautons = 6;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -607,20 +653,24 @@ void autonselector() {
   } else if (auton == 2) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,6);
-    controller1.Screen.print("Blue Goal Rush");
+    controller1.Screen.print("Blue Right Elims");
   } else if (auton == 3) {
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,6);
+    controller1.Screen.print("Blue Goal Rush");
+  } else if (auton == 4) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,10);
     controller1.Screen.print("Red Left");
-  } else if (auton == 4) {
+  } else if (auton == 5) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Red Goal Rush");
-  } else if (auton == 5) {
+  } else if (auton == 6) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,9);
     controller1.Screen.print("Prog Skills");
-  }
+  } 
 }
 
 // auton
@@ -628,24 +678,24 @@ void autonomous(void) {
   if (auton == 1) {
     blueRight();
   } else if (auton == 2){
+    blueRightElims();
+  } else if (auton == 3){
     blueGoalRush();
-  } else if (auton == 3) {
-    redLeft();
   } else if (auton == 4) {
-    redGoalRush();
+    redLeft();
   } else if (auton == 5) {
+    redGoalRush();
+  } else if (auton == 6) {
     progskills();
   }
 }
 
 void wallstakessetposition(){
  WallStakes.setVelocity(60, percent);
- WallStakes2.setVelocity(60, percent);
  if (controller1.ButtonUp.pressing()){
-  while (rotationSensor.angle(degrees)<30) {
+  while (rotationSensor.angle(degrees)<45) {
     controller1.rumble("...");
   WallStakes.spin(reverse);
-  WallStakes2.spin(reverse);
   } 
  } else {
     WallStakes.stop(hold);
@@ -657,14 +707,14 @@ void wallstakesscore() {
   WallStakes.setVelocity(80, percent);
   WallStakes2.setVelocity(80, percent);
  if (controller1.ButtonY.pressing()) {
-  WallStakes.spin(forward, 80, pct);
-  WallStakes2.spin(reverse, 80, percent);
+  WallStakes.spin(reverse, 80, pct);
  } else if (controller1.ButtonA.pressing()) {
   WallStakes.spin(reverse, 80, pct);
   WallStakes2.spin(forward, 80, pct);
  } else {
   WallStakes.stop(hold);
   WallStakes.stop(hold);
+  WallStakes2.stop(hold);
  }
 }
 
@@ -755,6 +805,7 @@ void usercontrol() {
     controller1.ButtonL1.released(clamping);
     controller1.ButtonL2.pressed(doinkerControl);
     controller1.ButtonL2.released(doinkeroinker);
+    controller1.ButtonUp.pressed(wallstakessetposition);
     wait(10,msec);
   }
 }

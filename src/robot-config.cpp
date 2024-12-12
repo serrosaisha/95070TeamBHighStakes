@@ -10,7 +10,7 @@ brain  Brain;
 pneumatics mogo = pneumatics(Brain.ThreeWirePort.C);
 pneumatics mogo2 = pneumatics(Brain.ThreeWirePort.B);
 pneumatics doinker = pneumatics(Brain.ThreeWirePort.A);
-rotation  rotationSensor = rotation (PORT10, false);
+rotation  rotationSensor = rotation (PORT21, false);
 controller controller1 = controller(primary);
 motor fr = motor(PORT15, ratio18_1, false);
 motor fl = motor(PORT7, ratio18_1, true);
