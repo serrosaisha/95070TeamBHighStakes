@@ -12,6 +12,7 @@ extern motor br;
 extern motor intake;
 extern motor intake2;
 extern motor WallStakes;
+extern motor WallStakes2;
 extern pneumatics mogo;
 extern pneumatics mogo2;
 extern pneumatics doinker;

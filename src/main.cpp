@@ -464,7 +464,7 @@ void redLeft() {
   wait(1, sec);
   pid_inches(-13);
   turnRight(60);
-  pid_inches(25);
+  pid_inches(30);
 }
 
   
@@ -640,23 +640,30 @@ void autonomous(void) {
 
 void wallstakessetposition(){
  WallStakes.setVelocity(60, percent);
+ WallStakes2.setVelocity(60, percent);
  if (controller1.ButtonUp.pressing()){
-  while (rotationSensor.angle(degrees)<45) {
+  while (rotationSensor.angle(degrees)<30) {
     controller1.rumble("...");
   WallStakes.spin(reverse);
+  WallStakes2.spin(reverse);
   } 
  } else {
     WallStakes.stop(hold);
+    WallStakes2.stop(hold);
   }
 }
 
 void wallstakesscore() {
   WallStakes.setVelocity(80, percent);
+  WallStakes2.setVelocity(80, percent);
  if (controller1.ButtonY.pressing()) {
-  WallStakes.spin(reverse, 80, pct);
- } else if (controller1.ButtonA.pressing()) {
   WallStakes.spin(forward, 80, pct);
+  WallStakes2.spin(reverse, 80, percent);
+ } else if (controller1.ButtonA.pressing()) {
+  WallStakes.spin(reverse, 80, pct);
+  WallStakes2.spin(forward, 80, pct);
  } else {
+  WallStakes.stop(hold);
   WallStakes.stop(hold);
  }
 }
