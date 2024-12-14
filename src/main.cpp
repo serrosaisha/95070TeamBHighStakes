@@ -691,13 +691,14 @@ void autonomous(void) {
 }
 
 void wallstakessetposition(){
- WallStakes.setVelocity(20, percent);
- WallStakes2.setVelocity(20, percent);
- if (controller1.ButtonUp.pressing()){
-  while (rotationSensor.angle(degrees)<4.5) {
-    controller1.rumble("...");
-    WallStakes.spin(forward, 20, percent);
-    WallStakes2.spin(forward, 20, percent);
+ WallStakes.setVelocity(60, percent);
+ WallStakes2.setVelocity(60, percent);
+if (controller1.ButtonUp.pressing()){
+  controller1.rumble("...");
+  while (rotationSensor.angle(degrees)<10.2) {
+  controller1.rumble("...");
+  WallStakes.spin(forward);
+  WallStakes2.spin(reverse);
   } 
  } else {
     WallStakes.stop(hold);
