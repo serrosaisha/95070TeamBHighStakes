@@ -446,13 +446,46 @@ void blueGoalRush() {
   stopIntaking();
 }
 
+// void redGoalRush() {
+//   kp = 0.3;
+//   pid_inches(-30);
+//   kp = 0.2;
+//   turnLeft(27);
+//   kp = 0.15;
+//   // going backwards to get the goal rush goal
+//   pid_inches(-15.2);
+//   clamp();
+//   //scores preload
+//   intake.spin(reverse, 80, pct);
+//   //intake2.spin(reverse, 450, rpm);
+//   turnRight(43);
+//   pid_inches(10);
+//   stopIntaking();
+//   intake.spin(reverse, 80, pct);
+//   wait(0.08, sec);
+//   stopIntaking();
+//   pid_inches(16);
+//   unclamp();
+//   kp = 0.1;
+//   pid_inches(15);
+//   turnLeft(42);
+//   stopIntaking();
+//   pid_inches(-29);
+//   clamp();
+//   intakeInAuton();
+//   kp = 0.4;
+//   // turnRight(150.5);
+//   // pid_inches(8); 
+// }
+
 void redGoalRush() {
   kp = 0.3;
   pid_inches(-30);
-  turnLeft(30);
+  kp = 0.2;
+  turnLeft(27);
   kp = 0.15;
   // going backwards to get the goal rush goal
-  pid_inches(-14);
+  pid_inches(-15.2);
   clamp();
   //scores preload
   intake.spin(reverse, 80, pct);
@@ -461,17 +494,21 @@ void redGoalRush() {
   pid_inches(10);
   stopIntaking();
   intake.spin(reverse, 80, pct);
-  wait(0.08, sec);
+  wait(0.1, sec);
   stopIntaking();
-  pid_inches(22);
+  pid_inches(27);
+  turnRight(145);
+  pid_inches(-4);
   unclamp();
-  pid_inches(15);
-  turnLeft(33);
-  stopIntaking();
-  pid_inches(-32);
+  kp = 0.1;
+  pid_inches(5);
+  turnRight(140);
+  pid_inches(-20);
   clamp();
   intakeInAuton();
   kp = 0.4;
+  wait(1, sec);
+  pid_inches(-10);
   // turnRight(150.5);
   // pid_inches(8); 
 }
@@ -521,108 +558,113 @@ void progskills() {
   pid_inches(14);
   turnLeft(82);
   kp = 0.115;
-  pid_inches(-25);
+  pid_inches(-22);
   clamp();
   //This clamps onto the first mogo (right side red)
   wait(20, msec);
-  kp = 0.24;
-  // this part was for a 6 ring part of prog skills but we ended up switching to get more points
-  // turnRight(95.3);
-  // intake.spin(reverse, 450, rpm);
-  // intake2.spin(reverse, 450, rpm);
-  // pid_inches(23);
-  // wait(1, sec);
-  // turnRight(63.27); 
-  // pid_inches(17);
-  // stopIntaking();
-  // intakeInAuton();
-  // pid_inches(7);
-  // wait(1.5, sec);
-  // stopIntaking();
-  // pid_inches(5.7);
-  // turnLeft(87);
-  // intake.spin(reverse, 450, rpm);
-  // pid_inches(24);
-  // intake2.spin(reverse, 450, rpm);
-  // wait(1, sec);
-  // stopIntaking();
-  // turnRight(186);
-  // intake.spin(reverse, 450, rpm);
-  // intake2.spin(reversef, 450, rpm);
-  // pid_inches(40);
-  // stopWheels();
-  // wait(1, sec);
-  // stopIntaking();
-  // pid_inches(7);
-  // intakeInAuton();
-  // turnLeft(15);
-  // pid_inches(7);
-  // turnLeft(93);
-  // pid_inches(11);
-  // wait(2, sec);
-  // stopIntaking();
-  // turnLeft(85);
-  // pid_inches(-13);
-  // unclamp();
-  turnRight(163);
-  // this part turns, then gets the first ring of the first quadrant
-  kp = 1;
+  kp = 0.19;
+  //first ring
+  turnRight(80);
   intakeInAuton();
-  pid_inches(15);
-  wait(1.3, sec);
-  // the second ring in the first quadrant
-  intakeInAuton();
-  pid_inches(5);
+  pid_inches(23);
   wait(1, sec);
-  pid_inches(-8);
-  //3rd ring in first quadrant
-  turnRight(74.5);
-  intakeInAuton();  
-  pid_inches(6);
+  //second ring
+  turnRight(70); 
+  pid_inches(17);
+  stopIntaking();
+  intakeInAuton();
+  pid_inches(7);
   wait(1.5, sec);
-  //unclamps first mogo into corner
-  turnRight(120);
-  kp = 0.5;
-  pid_inches(-7.4);
-  unclamp(); //ehehmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
   stopIntaking();
-  pid_inches(18);
-  kp = 0.2;
-  pid_inches(8);
-  wait(0.7, sec);
-  turnRight(140);
-  wait(0.6, sec);
-  kp = 0.17;
-  pid_inches(-20);
-  kp = 0.14;
-  pid_inches(-25);
-  //this clamps the second mogo of the second quadrent
-  clamp();
-  wait(0.8, sec);
-  turnRight(166);
-  //the first ring of the second quadrant
+  pid_inches(5.7);
+  //third ring
+  turnLeft(65);
   intakeInAuton();
-  pid_inches(24);
-  wait(0.75, sec);
-  //the second ring of the second quadrant
-  pid_inches(6);
+  pid_inches(20);
   wait(1, sec);
-  pid_inches(-15);
-  // third ring of second quadrant
-  turnLeft(40.1415962);
-  pid_inches(15);
-  wait(1, sec);
-  pid_inches(3);
-  turnLeft(160);
-  pid_inches(-4);
   stopIntaking();
-  outtakeInAuton();
-  wait(0.1, sec);
-  kp = 0.8;
-  unclamp();
+  //fourth ring
+  turnRight(167);
+  intakeInAuton();
+  pid_inches(40);
+  stopWheels();
   wait(1, sec);
+  stopIntaking();
+  //fifth ring
   pid_inches(10);
-  //3rd quadrant slaaay
+  intakeInAuton();
+  pid_inches(6);
+  wait(2, sec);
+  pid_inches(-8);
+  //sixth ring
+  turnLeft(90);
+  pid_inches(7);
+  wait(2, sec);
+  stopIntaking();
+  turnLeft(120);
+  pid_inches(-13);
+  unclamp();
+  //
+  //the next part was for only three ring
+  // turnRight(163);
+  // // this part turns, then gets the first ring of the first quadrant
+  // kp = 1;
+  // intakeInAuton();
+  // pid_inches(15);
+  // wait(1.3, sec);
+  // // the second ring in the first quadrant
+  // intakeInAuton();
+  // pid_inches(5);
+  // wait(1, sec);
+  // pid_inches(-8);
+  // //3rd ring in first quadrant
+  // turnRight(74.5);
+  // intakeInAuton();  
+  // pid_inches(6);
+  // wait(1.5, sec);
+  // //unclamps first mogo into corner
+  // turnRight(120);
+  // kp = 0.5;
+  // pid_inches(-6.2);
+  // unclamp(); //ehehmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+  // stopIntaking();
+  // pid_inches(16);
+  // kp = 0.2;
+  // pid_inches(8);
+  // wait(0.7, sec);
+  // turnRight(140);
+  // wait(0.6, sec);
+  // kp = 0.17;
+  // pid_inches(-20);
+  // kp = 0.14;
+  // pid_inches(-25);
+  // //this clamps the second mogo of the second quadrent
+  // clamp();
+  // wait(0.8, sec);
+  // turnRight(166);
+  // //the first ring of the second quadrant
+  // intakeInAuton();
+  // pid_inches(24);
+  // wait(0.75, sec);
+  // //the second ring of the second quadrant
+  // pid_inches(6);
+  // wait(1, sec);
+  // pid_inches(-15);
+  // // third ring of second quadrant
+  // turnLeft(40.1415962);
+  // pid_inches(15);
+  // wait(1, sec);
+  // pid_inches(3);
+  // turnLeft(160);
+  // pid_inches(-4);
+  // stopIntaking();
+  // outtakeInAuton();
+  // wait(0.1, sec);
+  // kp = 0.8;
+  // unclamp();
+  // wait(1, sec);
+  // pid_inches(10);
+  // 3rd quadrant slaaay
   // pid_inches(10);
   // turnLeft(45);
   // pid_inches(72);
@@ -696,9 +738,10 @@ void wallstakessetposition(){
 if (controller1.ButtonUp.pressing()){
   controller1.rumble("...");
   while (rotationSensor.angle(degrees)<10.2) {
+  controller1.Screen.print(rotationSensor.angle(degrees)); 
   controller1.rumble("...");
   WallStakes.spin(forward);
-  WallStakes2.spin(reverse);
+  WallStakes2.spin(forward);
   } 
  } else {
     WallStakes.stop(hold);
@@ -810,14 +853,15 @@ void usercontrol() {
   while (!selecting) {
     intaking();
     old_arcade();
-    //wallstakessetposition();
-    wallstakessetposition2();
+    wallstakessetposition();
+    //wallstakessetposition2();
     wallstakesscore();
     //mogoControl();
     controller1.ButtonL1.pressed(mogoControl);
     controller1.ButtonL1.released(clamping);
     controller1.ButtonL2.pressed(doinkerControl);
     controller1.ButtonL2.released(doinkeroinker);
+    controller1.ButtonUp.pressed(wallstakessetposition);
     wait(10,msec);
   }
 }
