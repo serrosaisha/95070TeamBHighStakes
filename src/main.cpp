@@ -626,7 +626,8 @@ void progskills() {
   // turnRight(120);
   // kp = 0.5;
   // pid_inches(-6.2);
-  // unclamp(); //ehehmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm
+  // unclamp();
+  //allyson is a slay bestie westie and also izukiel is really annoying;
   // stopIntaking();
   // pid_inches(16);
   // kp = 0.2;
@@ -738,7 +739,7 @@ void wallstakessetposition(){
 if (controller1.ButtonUp.pressing()){
   controller1.rumble("...");
   while (rotationSensor.angle(degrees)<10.2) {
-  controller1.Screen.print(rotationSensor.angle(degrees)); 
+  // controller1.Screen.print(rotationSensor.angle(degrees)); 
   controller1.rumble("...");
   WallStakes.spin(forward);
   WallStakes2.spin(forward);
