@@ -9,6 +9,7 @@ brain  Brain;
 pneumatics mogo = pneumatics(Brain.ThreeWirePort.C);
 pneumatics mogo2 = pneumatics(Brain.ThreeWirePort.B);
 pneumatics doinker = pneumatics(Brain.ThreeWirePort.A);
+pneumatics sorter = pneumatics(Brain.ThreeWirePort.D);
 rotation  rotationSensor = rotation (PORT21, false);
 controller controller1 = controller(primary);
 motor fr = motor(PORT15, ratio18_1, false);
@@ -22,6 +23,7 @@ motor WallStakes = motor(PORT4, ratio18_1, false);
 motor WallStakes2 = motor(PORT10, ratio18_1, true);
 // motor intake2 = motor(PORT15, ratio18_1, false);
 inertial inertialSensor = inertial(PORT18);
+optical opticalSensor = optical(PORT6);
 // VEXcode device constructors
 
 // VEXcode generated functions

@@ -16,8 +16,10 @@ extern motor WallStakes2;
 extern pneumatics mogo;
 extern pneumatics mogo2;
 extern pneumatics doinker;
+extern pneumatics sorter;
 extern inertial inertialSensor;
 extern rotation rotationSensor;
+extern optical opticalSensor;
 
 
 // VEXcode devices

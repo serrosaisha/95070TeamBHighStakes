@@ -404,15 +404,15 @@ void blueRight() {
 void blueRightElims() {
   WallStakes.setVelocity(45, pct);
   WallStakes2.setVelocity(45, pct);
-  WallStakes.spin(forward, 45, pct);
-  WallStakes2.spin(forward, 45, pct);
-  wait(1, sec);
+  WallStakes.spin(forward, 90, pct);
+  WallStakes2.spin(forward, 90, pct);
+  wait(0.5, sec);
   WallStakes.stop(coast);
   WallStakes2.stop(coast);
   pid_inches(-7);
-  WallStakes.spin(reverse, 45, pct);
-  WallStakes2.spin(reverse, 45, pct);
-  wait(1, sec);
+  WallStakes.spin(reverse, 90, pct);
+  WallStakes2.spin(reverse, 90, pct);
+  wait(0.4, sec);
   WallStakes.stop(coast);
   WallStakes2.stop(coast);
   turnLeft(11);
@@ -434,12 +434,15 @@ void blueRightElims() {
   pid_inches(-10);
   turnRight(45);
   pid_inches(17);
-  wait(0.7, sec);
+  wait(1, sec);
   stopIntaking();
-  turnRight(12);
+  outtakeInAuton();
+  wait(0.5, sec);
+  turnRight(50);
   pid_inches(20);
   intakeInAuton();
-  pid_inches(30);
+
+  pid_inches(15);
 }
 
 
@@ -447,9 +450,9 @@ void blueRightElims() {
 void blueGoalRush() {
   kp = 0.3;
   pid_inches(-33);
-  turnRight(20);
-  kp = 0.15;
-  pid_inches(-10.5);
+  turnRight(18.5);
+  kp = 0.2;
+  pid_inches(-9.53);
   clamp(); 
   wait(0.5, sec); 
   //first ring 
@@ -458,8 +461,8 @@ void blueGoalRush() {
   pid_inches(12);
   stopIntaking();
   //second ring
-  intake.spin(reverse, 5, pct);
-  wait(0.5, sec);
+  intake.spin(reverse, 30, pct);
+  wait(0.2222222, sec);
   stopIntaking();
   pid_inches(25);
   turnLeft(160);
@@ -468,7 +471,7 @@ void blueGoalRush() {
   kp = 0.3;
   pid_inches(10);
   kp = 0.15;
-  turnRight(226);
+  turnRight(219.5);
   pid_inches(-25);
   clamp();
   wait(0.5, sec);
@@ -477,22 +480,16 @@ void blueGoalRush() {
   intakeInAuton();
   wait(0.7, sec);
   //intake2.spin(reverse, 450, rpm);
-  turnLeft(145);
-  //changed it to 150 at Aarivs house from 160
-  kp = 0.2;
-  pid_inches(7);
-  stopwheels();
-  stopIntaking();
+  pid_inches(-14);
 }
 
 void redGoalRush() {
   kp = 0.3;
   pid_inches(-30);
-  kp = 0.2;
   turnLeft(27);
-  kp = 0.15;
   // going backwards to get the goal rush goal
-  pid_inches(-13.8);
+  pid_inches(-12);
+  kp = 0.25;
   clamp();
   //scores preload
   intake.spin(reverse, 80, pct);
@@ -512,11 +509,12 @@ void redGoalRush() {
   turnRight(140);
   pid_inches(-20);
   clamp();
+  wait(0.4, sec);
   intakeInAuton();
   kp = 0.4;
   wait(1, sec);
   stopIntaking();
-  pid_inches(-11);
+  pid_inches(-16);
   // turnRight(150.5);
   // pid_inches(8); 
 }
@@ -574,8 +572,10 @@ void redLeft() {
   WallStakes2.stop(coast);
   turnRight(11);
   pid_inches(-26);
+  kp = 0.17;
   mogo.set(true);
   mogo2.set(true);
+  kp = 0.175;
   wait(200, msec);
   turnRight(140);
   intakeInAuton();
@@ -585,10 +585,7 @@ void redLeft() {
   turnLeft(12);
   pid_inches(16);
   wait(0.7, sec);
-  stopIntaking();
-  pid_inches(-5);
-  intakeInAuton();
-  pid_inches(-10);
+  pid_inches(-15);
   turnLeft(45);
   pid_inches(17);
   wait(0.7, sec);
@@ -625,7 +622,7 @@ void progskills() {
   stopIntaking();
   pid_inches(5.7);
   //third ring
-  turnLeft(70);
+  turnLeft(78);
   intakeInAuton();
   pid_inches(20);
   wait(1, sec);
@@ -804,8 +801,8 @@ void wallstakessetposition2(){
  WallStakes.setVelocity(60, percent);
  WallStakes2.setVelocity(60, percent);
  if (controller1.ButtonUp.pressing()){
-  WallStakes.spinFor(50,degrees);
-  WallStakes2.spinFor(50,degrees);
+  WallStakes.spinFor(60,degrees);
+  WallStakes2.spinFor(60,degrees);
  }
 }
 
@@ -823,6 +820,26 @@ void wallstakesscore() {
   WallStakes2.stop(hold);
  }
 }
+
+vex::task ColorSortRed() {
+
+ while(1){
+wait(10,msec);
+opticalSensor.setLightPower(100,percent);
+
+ if (opticalSensor.color() == red) {
+controller1.rumble("...");
+wait(250,msec); 
+sorter.set(true);
+wait(250,msec);
+sorter.set(false);
+
+}
+}
+}
+
+
+
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -904,15 +921,15 @@ void usercontrol() {
   while (!selecting) {
     intaking();
     old_arcade();
-    wallstakessetposition();
-    //wallstakessetposition2();
+    // wallstakessetposition();
+    wallstakessetposition2();
     wallstakesscore();
     //mogoControl();
     controller1.ButtonL1.pressed(mogoControl);
     controller1.ButtonL1.released(clamping);
     controller1.ButtonL2.pressed(doinkerControl);
     controller1.ButtonL2.released(doinkeroinker);
-    controller1.ButtonUp.pressed(wallstakessetposition);
+    controller1.ButtonUp.pressed(wallstakessetposition2);
     wait(10,msec);
   }
 }
