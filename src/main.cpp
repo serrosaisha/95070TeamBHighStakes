@@ -441,7 +441,6 @@ void blueRightElims() {
   turnRight(50);
   pid_inches(20);
   intakeInAuton();
-
   pid_inches(15);
 }
 
@@ -472,6 +471,7 @@ void blueGoalRush() {
   pid_inches(10);
   kp = 0.15;
   turnRight(219.5);
+  kp = 0.1;
   pid_inches(-25);
   clamp();
   wait(0.5, sec);
@@ -515,8 +515,9 @@ void blueGoalRushElims() {
   //2nd ring in goal
   intakeInAuton();
   wait(0.7, sec);
+  stopIntaking();
   //intake2.spin(reverse, 450, rpm);
-  turnLeft(20);
+  turnLeft(15);
   pid_inches(50);
 }
 
@@ -526,7 +527,7 @@ void redGoalRush() {
   turnLeft(27);
   // going backwards to get the goal rush goal
   pid_inches(-12);
-  kp = 0.25;
+  kp = 0.24;
   clamp();
   //scores preload
   intake.spin(reverse, 80, pct);
@@ -587,7 +588,7 @@ void redGoalRushElims() {
   kp = 0.4;
   wait(1, sec);
   stopIntaking();
-  turnRight(20);
+  turnRight(15);
   pid_inches(50);
   // turnRight(150.5);
   // pid_inches(8); 
@@ -797,7 +798,7 @@ int auton = 1;
 
 //auton selector
 void autonselector() {
-  int numofautons = 6;
+  int numofautons = 8;
   if (controller1.ButtonRight.pressing()) {
     auton++;
     wait(200,msec);
@@ -829,12 +830,22 @@ void autonselector() {
     controller1.Screen.print("Blue Goal Rush Elims");
   } else if (auton == 5) {
     controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,4);
+    controller1.Screen.print("Blue Goal Rush Elims");
+  } else if (auton == 5) {
+    controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,10);
     controller1.Screen.print("Red Left");
+  } else if (auton == 6) {
   } else if (auton == 6) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Red Goal Rush");
+  } else if (auton == 7) {
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,4);
+    controller1.Screen.print("Red Goal Rush Elims");
+  } else if (auton == 8) {
   } else if (auton == 7) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,4);
@@ -854,16 +865,17 @@ void autonomous(void) {
     blueRightElims();
   } else if (auton == 3){
     blueGoalRush();
-  } else if (auton == 4) {
+  } else if (auton == 4){
     blueGoalRushElims();
   } else if (auton == 5) {
+    redLeft();
     redLeft();
   } else if (auton == 6) {
     redGoalRush();
   } else if (auton == 7) {
     redGoalRushElims();
   } else if (auton == 8) {
-    redGoalRushElims();
+    progskills();
   }
 }
 
@@ -871,10 +883,8 @@ void wallstakessetposition(){
  WallStakes.setVelocity(60, percent);
  WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
-  controller1.rumble("...");
   while (rotationSensor.angle(degrees)<10.2) {
-  // controller1.Screen.print(rotationSensor.angle(degrees)); 
-  controller1.rumble("...");
+  // controller1.Screen.print(rotationSensor.angle(degrees));
   WallStakes.spin(forward);
   WallStakes2.spin(forward);
   } 
@@ -884,11 +894,11 @@ if (controller1.ButtonUp.pressing()){
 }
 
 void wallstakessetposition2(){
- WallStakes.setVelocity(60, percent);
- WallStakes2.setVelocity(60, percent);
+ WallStakes.setVelocity(80, percent);
+ WallStakes2.setVelocity(80, percent);
  if (controller1.ButtonUp.pressing()){
-  WallStakes.spinFor(60,degrees);
-  WallStakes2.spinFor(60,degrees);
+  WallStakes.spinFor(63,degrees);
+  WallStakes2.spinFor(63,degrees);
  }
 }
 
@@ -909,24 +919,32 @@ void wallstakesscore() {
 
 vex::task ColorSortRed() {
 
- while(1){
-
+ while(1) {
 wait(10,msec);
 opticalSensor.setLightPower(100,percent);
 
  if (opticalSensor.color() == red) {
-controller1.rumble("...");
 wait(250,msec); 
 sorter.set(true);
 wait(250,msec);
 sorter.set(false);
-
 }
 }
 }
 
+ vex::task ColorSortBlue() {
+ while(1) {
+wait(10,msec);
+opticalSensor.setLightPower(100,percent);
 
-
+ if (opticalSensor.color() == blue) {
+wait(250,msec); 
+sorter.set(true);
+wait(250,msec);
+sorter.set(false);
+}
+}
+}
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -1025,10 +1043,12 @@ void usercontrol() {
 //
 int main() {
  // Set up callbacks for autonomous and driver control periods.
+
  Competition.autonomous(autonomous);
  Competition.drivercontrol(usercontrol);
- pre_auton();
+pre_auton();
  ColorSortRed();
+ ColorSortBlue();
 
  // Run the pre-autonomous function.
  // Prevent main from exiting with an infinite loop.
