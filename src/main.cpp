@@ -483,6 +483,43 @@ void blueGoalRush() {
   pid_inches(-14);
 }
 
+void blueGoalRushElims() {
+  kp = 0.3;
+  pid_inches(-33);
+  turnRight(18.5);
+  kp = 0.2;
+  pid_inches(-9.53);
+  clamp(); 
+  wait(0.5, sec); 
+  //first ring 
+  intake.spin(reverse, 80, pct);
+  turnLeft(35);
+  pid_inches(12);
+  stopIntaking();
+  //second ring
+  intake.spin(reverse, 30, pct);
+  wait(0.2222222, sec);
+  stopIntaking();
+  pid_inches(25);
+  turnLeft(160);
+  pid_inches(-9);
+  unclamp();
+  kp = 0.3;
+  pid_inches(10);
+  kp = 0.15;
+  turnRight(219.5);
+  pid_inches(-25);
+  clamp();
+  wait(0.5, sec);
+  pid_inches(2);
+  //2nd ring in goal
+  intakeInAuton();
+  wait(0.7, sec);
+  //intake2.spin(reverse, 450, rpm);
+  turnLeft(20);
+  pid_inches(50);
+}
+
 void redGoalRush() {
   kp = 0.3;
   pid_inches(-30);
@@ -515,6 +552,43 @@ void redGoalRush() {
   wait(1, sec);
   stopIntaking();
   pid_inches(-16);
+  // turnRight(150.5);
+  // pid_inches(8); 
+}
+
+void redGoalRushElims() {
+  kp = 0.3;
+  pid_inches(-30);
+  turnLeft(27);
+  // going backwards to get the goal rush goal
+  pid_inches(-12);
+  kp = 0.25;
+  clamp();
+  //scores preload
+  intake.spin(reverse, 80, pct);
+  //intake2.spin(reverse, 450, rpm);
+  turnRight(43);
+  pid_inches(10);
+  stopIntaking();
+  intake.spin(reverse, 80, pct);
+  wait(0.1, sec);
+  stopIntaking();
+  pid_inches(27);
+  turnRight(145);
+  pid_inches(-4);
+  unclamp();
+  kp = 0.1;
+  pid_inches(5);
+  turnRight(140);
+  pid_inches(-20);
+  clamp();
+  wait(0.4, sec);
+  intakeInAuton();
+  kp = 0.4;
+  wait(1, sec);
+  stopIntaking();
+  turnRight(20);
+  pid_inches(50);
   // turnRight(150.5);
   // pid_inches(8); 
 }
@@ -751,13 +825,21 @@ void autonselector() {
     controller1.Screen.print("Blue Goal Rush");
   } else if (auton == 4) {
     controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,4);
+    controller1.Screen.print("Blue Goal Rush Elims");
+  } else if (auton == 5) {
+    controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,10);
     controller1.Screen.print("Red Left");
-  } else if (auton == 5) {
+  } else if (auton == 6) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,6);
     controller1.Screen.print("Red Goal Rush");
-  } else if (auton == 6) {
+  } else if (auton == 7) {
+    controller1.Screen.clearScreen();
+    controller1.Screen.setCursor(2,4);
+    controller1.Screen.print("Red Goal Rush Elims");
+  } else if (auton == 8) {
     controller1.Screen.clearScreen();
     controller1.Screen.setCursor(2,9);
     controller1.Screen.print("Prog Skills");
@@ -773,11 +855,15 @@ void autonomous(void) {
   } else if (auton == 3){
     blueGoalRush();
   } else if (auton == 4) {
-    redLeft();
+    blueGoalRushElims();
   } else if (auton == 5) {
-    redGoalRush();
+    redLeft();
   } else if (auton == 6) {
-    progskills();
+    redGoalRush();
+  } else if (auton == 7) {
+    redGoalRushElims();
+  } else if (auton == 8) {
+    redGoalRushElims();
   }
 }
 
@@ -824,6 +910,7 @@ void wallstakesscore() {
 vex::task ColorSortRed() {
 
  while(1){
+
 wait(10,msec);
 opticalSensor.setLightPower(100,percent);
 
@@ -938,9 +1025,10 @@ void usercontrol() {
 //
 int main() {
  // Set up callbacks for autonomous and driver control periods.
- pre_auton();
  Competition.autonomous(autonomous);
  Competition.drivercontrol(usercontrol);
+ pre_auton();
+ ColorSortRed();
 
  // Run the pre-autonomous function.
  // Prevent main from exiting with an infinite loop.
