@@ -668,6 +668,42 @@ void redLeft() {
   pid_inches(-35);
 }
 
+void redLeftGoofy() {
+  WallStakes.setVelocity(45, pct);
+  WallStakes2.setVelocity(45, pct);
+  WallStakes.spin(forward, 90, pct);
+  WallStakes2.spin(forward, 90, pct);
+  wait(0.5, sec);
+  WallStakes.stop(coast);
+  WallStakes2.stop(coast);
+  pid_inches(-7);
+  WallStakes.spin(reverse, 90, pct);
+  WallStakes2.spin(reverse, 90, pct);
+  wait(0.5, sec);
+  WallStakes.stop(coast);
+  WallStakes2.stop(coast);
+  turnRight(9);
+  pid_inches(-26);
+  kp = 0.17;
+  mogo.set(true);
+  mogo2.set(true);
+  kp = 0.175;
+  wait(200, msec);
+  turnRight(140);
+  intakeInAuton();
+  pid_inches(22);
+  wait(0.3, sec);
+  pid_inches(-8);
+  turnLeft(12);
+  pid_inches(16);
+  wait(0.7, sec);
+  pid_inches(-15);
+  turnLeft(45);
+  pid_inches(17);
+  wait(0.7, sec);
+  stopIntaking();
+  pid_inches(-35);
+}
   
 void progskills() {
   kp = 0.3;
