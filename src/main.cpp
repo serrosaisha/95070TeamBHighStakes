@@ -654,18 +654,18 @@ void redLeft() {
   wait(200, msec);
   turnRight(140);
   intakeInAuton();
-  pid_inches(22);
-  wait(0.3, sec);
+  pid_inches(23);
+  wait(0.5, sec);
   pid_inches(-8);
   turnLeft(12);
-  pid_inches(16);
-  wait(0.7, sec);
+  pid_inches(16.5);
+  wait(0.8, sec);
   pid_inches(-15);
   turnLeft(45);
   pid_inches(17);
   wait(0.7, sec);
   stopIntaking();
-  pid_inches(-35);
+  pid_inches(-32);
 }
 
 void redLeftGoofy() {
@@ -711,8 +711,8 @@ void progskills() {
   wait(0.71, sec);
   stopIntaking();
   pid_inches(14);
-  turnLeft(82);
   kp = 0.115;
+  turnLeft(82);
   pid_inches(-22);
   clamp();
   //This clamps onto the first mogo (right side red)
@@ -724,45 +724,68 @@ void progskills() {
   pid_inches(23);
   wait(1, sec);
   //second ring
-  turnRight(74); 
+  turnRight(80); 
   pid_inches(17);
-  stopIntaking();
   intakeInAuton();
   pid_inches(7);
   wait(1.5, sec);
-  stopIntaking();
   pid_inches(5.7);
   //third ring
-  turnLeft(78);
+  turnLeft(80);
+  kp = 0.15;
   intakeInAuton();
   pid_inches(20);
   wait(1, sec);
-  stopIntaking();
+  kp = 0.19;
   //fourth ring
   pid_inches(-15);
-  turnRight(168);
+  turnRight(183);
   intakeInAuton();
   pid_inches(25);
   stopWheels();
   wait(1, sec);
-  stopIntaking();
   //fifth ring
   turnLeft(5);
   pid_inches(10);
   intakeInAuton();
-  pid_inches(6);
   wait(2, sec);
   pid_inches(-14);
   //sixth ring
   turnLeft(85);
   pid_inches(7);
   wait(2, sec);
-  stopIntaking();
   pid_inches(-7);
   //unclamp in the corner
-  turnLeft(110);
-  pid_inches(-14);
+  turnLeft(131.5);
+  pid_inches(-15.8);
+  stopIntaking();
   unclamp();
+  //unclamps into corner and starts second quadrant
+  kp = 0.15;
+  pid_inches(10);
+  kp = 0.09;
+  turnRight(128.3);
+  kp = 0.11;
+  pid_inches(-50);
+  kp = 0.1;
+  pid_inches(-19);
+  clamp();
+  kp = 0.15;
+  turnLeft(70);
+  //first ring
+  intakeInAuton();
+  pid_inches(23);
+  wait(1, sec);
+  //secpnd ring
+  turnLeft(70);
+  pid_inches(23);
+  wait(0.7, sec);
+  pid_inches(5.7);
+  turnRight(90);
+  pid_inches(20);
+  wait(1, sec);
+
+
   //
   //the next part was for only three ring
   // turnRight(163);
@@ -905,7 +928,6 @@ void autonomous(void) {
     blueGoalRushElims();
   } else if (auton == 5) {
     redLeft();
-    redLeft();
   } else if (auton == 6) {
     redGoalRush();
   } else if (auton == 7) {
@@ -933,8 +955,8 @@ void wallstakessetposition2(){
  WallStakes.setVelocity(80, percent);
  WallStakes2.setVelocity(80, percent);
  if (controller1.ButtonUp.pressing()){
-  WallStakes.spinFor(63,degrees);
-  WallStakes2.spinFor(63,degrees);
+  WallStakes.spinFor(58,degrees);
+  WallStakes2.spinFor(58,degrees);
  }
 }
 
