@@ -917,7 +917,7 @@ void wallstakessetposition(){
 WallStakes.setVelocity(60, percent);
 WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
- while (rotationSensor.angle(degrees)<10.2) {
+ while (rotationSensor.angle(degrees)<11) {
  // controller1.Screen.print(rotationSensor.angle(degrees));
  WallStakes.spin(forward);
  WallStakes2.spin(forward);
@@ -980,6 +980,9 @@ sorter.set(false);
 }
 }
 
+void stopWallStakes() {
+
+}
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
 /*                              User Control Task                            */
@@ -998,7 +1001,7 @@ void old_arcade() {
 // search up the ebot pilons turning curves(or something like that) desmos
 
 double speedleft = controller1.Axis1.value() * 0.7 + controller1.Axis3.value();
-double speedright = controller1.Axis1.value() * 0.7 - controller1.Axis3.value();
+double speedright = controller1.Axis1.value() * 0.62 - controller1.Axis3.value();
 
 fl.spin(forward, speedleft, percent);
 ml.spin(forward, speedleft, percent);
@@ -1060,8 +1063,8 @@ void usercontrol() {
  while (!selecting) {
    intaking();
    old_arcade();
-   // wallstakessetposition();
-   wallstakessetposition2();
+   wallstakessetposition();
+   //wallstakessetposition2();
    wallstakesscore();
    //mogoControl();
    controller1.ButtonL1.pressed(mogoControl);
