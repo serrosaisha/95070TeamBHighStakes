@@ -52,17 +52,7 @@ steady_clock::time_point lastDoinker;
 /*---------------------------------------------------------------------------*/
 
 
-void pre_auton(void) {
-//  inertialSensor.calibrate();
-//  while(inertialSensor.isCalibrating()) {
-//   wait(20, msec);
-//  }
-// Initializing Robot Configuration. DO NOT REMOVE!
-vexcodeInit();
-inertialSensor.calibrate();
-wait(5, msec);
-waitUntil(!inertialSensor.isCalibrating());
-}
+
  // All activities that occur before the competition starts
 // Example: clearing encoders, setting servo positions, ...
 
@@ -432,13 +422,13 @@ void blueRightElims() {
  pid_inches(15);
 }
 
-//blue goal rush auton
+//blue goal rush auton with clamping
 void blueGoalRush() {
  kp = 0.3;
  pid_inches(-33);
  turnRight(18.5);
- kp = 0.2;
- pid_inches(-9.53);
+ kp = 0.25;
+ pid_inches(-10);
  clamp();
  wait(0.5, sec);
  //first ring
@@ -457,7 +447,7 @@ void blueGoalRush() {
  kp = 0.3;
  pid_inches(10);
  kp = 0.15;
- turnRight(219.5);
+ turnRight(224);
  kp = 0.1;
  pid_inches(-25);
  clamp();
@@ -466,8 +456,33 @@ void blueGoalRush() {
  //2nd ring in goal
  intakeInAuton();
  wait(0.7, sec);
+ stopIntaking();
  //intake2.spin(reverse, 450, rpm);
  pid_inches(-14);
+}
+
+void blueGoalRushDoinker() {
+  kp = 0.41;
+  pid_inches(15);
+  turnRight(90);
+  pid_inches(8);
+  turnLeft(90);
+  intakeInAuton();
+  pid_inches(10);
+  wait(0.2, sec);
+  pid_inches(13);
+  doinker.set(true);
+  pid_inches(-10);
+  doinker.set(false);
+  pid_inches(-13);
+  turnRight(180);
+  pid_inches(-20);
+  kp = 0.29;
+  pid_inches(-6);
+  clamp();
+  intakeInAuton();
+  wait(0.2, sec);
+  stopIntaking();
 }
 
 void blueGoalRushElims() {
@@ -513,8 +528,8 @@ void redGoalRush() {
  pid_inches(-30);
  turnLeft(27);
  // going backwards to get the goal rush goal
- pid_inches(-12);
- kp = 0.24;
+ pid_inches(-13);
+ kp = 0.32;
  clamp();
  //scores preload
  intake.spin(reverse, 80, pct);
@@ -522,8 +537,8 @@ void redGoalRush() {
  turnRight(43);
  pid_inches(10);
  stopIntaking();
- intake.spin(reverse, 80, pct);
- wait(0.1, sec);
+ intakeInAuton();
+ wait(0.07, sec);
  stopIntaking();
  pid_inches(27);
  turnRight(145);
@@ -917,7 +932,7 @@ void wallstakessetposition(){
 WallStakes.setVelocity(60, percent);
 WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
- while (rotationSensor.angle(degrees)<11) {
+ while (rotationSensor.angle(degrees)<13 || rotationSensor.angle(degrees) > 350) {
  // controller1.Screen.print(rotationSensor.angle(degrees));
  WallStakes.spin(forward);
  WallStakes2.spin(forward);
@@ -1000,6 +1015,8 @@ void old_arcade() {
 // int speedright = controller1.Axis3.value()/2;
 // search up the ebot pilons turning curves(or something like that) desmos
 
+std::cout << "confirm" << std::endl;
+
 double speedleft = controller1.Axis1.value() * 0.7 + controller1.Axis3.value();
 double speedright = controller1.Axis1.value() * 0.62 - controller1.Axis3.value();
 
@@ -1054,15 +1071,29 @@ bool toggleArcade = 0;
 // }
 
 bool selecting = 1;
-void usercontrol() {
- while (selecting) {
+void pre_auton(void) {
+//  inertialSensor.calibrate();
+//  while(inertialSensor.isCalibrating()) {
+//   wait(20, msec);
+//  }
+// Initializing Robot Configuration. DO NOT REMOVE!
+vexcodeInit();
+inertialSensor.calibrate();
+wait(5, msec);
+waitUntil(!inertialSensor.isCalibrating());
+while (selecting) {
    autonselector();
-   if (controller1.ButtonB.pressing()) selecting = 0;
+  // if (controller1.ButtonB.pressing()) selecting = 0;
    wait(5, msec);
  }
- while (!selecting) {
+}
+
+void usercontrol() {
+  while (true) {
    intaking();
    old_arcade();
+   wallstakessetposition();
+   //wallstakessetposition2();
    wallstakessetposition();
    //wallstakessetposition2();
    wallstakesscore();
@@ -1071,21 +1102,20 @@ void usercontrol() {
    controller1.ButtonL1.released(clamping);
    controller1.ButtonL2.pressed(doinkerControl);
    controller1.ButtonL2.released(doinkeroinker);
-   controller1.ButtonUp.pressed(wallstakessetposition2);
+   //controller1.ButtonUp.pressed(wallstakessetposition);
    wait(10,msec);
- }
+  }
 }
 
 // Main will set up the competition functions and callbacks.
 //
 int main() {
 // Set up callbacks for autonomous and driver control periods.
-
+pre_auton();
 Competition.autonomous(autonomous);
 Competition.drivercontrol(usercontrol);
-pre_auton();
-ColorSortRed();
-ColorSortBlue();
+//ColorSortRed();
+//ColorSortBlue();
 
 // Run the pre-autonomous function.
 // Prevent main from exiting with an infinite loop.
