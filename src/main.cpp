@@ -463,25 +463,9 @@ void blueGoalRush() {
 
 void blueGoalRushDoinker() {
   kp = 0.41;
-  pid_inches(15);
-  turnRight(90);
-  pid_inches(8);
-  turnLeft(90);
-  intakeInAuton();
   pid_inches(10);
-  wait(0.2, sec);
-  pid_inches(13);
-  doinker.set(true);
-  pid_inches(-10);
-  doinker.set(false);
-  pid_inches(-13);
-  turnRight(180);
-  pid_inches(-20);
-  kp = 0.29;
-  pid_inches(-6);
-  clamp();
   intakeInAuton();
-  wait(0.2, sec);
+  pid_inches(5);
   stopIntaking();
 }
 
@@ -523,13 +507,51 @@ void blueGoalRushElims() {
  pid_inches(50);
 }
 
+void redGoalRushDoinker() {
+  kp = 0.41;
+  pid_inches(10);
+  intakeInAuton();
+  pid_inches(15);
+  wait(0.4, sec);
+  stopIntaking();
+  kp = 0.2;
+  pid_inches(7.8);
+  doinker.set(true);
+  wait(0.6, sec);
+  kp = 0.05;
+  pid_inches(-20);
+  doinker.set(false);
+  kp = 0.3;
+  pid_inches(-7);
+  turnRight(176);
+  kp = 0.1;
+  pid_inches(-25);
+  clamp();
+  intakeInAuton();
+  kp = 0.27;
+  turnRight(15);
+  intakeInAuton();
+  pid_inches(30);
+  stopIntaking();
+  unclamp();
+  turnLeft(25);
+  pid_inches(-25);  
+  kp = 0.16;
+  pid_inches(-10);
+  clamp();
+  intakeInAuton();
+  wait(0.7, sec);
+  stopIntaking();
+  pid_inches(-13);
+}
+
 void redGoalRush() {
- kp = 0.3;
+ kp = 0.4;
  pid_inches(-30);
  turnLeft(27);
  // going backwards to get the goal rush goal
  pid_inches(-13);
- kp = 0.32;
+ kp = 0.35;
  clamp();
  //scores preload
  intake.spin(reverse, 80, pct);
@@ -544,7 +566,7 @@ void redGoalRush() {
  turnRight(145);
  pid_inches(-4);
  unclamp();
- kp = 0.1;
+ kp = 0.23;
  pid_inches(5);
  turnRight(140);
  pid_inches(-20);
@@ -733,7 +755,7 @@ void redLeftGoofy() {
  wait(1.5, sec);
  pid_inches(5.7);
  //third ring
- turnLeft(80);
+ turnLeft(78);
  kp = 0.15;
  intakeInAuton();
  pid_inches(20);
@@ -741,11 +763,10 @@ void redLeftGoofy() {
  kp = 0.19;
  //fourth ring
  pid_inches(-15);
- turnRight(183);
+ turnRight(170);
  intakeInAuton();
  pid_inches(25);
  stopWheels();
- wait(1, sec);
  //fifth ring
  turnLeft(5);
  pid_inches(10);
@@ -753,40 +774,60 @@ void redLeftGoofy() {
  wait(2, sec);
  pid_inches(-14);
  //sixth ring
- turnLeft(85);
+ turnLeft(80);
  pid_inches(7);
  wait(2, sec);
  pid_inches(-7);
  //unclamp in the corner
  turnLeft(131.5);
+ kp = 0.1;
  pid_inches(-15.8);
  stopIntaking();
  unclamp();
  //unclamps into corner and starts second quadrant
  kp = 0.15;
- pid_inches(10);
- kp = 0.09;
- turnRight(128.3);
+ pid_inches(9);
+ kp = 0.05;
+ turnRight(117.5);
  kp = 0.11;
  pid_inches(-50);
  kp = 0.1;
- pid_inches(-19);
+ turnLeft(5);
+ pid_inches(-24);
  clamp();
  kp = 0.15;
- turnLeft(70);
+ turnLeft(60);
  //first ring
  intakeInAuton();
  pid_inches(23);
  wait(1, sec);
  //secpnd ring
- turnLeft(70);
+ turnLeft(85);
  pid_inches(23);
  wait(0.7, sec);
- pid_inches(5.7);
- turnRight(90);
+ pid_inches(13);
+ //3rd Ring
+ turnRight(83);
  pid_inches(20);
  wait(1, sec);
-
+ // fourth ring
+ turnRight(150);
+ pid_inches(25);
+ wait(0.7, sec);
+//fifth ring
+ pid_inches(15);
+ wait(0.7, sec);
+ pid_inches(-18);
+ //sixth ring
+ turnRight(90);
+ pid_inches(17);
+ wait(0.7, sec);
+ stopIntaking();
+ pid_inches(-19);
+ turnRight(115);
+ pid_inches(-10);
+ unclamp();
+ pid_inches(15);
  //
  //the next part was for only three ring
  // turnRight(163);
@@ -932,7 +973,7 @@ void wallstakessetposition(){
 WallStakes.setVelocity(60, percent);
 WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
- while (rotationSensor.angle(degrees)<13 || rotationSensor.angle(degrees) > 350) {
+ while (rotationSensor.angle(degrees)<19 || rotationSensor.angle(degrees) > 350) {
  // controller1.Screen.print(rotationSensor.angle(degrees));
  WallStakes.spin(forward);
  WallStakes2.spin(forward);
