@@ -355,28 +355,65 @@ void blueRight() {
  wait(0.4, sec);
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
- turnLeft(11);
+ turnLeft(5);
  pid_inches(-25);
  mogo.set(true);
  mogo2.set(true);
  wait(200, msec);
- turnLeft(146);
+ turnLeft(149);
  intakeInAuton();
  pid_inches(22);
  wait(0.3, sec);
  pid_inches(-8);
- turnRight(10);
+ turnRight(4);
  pid_inches(14);
  wait(0.7, sec);
  stopIntaking();
  pid_inches(-5);
  intakeInAuton();
  pid_inches(-10);
- turnRight(45);
+ turnRight(54);
  pid_inches(17);
  wait(0.7, sec);
  stopIntaking();
- pid_inches(-36);
+ pid_inches(-34);
+}
+
+void redLeft() {
+ WallStakes.setVelocity(45, pct);
+ WallStakes2.setVelocity(45, pct);
+ WallStakes.spin(forward, 90, pct);
+ WallStakes2.spin(forward, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ pid_inches(-7);
+ WallStakes.spin(reverse, 90, pct);
+ WallStakes2.spin(reverse, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ turnRight(5);// used to be 11 if neede chang ebcak
+ pid_inches(-26);
+ kp = 0.17;
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.175;
+ wait(200, msec);
+ turnRight(139);
+ intakeInAuton();
+ pid_inches(23);
+ wait(0.5, sec);
+ pid_inches(-8);
+ turnLeft(2);
+ pid_inches(18);
+ wait(0.8, sec);
+ pid_inches(-20);
+ turnLeft(54);
+ pid_inches(23);
+ wait(0.7, sec);
+ stopIntaking();
+ pid_inches(-40);
 }
 
 void blueRightElims() {
@@ -426,14 +463,15 @@ void blueRightElims() {
 void blueGoalRush() {
  kp = 0.3;
  pid_inches(-33);
- turnRight(18.5);
- kp = 0.25;
+ turnRight(15);
+ kp = 0.2;
  pid_inches(-10);
  clamp();
+ kp = 0.27;
  wait(0.5, sec);
  //first ring
  intake.spin(reverse, 80, pct);
- turnLeft(35);
+ turnLeft(15);
  pid_inches(12);
  stopIntaking();
  //second ring
@@ -442,12 +480,12 @@ void blueGoalRush() {
  stopIntaking();
  pid_inches(25);
  turnLeft(160);
- pid_inches(-9);
+ pid_inches(-6.9);
  unclamp();
  kp = 0.3;
  pid_inches(10);
  kp = 0.15;
- turnRight(224);
+ turnRight(217);
  kp = 0.1;
  pid_inches(-25);
  clamp();
@@ -548,15 +586,16 @@ void redGoalRushDoinker() {
 void redGoalRush() {
  kp = 0.4;
  pid_inches(-30);
- turnLeft(27);
+ turnLeft(30);
  // going backwards to get the goal rush goal
- pid_inches(-13);
- kp = 0.35;
+ kp = 0.15;
+ pid_inches(-11.5);
  clamp();
  //scores preload
  intake.spin(reverse, 80, pct);
  //intake2.spin(reverse, 450, rpm);
  turnRight(43);
+ kp = 0.3;
  pid_inches(10);
  stopIntaking();
  intakeInAuton();
@@ -569,11 +608,12 @@ void redGoalRush() {
  kp = 0.23;
  pid_inches(5);
  turnRight(140);
+ kp = 0.18;
  pid_inches(-20);
  clamp();
  wait(0.4, sec);
  intakeInAuton();
- kp = 0.4;
+ kp = 0.3;
  wait(1, sec);
  stopIntaking();
  pid_inches(-16);
@@ -655,42 +695,6 @@ void redGoalRushElims() {
 //   pid_inches(25);
 // }
 
-void redLeft() {
- WallStakes.setVelocity(45, pct);
- WallStakes2.setVelocity(45, pct);
- WallStakes.spin(forward, 90, pct);
- WallStakes2.spin(forward, 90, pct);
- wait(0.5, sec);
- WallStakes.stop(coast);
- WallStakes2.stop(coast);
- pid_inches(-7);
- WallStakes.spin(reverse, 90, pct);
- WallStakes2.spin(reverse, 90, pct);
- wait(0.5, sec);
- WallStakes.stop(coast);
- WallStakes2.stop(coast);
- turnRight(11);
- pid_inches(-26);
- kp = 0.17;
- mogo.set(true);
- mogo2.set(true);
- kp = 0.175;
- wait(200, msec);
- turnRight(140);
- intakeInAuton();
- pid_inches(23);
- wait(0.5, sec);
- pid_inches(-8);
- turnLeft(12);
- pid_inches(16.5);
- wait(0.8, sec);
- pid_inches(-15);
- turnLeft(45);
- pid_inches(17);
- wait(0.7, sec);
- stopIntaking();
- pid_inches(-32);
-}
 
 void redLeftGoofy() {
  WallStakes.setVelocity(45, pct);
@@ -748,7 +752,7 @@ void redLeftGoofy() {
  pid_inches(23);
  wait(1, sec);
  //second ring
- turnRight(80);
+ turnRight(84);
  pid_inches(17);
  intakeInAuton();
  pid_inches(7);
@@ -768,62 +772,61 @@ void redLeftGoofy() {
  pid_inches(25);
  stopWheels();
  //fifth ring
- turnLeft(5);
+ turnLeft(15);
  pid_inches(10);
  intakeInAuton();
  wait(2, sec);
- pid_inches(-14);
+ turnLeft(15);
+ pid_inches(-12);
  //sixth ring
- turnLeft(80);
- pid_inches(7);
+ turnLeft(60);
+ pid_inches(15);
  wait(2, sec);
  pid_inches(-7);
  //unclamp in the corner
- turnLeft(131.5);
+ turnLeft(116);
  kp = 0.1;
- pid_inches(-15.8);
+ pid_inches(-12.5);
  stopIntaking();
  unclamp();
- //unclamps into corner and starts second quadrant
+ //starts second quadrant
  kp = 0.15;
- pid_inches(9);
+ pid_inches(10);
  kp = 0.05;
- turnRight(117.5);
+ turnRight(122);
  kp = 0.11;
  pid_inches(-50);
  kp = 0.1;
- turnLeft(5);
  pid_inches(-24);
  clamp();
  kp = 0.15;
- turnLeft(60);
+ turnLeft(65);
  //first ring
  intakeInAuton();
  pid_inches(23);
  wait(1, sec);
  //secpnd ring
- turnLeft(85);
+ turnLeft(90);
  pid_inches(23);
  wait(0.7, sec);
- pid_inches(13);
- //3rd Ring
- turnRight(83);
+ //third Ring
+ turnRight(50);
  pid_inches(20);
  wait(1, sec);
  // fourth ring
- turnRight(150);
- pid_inches(25);
+ turnLeft(145);
+ pid_inches(50);
  wait(0.7, sec);
 //fifth ring
- pid_inches(15);
+ pid_inches(5);
  wait(0.7, sec);
  pid_inches(-18);
  //sixth ring
  turnRight(90);
  pid_inches(17);
- wait(0.7, sec);
+ wait(1, sec);
  stopIntaking();
- pid_inches(-19);
+ pid_inches(-30);
  turnRight(115);
  pid_inches(-10);
  unclamp();
@@ -973,7 +976,7 @@ void wallstakessetposition(){
 WallStakes.setVelocity(60, percent);
 WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
- while (rotationSensor.angle(degrees)<19 || rotationSensor.angle(degrees) > 350) {
+ while (rotationSensor.angle(degrees)<20 || rotationSensor.angle(degrees) > 350) {
  // controller1.Screen.print(rotationSensor.angle(degrees));
  WallStakes.spin(forward);
  WallStakes2.spin(forward);
