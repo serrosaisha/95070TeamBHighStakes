@@ -355,12 +355,12 @@ void blueRight() {
  wait(0.4, sec);
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
- turnLeft(5);
+ turnLeft(15);
  pid_inches(-25);
  mogo.set(true);
  mogo2.set(true);
  wait(200, msec);
- turnLeft(149);
+ turnLeft(140);
  intakeInAuton();
  pid_inches(22);
  wait(0.3, sec);
@@ -461,22 +461,23 @@ void blueRightElims() {
 
 //blue goal rush auton with clamping
 void blueGoalRush() {
+ kd = 0.5;
  kp = 0.3;
  pid_inches(-33);
  turnRight(15);
- kp = 0.2;
- pid_inches(-10);
+ kp = 0.14;
+ pid_inches(-9);
  clamp();
  kp = 0.27;
  wait(0.5, sec);
  //first ring
  intake.spin(reverse, 80, pct);
- turnLeft(15);
+ turnLeft(25);
  pid_inches(12);
  stopIntaking();
  //second ring
  intake.spin(reverse, 30, pct);
- wait(0.2222222, sec);
+ wait(0.5, sec);
  stopIntaking();
  pid_inches(25);
  turnLeft(160);
@@ -586,7 +587,7 @@ void redGoalRushDoinker() {
 void redGoalRush() {
  kp = 0.4;
  pid_inches(-30);
- turnLeft(30);
+ turnLeft(35);
  // going backwards to get the goal rush goal
  kp = 0.15;
  pid_inches(-11.5);
@@ -599,7 +600,7 @@ void redGoalRush() {
  pid_inches(10);
  stopIntaking();
  intakeInAuton();
- wait(0.07, sec);
+ wait(0.4, sec);
  stopIntaking();
  pid_inches(27);
  turnRight(145);
@@ -976,7 +977,7 @@ void wallstakessetposition(){
 WallStakes.setVelocity(60, percent);
 WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
- while (rotationSensor.angle(degrees)<20 || rotationSensor.angle(degrees) > 350) {
+ while (rotationSensor.angle(degrees)<10 || rotationSensor.angle(degrees) > 350) {
  // controller1.Screen.print(rotationSensor.angle(degrees));
  WallStakes.spin(forward);
  WallStakes2.spin(forward);
