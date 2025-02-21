@@ -17,6 +17,7 @@ extern pneumatics mogo;
 extern pneumatics mogo2;
 extern pneumatics doinker;
 extern pneumatics sorter;
+extern pneumatics lift;
 extern inertial inertialSensor;
 extern rotation rotationSensor;
 extern optical opticalSensor;

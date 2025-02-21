@@ -9,7 +9,8 @@ brain  Brain;
 pneumatics mogo = pneumatics(Brain.ThreeWirePort.C);
 pneumatics mogo2 = pneumatics(Brain.ThreeWirePort.B);
 pneumatics doinker = pneumatics(Brain.ThreeWirePort.A);
-pneumatics sorter = pneumatics(Brain.ThreeWirePort.D);
+pneumatics sorter = pneumatics(Brain.ThreeWirePort.H);
+pneumatics lift = pneumatics(Brain.ThreeWirePort.D);
 rotation  rotationSensor = rotation (PORT21, false);
 controller controller1 = controller(primary);
 motor fr = motor(PORT15, ratio18_1, false);
@@ -28,13 +29,10 @@ optical opticalSensor = optical(PORT6);
 
 // VEXcode generated functions
 
-//Bad Ports:
-// 8, 7, 
-
 /**
 * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
 *
 * This should be called at the start of your int main function.
 */
-void vexcodeInit( void ) {
+void vexcodeInit (void) {
 }

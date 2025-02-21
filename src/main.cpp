@@ -130,6 +130,13 @@ void stopWheels() {
  br.stop(brake);
 }
 
+void tunepid () {
+kp = 0.3;
+ki = 0;
+kd = 0.5;
+pid_inches(12);
+}
+
 //clamp
 void clamp() {
   mogo.set(true);
@@ -300,46 +307,46 @@ void stopIntaking() {
 
 //this is our old code
 //blue right auton (4 ring)
-// void blueRight() {
-//   kp = 0.11;
-//   pid_inches(-31.5);
-//   clamp();
-//   kp = 0.2;
-//   intakeInAuton();
-//   wait(1, sec);
-//   stopIntaking();
-//   turnLeft(115);
-//   kp = 0.12;
-//   //first ring
-//   intakeInAuton();
-//   pid_inches(12.5);
-//   // intakeInAuton();
-//   // pid_inches(6);
-//   wait(1, sec);
-//   stopIntaking();
-//   pid_inches(-5);
-//   turnRight(62);
-//   stopIntaking();
-//   //second ring
-//   intakeInAuton();
-//   pid_inches(14);
-//   wait(0.8, sec);
-//   stopIntaking();
-//   kp = 0.3;
-//   turnLeft(20);
-//   pid_inches(10);
-//   turnLeft(100);
-//   kp = 0.3;
-//   intakeInAuton();
-//   pid_inches(8);
-//   wait(0.75, sec);
-//   pid_inches(-15);
-//   turnLeft(40);
-//   pid_inches(38);
-//   WallStakes2.spin(reverse, 90, pct);
-//   WallStakes.spin(forward, 90, pct);
-//   wait(0.4, sec);
-// }
+void blueRight5() {
+  kp = 0.11;
+  pid_inches(-31.5);
+  clamp();
+  kp = 0.2;
+  intakeInAuton();
+  wait(1, sec);
+  stopIntaking();
+  turnLeft(115);
+  kp = 0.12;
+  //first ring
+  intakeInAuton();
+  pid_inches(12.5);
+  // intakeInAuton();
+  // pid_inches(6);
+  wait(1, sec);
+  stopIntaking();
+  pid_inches(-5);
+  turnRight(62);
+  stopIntaking();
+  //second ring
+  intakeInAuton();
+  pid_inches(14);
+  wait(0.8, sec);
+  stopIntaking();
+  kp = 0.3;
+  turnLeft(20);
+  pid_inches(10);
+  turnLeft(100);
+  kp = 0.3;
+  intakeInAuton();
+  pid_inches(8);
+  wait(0.75, sec);
+  pid_inches(-15);
+  turnLeft(40);
+  pid_inches(38);
+  WallStakes2.spin(reverse, 90, pct);
+  WallStakes.spin(forward, 90, pct);
+  wait(0.4, sec);
+}
 
 void blueRight() {
  WallStakes.setVelocity(45, pct);
@@ -355,17 +362,57 @@ void blueRight() {
  wait(0.4, sec);
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
- turnLeft(15);
+ turnLeft(11);
+ pid_inches(-27);
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.3;
+ wait(200, msec);
+ turnLeft(140);
+ intakeInAuton();
+ pid_inches(20);
+ wait(0.7, sec);
+ pid_inches(-10);
+ turnRight(10.95);
+ pid_inches(13);
+ wait(0.7, sec);
+ stopIntaking();
+ pid_inches(-5);
+ intakeInAuton();
+ pid_inches(-10);
+ turnRight(54);
+ pid_inches(17);
+ wait(0.7, sec);
+ pid_inches(-20);
+ stopIntaking();
+ turnRight(20);
+ WallStakes.spin(fwd, 90, pct);
+ WallStakes2.spin(fwd, 90, pct);
+ wait(0.313, sec);
+ WallStakes.stop(hold);
+ WallStakes2.stop(hold);
+ intakeInAuton();
+ pid_inches(50);
+ wait(0.6, sec);
+ WallStakes.spin(reverse, 90, pct);
+ WallStakes2.spin(reverse, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ pid_inches(-60);
+}
+
+void blueRight1() {
  pid_inches(-25);
  mogo.set(true);
  mogo2.set(true);
+ kp = 0.3;
  wait(200, msec);
  turnLeft(140);
  intakeInAuton();
  pid_inches(22);
- wait(0.3, sec);
- pid_inches(-8);
- turnRight(4);
+ pid_inches(-10);
+ turnRight(10.95);
  pid_inches(14);
  wait(0.7, sec);
  stopIntaking();
@@ -375,11 +422,76 @@ void blueRight() {
  turnRight(54);
  pid_inches(17);
  wait(0.7, sec);
+ pid_inches(-20);
  stopIntaking();
- pid_inches(-34);
+ turnRight(25);
+ intakeInAuton();
+ pid_inches(50);
 }
 
 void redLeft() {
+ kp = 0.3;
+ WallStakes.setVelocity(45, pct);
+ WallStakes2.setVelocity(45, pct);
+ WallStakes.spin(forward, 90, pct);
+ WallStakes2.spin(forward, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ pid_inches(-7);
+ WallStakes.spin(reverse, 90, pct);
+ WallStakes2.spin(reverse, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ kp = 0.1;
+ turnRight(10);
+ // used to be 11 if need change back
+ pid_inches(-30);
+ //clamp onto first goal
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.3;
+ wait(200, msec);
+ turnRight(134);
+ //intake first ring
+ intakeInAuton();
+ pid_inches(16.5);
+ wait(0.5, sec);
+ pid_inches(-8);
+ turnLeft(7.3);
+ pid_inches(11);
+ wait(0.8, sec);
+ pid_inches(-18.7);
+ turnLeft(30);
+ kp = 0.4;
+ pid_inches(18);
+ wait(0.9, sec);
+ stopIntaking();
+ pid_inches(-15);
+ turnLeft(30);
+ intakeInAuton();
+ WallStakes.spin(fwd, 90, pct);
+ WallStakes2.spin(fwd, 90, pct);
+ wait(0.313, sec);
+ WallStakes.stop(hold);
+ WallStakes2.stop(hold);
+ //ram into stack
+ pid_inches(35);
+ kp = 0.35;
+ pid_inches(15);
+ wait(1, sec);
+ kp = 0.45;
+ pid_inches(-43);
+ WallStakes.spin(reverse, 90, pct);
+ WallStakes2.spin(reverse, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ pid_inches(-8);
+}
+
+void redLeftold() {
  WallStakes.setVelocity(45, pct);
  WallStakes2.setVelocity(45, pct);
  WallStakes.spin(forward, 90, pct);
@@ -409,14 +521,15 @@ void redLeft() {
  pid_inches(15);
  wait(0.8, sec);
  pid_inches(-20);
- turnLeft(51);
+ turnLeft(46);
  pid_inches(23);
  wait(0.9, sec);
  stopIntaking();
  pid_inches(-40);
 }
 
-void redleftelims() {
+void redleftelims1() {
+kp = 0.3;
  WallStakes.setVelocity(45, pct);
  WallStakes2.setVelocity(45, pct);
  WallStakes.spin(forward, 90, pct);
@@ -430,73 +543,123 @@ void redleftelims() {
  wait(0.5, sec);
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
- turnRight(10);// used to be 11 if neede change back
- pid_inches(-26);
- kp = 0.17;
+ kp = 0.1;
+ turnRight(10);
+ // used to be 11 if need change back
+ pid_inches(-30);
  mogo.set(true);
  mogo2.set(true);
- kp = 0.175;
+ kp = 0.3;
  wait(200, msec);
  turnRight(134);
  intakeInAuton();
- pid_inches(23);
+ pid_inches(16.5);
  wait(0.5, sec);
  pid_inches(-8);
- turnLeft(5);
- pid_inches(15);
+ turnLeft(7.3);
+ pid_inches(11.5);
  wait(0.8, sec);
  pid_inches(-20);
- turnLeft(51);
- pid_inches(23);
+ turnLeft(30);
+ kp = 0.4;
+ pid_inches(18);
  wait(0.9, sec);
  stopIntaking();
- turnLeft(110);
- kp = 0.25;
- pid_inches(30);
- turnLeft(45);
- pid_inches(55);
+ pid_inches(-15);
+ turnLeft(23);
+ intakeInAuton();
+ pid_inches(50);
+ wait(1, sec);
+ pid_inches(-8);
+ lift.set(true);
+ pid_inches(9);
 }
 
-void blueRightElims() {
- WallStakes.setVelocity(45, pct);
- WallStakes2.setVelocity(45, pct);
- WallStakes.spin(forward, 90, pct);
- WallStakes2.spin(forward, 90, pct);
- wait(0.5, sec);
- WallStakes.stop(coast);
- WallStakes2.stop(coast);
- pid_inches(-7);
- WallStakes.spin(reverse, 90, pct);
- WallStakes2.spin(reverse, 90, pct);
- wait(0.4, sec);
- WallStakes.stop(coast);
- WallStakes2.stop(coast);
- turnLeft(15);
- pid_inches(-25);
+void redleftelims6() {
+ kp = 0.13;
+ pid_inches(-30);
  mogo.set(true);
  mogo2.set(true);
+ kp = 0.34;
  wait(200, msec);
- turnLeft(140);
+ turnRight(116);
  intakeInAuton();
- pid_inches(22);
- wait(0.3, sec);
+ pid_inches(16);
+ wait(0.5, sec);
+ pid_inches(-9);
+ turnLeft(8);
+ pid_inches(12);
+ wait(0.8, sec);
+ pid_inches(-20);
+ turnLeft(27);
+ kp = 0.4;
+ pid_inches(18);
+ wait(0.8, sec);
+ pid_inches(-15);
+ stopIntaking();
+ outtakeInAuton();
+ turnLeft(31.5);
+ WallStakes.spin(fwd, 90, pct);
+ WallStakes2.spin(fwd, 90, pct);
+ wait(0.36, sec);
+ WallStakes.stop(hold);
+ WallStakes2.stop(hold);
+ kp = 0.23;
+ intakeInAuton();
+ pid_inches(49);
+ wait(1, sec);
+ pid_inches(-11.5);
+ lift.set(true);
+ pid_inches(12.5);
+ wait(1, sec);
+ lift.set(false);
  pid_inches(-8);
- turnRight(4);
- pid_inches(14);
- wait(0.7, sec);
- stopIntaking();
- pid_inches(-5);
+ }
+
+void blueRightElims6() {
+ kp = 0.15;
+ pid_inches(-30);
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.34;
+ wait(200, msec);
+ turnLeft(116);
  intakeInAuton();
+ pid_inches(14);
+ wait(0.5, sec);
  pid_inches(-10);
- turnRight(54);
- pid_inches(17);
- wait(0.7, sec);
+ turnRight(9);
+ pid_inches(14);
+ wait(0.8, sec);
+ pid_inches(-20);
+ turnRight(25);
+ kp = 0.4;
+ pid_inches(18);
+ wait(0.8, sec);
+ pid_inches(-15);
  stopIntaking();
- turnRight(110);
- pid_inches(30);
- kp = 0.25;
- turnRight(45);
- pid_inches(55);
+ outtakeInAuton();
+ turnRight(28);
+ WallStakes.spin(fwd, 90, pct);
+ WallStakes2.spin(fwd, 90, pct);
+ wait(0.32, sec);
+ WallStakes.stop(hold);
+ WallStakes2.stop(hold);
+ kp = 0.23;
+ intakeInAuton();
+ pid_inches(49.5);
+ outtakeInAuton();
+ wait(0.1, sec); 
+ intakeInAuton();
+ wait(1, sec);
+ pid_inches(-11.5);
+ stopIntaking();
+//  lift.set(true);
+//  pid_inches(12.5);
+//  wait(1, sec);
+//  lift.set(false);
+//  kp = 0.23;
+//  pid_inches(-8);
 }
 
 //blue goal rush auton with clamping
@@ -504,7 +667,7 @@ void blueGoalRush() {
  kd = 0.5;
  kp = 0.3;
  pid_inches(-33);
- turnRight(16.5);
+ turnRight(21);
  kp = 0.14;
  pid_inches(-9.5);
  clamp();
@@ -538,14 +701,6 @@ void blueGoalRush() {
  stopIntaking();
  //intake2.spin(reverse, 450, rpm);
  pid_inches(-15);
-}
-
-void blueGoalRushDoinker() {
-  kp = 0.41;
-  pid_inches(10);
-  intakeInAuton();
-  pid_inches(5);
-  stopIntaking();
 }
 
 void blueGoalRushElims() {
@@ -587,41 +742,77 @@ void blueGoalRushElims() {
 }
 
 void redGoalRushDoinker() {
-  kp = 0.41;
-  pid_inches(10);
+  kp = 0.3;
+  intake.spin(reverse, 65, pct);
+  pid_inches(35);
+  doinker.set(true);
+  wait(100, msec);
+  stopIntaking();
+  kp = 0.17;
+  pid_inches(-15);
+  doinker.set(false);
+  kp = 0.21;
+  pid_inches(-7);
+  turnRight(184);
+  kp = 0.1;
+  pid_inches(-13);
+  clamp();
+  kp = 0.3;
   intakeInAuton();
-  pid_inches(15);
+  pid_inches(10);
+  turnLeft(15);
+  pid_inches(11);
+  wait(0.6, sec);
+  stopIntaking();
+  pid_inches(-14);
+  turnLeft(100);
+  pid_inches(-21);
+  unclamp();
+  pid_inches(9);
+  turnRight(79.5);
+  kp = 0.1;
+  pid_inches(-18);
+  clamp();
+  wait(0.5, sec);
+  kp = 0.3;
+  intakeInAuton();
+  pid_inches(-20);
+}
+
+void blueGoalRushDoinker() {
+  kp = 0.3;
+  intake.spin(reverse, 53, pct);
+  pid_inches(35);
+  doinker.set(true);
+  wait(99.9, msec);
+  stopIntaking();
+  kp = 0.17;
+  pid_inches(-15);
+  doinker.set(false);
+  kp = 0.21;
+  pid_inches(-7);
+  turnRight(184);
+  kp = 0.1;
+  pid_inches(-13);
+  clamp();
+  kp = 0.3;
+  intakeInAuton();
+  pid_inches(10);
+  turnLeft(25);
+  pid_inches(12);
   wait(0.4, sec);
   stopIntaking();
-  kp = 0.2;
-  pid_inches(7.8);
-  doinker.set(true);
-  wait(0.6, sec);
-  kp = 0.05;
-  pid_inches(-20);
-  doinker.set(false);
-  kp = 0.3;
-  pid_inches(-7);
-  turnRight(176);
-  kp = 0.1;
-  pid_inches(-25);
-  clamp();
-  intakeInAuton();
-  kp = 0.27;
-  turnRight(15);
-  intakeInAuton();
-  pid_inches(30);
-  stopIntaking();
+  turnLeft(200);
+  pid_inches(-8);
   unclamp();
-  turnLeft(25);
-  pid_inches(-25);  
-  kp = 0.16;
-  pid_inches(-10);
+  pid_inches(12);
+  turnLeft(66);
+  pid_inches(-12);
+  wait(100, msec);
   clamp();
   intakeInAuton();
-  wait(0.7, sec);
-  stopIntaking();
-  pid_inches(-13);
+  wait(1, sec);
+  pid_inches(-9);
 }
 
 void redGoalRush() {
@@ -657,7 +848,7 @@ void redGoalRush() {
  kp = 0.3;
  wait(1, sec);
  stopIntaking();
- pid_inches(-20);
+ pid_inches(-25);
 // turnRight(150.5);
  // pid_inches(8);
 }
@@ -701,40 +892,40 @@ void redGoalRushElims() {
 
 //our old code
 // red left auton
-// void redLeft() {
-//   kp = 0.14;
-//   pid_inches(-30);
-//   clamp();
-//   kp = 0.17;
-//   //first ring
-//   intakeInAuton();
-//   // wait(0.4, sec);
-//   turnRight(117);
-//   wait(0.75, sec);
-//   stopIntaking();
-//   pid_inches(14.5);
-//   //second ring
-//   intakeInAuton();
-//   pid_inches(3);
-//   wait(0.7, sec);
-//   pid_inches(-5);
-//   turnLeft(70);
-//   pid_inches(10);
-//   //third ring
-//   intakeInAuton();
-//   pid_inches(4);
-//   wait(1, sec);
-//   stopIntaking();
-//   pid_inches(14);
-//   turnRight(115);
-//   //fourth ring
-//   intakeInAuton();
-//   pid_inches(16.187);
-//   wait(1, sec);
-//   pid_inches(-13);
-//   turnRight(60);
-//   pid_inches(25);
-// }
+void redLeft5() {
+  kp = 0.14;
+  pid_inches(-30);
+  clamp();
+  kp = 0.17;
+  //first ring
+  intakeInAuton();
+  // wait(0.4, sec);
+  turnRight(117);
+  wait(0.75, sec);
+  stopIntaking();
+  pid_inches(14.5);
+  //second ring
+  intakeInAuton();
+  pid_inches(3);
+  wait(0.7, sec);
+  pid_inches(-5);
+  turnLeft(70);
+  pid_inches(10);
+  //third ring
+  intakeInAuton();
+  pid_inches(4);
+  wait(1, sec);
+  stopIntaking();
+  pid_inches(14);
+  turnRight(115);
+  //fourth ring
+  intakeInAuton();
+  pid_inches(16.187);
+  wait(1, sec);
+  pid_inches(-13);
+  turnRight(60);
+  pid_inches(25);
+}
 
 
  void progskills() {
@@ -745,7 +936,7 @@ void redGoalRushElims() {
  kp = 0.19;
  pid_inches(14);
  kp = 0.115;
- turnLeft(80);
+ turnLeft(83);
  pid_inches(-22);
  clamp();
  //This clamps onto the first mogo (right side red)
@@ -820,13 +1011,14 @@ void redGoalRushElims() {
  wait(0.7, sec);
  //third Ring
  turnRight(55.5);
- pid_inches(20);
+ pid_inches(10);
  wait(1, sec);
  //unclamp in corner
  turnLeft(120);
  pid_inches(40);
  wait(1, sec);
  turnRight(175);
+ stopIntaking();
  pid_inches(-10);
  stopwheels();
  unclamp();
@@ -916,11 +1108,184 @@ void redGoalRushElims() {
  // pid_inches(72);
  }
 
+ void progskills2() {
+ kp = 0.3;
+ intakeInAuton();
+ wait(0.71, sec);
+ stopIntaking();
+ pid_inches(14);
+ kp = 0.115;
+ turnLeft(82);
+ pid_inches(-22);
+ clamp();
+ //This clamps onto the first mogo (right side red)
+ wait(20, msec);
+ kp = 0.19;
+ //first ring
+ turnRight(80);
+ intakeInAuton();
+ pid_inches(23);
+ wait(1, sec);
+ //second ring
+ turnRight(84);
+ pid_inches(17);
+ intakeInAuton();
+ pid_inches(7);
+ wait(1.5, sec);
+ pid_inches(5.7);
+ //third ring
+ turnLeft(78);
+ kp = 0.15;
+ intakeInAuton();
+ pid_inches(20);
+ wait(1, sec);
+ kp = 0.19;
+ //fourth ring
+ pid_inches(-15);
+ turnRight(170);
+ intakeInAuton();
+ pid_inches(25);
+ stopWheels();
+ //fifth ring
+ turnLeft(15);
+ pid_inches(10);
+ intakeInAuton();
+ wait(2, sec);
+ turnLeft(15);
+ pid_inches(-12);
+ //sixth ring
+ turnLeft(60);
+ pid_inches(15);
+ wait(2, sec);
+ pid_inches(-7);
+ //unclamp in the corner
+ turnLeft(116);
+ kp = 0.1;
+ pid_inches(-12.5);
+ stopIntaking();
+ unclamp();
+ //starts second quadrant
+ kp = 0.15;
+ pid_inches(10);
+ kp = 0.05;
+ turnRight(122);
+ kp = 0.11;
+ pid_inches(-50);
+ kp = 0.1;
+ pid_inches(-24);
+ clamp();
+ kp = 0.15;
+ turnLeft(65);
+ //first ring
+ intakeInAuton();
+ pid_inches(23);
+ wait(1, sec);
+ //secpnd ring
+ turnLeft(90);
+ pid_inches(23);
+ wait(0.7, sec);
+ //third Ring
+ turnRight(50);
+ pid_inches(20);
+ wait(1, sec);
+ // fourth ring
+ turnLeft(145);
+ pid_inches(50);
+ wait(0.7, sec);
+//fifth ring
+ pid_inches(5);
+ wait(0.7, sec);
+ pid_inches(-18);
+ //sixth ring
+ turnRight(90);
+ pid_inches(17);
+ wait(1, sec);
+ stopIntaking();
+ pid_inches(-30);
+ turnRight(115);
+ pid_inches(-14);
+ unclamp();
+ kp = 0.15;
+ pid_inches(10);
+ kp = 0.05;
+ turnRight(122);
+ pid_inches(20);
+ kp = 0.1;
+ pid_inches(-61);
+ turnLeft(15);
+ kp = 0.07;
+ kd = 0.5;
+ pid_inches(-27);
+ clamp();
+ kd = 0;
+ turnLeft(50);
+ //first ring
+ kp = 0.15;
+ intakeInAuton();
+ pid_inches(23);
+ wait(1, sec);
+ //secpnd ring
+ turnLeft(86);
+ pid_inches(23);
+ wait(0.7, sec);
+ //third Ring
+ turnRight(55.5);
+ pid_inches(20);
+ wait(1, sec);
+ //unclamp in corner
+ turnLeft(120);
+ pid_inches(40);
+ wait(1, sec);
+ turnRight(175);
+ pid_inches(-14);
+ stopwheels();
+ unclamp();
+ pid_inches(15);
+ kp = 0.15;
+ pid_inches(10);
+ kp = 0.05;
+ turnRight(122);
+ pid_inches(20);
+ kp = 0.1;
+ pid_inches(-61);
+ turnLeft(15);
+ kp = 0.07;
+ kd = 0.5;
+ pid_inches(-27);
+ turnLeft(5);
+ clamp();
+ kd = 0;
+ turnLeft(45);
+ //first ring
+ kp = 0.15;
+ intakeInAuton();
+ pid_inches(23);
+ wait(1, sec);
+ //secpnd ring
+ turnLeft(86);
+ pid_inches(23);
+ wait(0.7, sec);
+ //third Ring
+ turnRight(55.5);
+ pid_inches(9);
+ wait(1, sec);
+ //unclamp in corner
+ turnLeft(120);
+ pid_inches(10);
+ wait(1, sec);
+ turnRight(200);
+ stopIntaking();
+ pid_inches(-35);
+ stopwheels();
+ unclamp();
+ pid_inches(15);
+ }
+
 int auton = 1;
 
 //auton selector
 void autonselector() {
- int numofautons = 9;
+ int numofautons = 10;
  if (controller1.ButtonRight.pressing()) {
    auton++;
    wait(200,msec);
@@ -941,7 +1306,7 @@ void autonselector() {
  } else if (auton == 2) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,6);
-   controller1.Screen.print("Blue Right Elims");
+   controller1.Screen.print("Blue Right Elims 6");
  } else if (auton == 3) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,6);
@@ -957,16 +1322,20 @@ void autonselector() {
  } else if (auton == 6) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,3);
-   controller1.Screen.print("Red Left Elims");
+   controller1.Screen.print("Red Left Elims 1+5");
  } else if (auton == 7) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,6);
-   controller1.Screen.print("Red Goal Rush");
+   controller1.Screen.print("Red Left Elims 6");
  } else if (auton == 8) {
+   controller1.Screen.clearScreen();
+   controller1.Screen.setCursor(2,6);
+   controller1.Screen.print("Red Goal Rush");
+ } else if (auton == 9) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,4);
    controller1.Screen.print("Red Goal Rush Elims");
- } else if (auton == 9) {
+ } else if (auton == 10) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,9);
    controller1.Screen.print("Prog Skills");
@@ -978,21 +1347,23 @@ void autonomous(void) {
  if (auton == 1) {
    blueRight();
  } else if (auton == 2){
-   blueRightElims();
+   blueRightElims6();
  } else if (auton == 3){
-   blueGoalRush();
+   blueGoalRushDoinker();
  } else if (auton == 4){
    blueGoalRushElims();
- } else if (auton == 5) {
-   redLeft();
+ } else if (auton == 5) { 
+   redLeftold();
  } else if (auton == 6) {
-   redleftelims();
+   redleftelims1();
  } else if (auton == 7) {
-   redGoalRush();
+   redleftelims6();
  } else if (auton == 8) {
-   redGoalRushElims();
+   redGoalRushDoinker();
  } else if (auton == 9) {
-   progskills();
+   redGoalRushElims();
+ } else if (auton == 10) {
+   progskills2();
  }
 }
 
@@ -1098,6 +1469,17 @@ mr.spin(reverse, speedright, percent);
 br.spin(reverse, speedright, percent);
 }
 
+void newarcade(){
+ float throttle = (controller(primary).Axis3.value());
+ float turn = (controller(primary).Axis1.value());
+ fl.spin(fwd, (throttle+turn), pct);
+ ml.spin(fwd, (throttle+turn), pct);
+ bl.spin(fwd, (throttle+turn), pct);
+ fr.spin(fwd, (throttle-turn), pct);
+ mr.spin(fwd, (throttle-turn), pct);
+ br.spin(fwd, (throttle-turn), pct);
+}
+
 // fast arcade
 void fast_arcade() {
 //Slower
@@ -1159,7 +1541,8 @@ while (selecting) {
 void usercontrol() {
   while (true) {
    intaking();
-   old_arcade();
+   //old_arcade();
+   newarcade();
    wallstakessetposition();
    //wallstakessetposition2();
    wallstakessetposition();
