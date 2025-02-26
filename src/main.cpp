@@ -72,7 +72,7 @@ double kp = 0.175;
 double ki = 0;
 double kd = 0;
 
-void pid(double targetDistance) {
+void pidfwdbk(double targetDistance) {
  double error = targetDistance;
  double integral = 0;
  double lastError =  targetDistance;
@@ -116,8 +116,89 @@ void pid(double targetDistance) {
 #define INCHES_TO_DEGREES 90/5
 void pid_inches (double DistanceInInches) {
  double degrees = DistanceInInches * INCHES_TO_DEGREES;
- pid(degrees);
+ pidfwdbk(degrees);
 }
+
+void pidL(double targetDistance) {
+ double error = targetDistance;
+ double integral = 0;
+ double lastError =  targetDistance;
+ double prevDistanceError = fl.position(degrees);
+ fl.setPosition(0, degrees);
+ ml.setPosition(0, degrees);
+ bl.setPosition(0, degrees);
+ fr.setPosition(0, degrees);
+ mr.setPosition(0, degrees);
+ br.setPosition(0, degrees);
+ while (true) {
+   double measureDistance = (fl.position(degrees) + fr.position(degrees))/2;
+   error = targetDistance - inertialSensor.rotation(deg);
+   prevDistanceError = measureDistance;
+   if (fabs(error)<30) {
+     fl.stop(brake);
+     ml.stop(brake);
+     bl.stop(brake);
+
+     fr.stop(brake);
+     mr.stop(brake);
+     br.stop(brake);
+     return;
+   }
+  
+   double speed = error * kp + integral * ki + (error - lastError) * kd;
+   fl.spin(reverse, speed, percent);
+   ml.spin(reverse, speed, percent);
+   bl.spin(reverse, speed, percent);
+
+   fr.spin(fwd, speed, percent);
+   mr.spin(fwd, speed, percent);
+   br.spin(fwd, speed, percent);
+
+   lastError = error;
+   wait(15, msec);
+ }
+}
+
+void pidR(double targetDistance) {
+ double error = targetDistance;
+ double integral = 0;
+ double lastError =  targetDistance;
+ double prevDistanceError = fl.position(degrees);
+ fl.setPosition(0, degrees);
+ ml.setPosition(0, degrees);
+ bl.setPosition(0, degrees);
+ fr.setPosition(0, degrees);
+ mr.setPosition(0, degrees);
+ br.setPosition(0, degrees);
+ while (true) {
+   double measureDistance = (fl.position(degrees) + fr.position(degrees))/2;
+   error = targetDistance - inertialSensor.rotation(deg);
+   prevDistanceError = measureDistance;
+   if (fabs(error)<30) {
+     fl.stop(brake);
+     ml.stop(brake);
+     bl.stop(brake);
+
+     fr.stop(brake);
+     mr.stop(brake);
+     br.stop(brake);
+     return;
+   }
+  
+   double speed = error * kp + integral * ki + (error - lastError) * kd;
+   fl.spin(fwd, speed, percent);
+   ml.spin(fwd, speed, percent);
+   bl.spin(fwd, speed, percent);
+
+   fr.spin(reverse, speed, percent);
+   mr.spin(reverse, speed, percent);
+   br.spin(reverse, speed, percent);
+
+   lastError = error;
+   wait(15, msec);
+ }
+}
+
 //stop moving (good)
 void stopWheels() {
  // stop all motors in brake
@@ -385,14 +466,17 @@ void blueRight() {
  wait(0.7, sec);
  pid_inches(-20);
  stopIntaking();
- turnRight(20);
+ outtakeInAuton();
+ turnRight(30);
  WallStakes.spin(fwd, 90, pct);
  WallStakes2.spin(fwd, 90, pct);
  wait(0.313, sec);
  WallStakes.stop(hold);
  WallStakes2.stop(hold);
- intakeInAuton();
  pid_inches(50);
+ outtakeInAuton();
+ wait(0.5, sec);
+ intakeInAuton();
  wait(0.6, sec);
  WallStakes.spin(reverse, 90, pct);
  WallStakes2.spin(reverse, 90, pct);
@@ -401,6 +485,44 @@ void blueRight() {
  WallStakes2.stop(coast);
  pid_inches(-60);
 }
+
+void blueRightold() {
+ WallStakes.setVelocity(45, pct);
+ WallStakes2.setVelocity(45, pct);
+ WallStakes.spin(forward, 90, pct);
+ WallStakes2.spin(forward, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ pid_inches(-7);
+ WallStakes.spin(reverse, 90, pct);
+ WallStakes2.spin(reverse, 90, pct);
+ wait(0.4, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ turnLeft(15);
+ pid_inches(-25);
+ mogo.set(true);
+ mogo2.set(true);
+ wait(200, msec);
+ turnLeft(140);
+ intakeInAuton();
+ pid_inches(25);
+ wait(0.3, sec);
+ pid_inches(-10);
+ turnRight(4);
+ pid_inches(13);
+ wait(0.7, sec);
+ pid_inches(-5);
+ intakeInAuton();
+ pid_inches(-10);
+ turnRight(54);
+ pid_inches(17);
+ wait(0.7, sec);
+ stopIntaking();
+ pid_inches(-34);
+}
+
 
 void blueRight1() {
  pid_inches(-25);
@@ -491,6 +613,58 @@ void redLeft() {
  pid_inches(-8);
 }
 
+void redsawp() {
+ kp = 0.3;
+ WallStakes.setVelocity(45, pct);
+ WallStakes2.setVelocity(45, pct);
+ WallStakes.spin(forward, 90, pct);
+ WallStakes2.spin(forward, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ pid_inches(-7);
+ WallStakes.spin(reverse, 15, pct);
+ WallStakes2.spin(reverse, 15, pct);
+ kp = 0.15;
+ turnRight(10);
+ // used to be 11 if need change back
+ pid_inches(-30);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ //clamp onto first goal
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.4;
+ wait(200, msec);
+ turnRight(139);
+ //intake first ring
+ intakeInAuton();
+ pid_inches(14);
+ wait(0.5, sec);
+ pid_inches(-12);
+ turnLeft(63);
+ pid_inches(16);
+ wait(0.5, sec);
+ pid_inches(-8);
+ turnRight(23);
+ pid_inches(-47);
+ stopIntaking();
+ unclamp();
+ pid_inches(12);
+ turnLeft(62);
+ kp = 0.15;
+ pid_inches(-18);
+ clamp();
+ kp = 0.4;
+ turnLeft(133);
+ intakeInAuton();
+ pid_inches(20);
+ wait(0.7, sec);
+ turnRight(15);
+ pid_inches(-26);
+ stopIntaking();
+}
+
 void redLeftold() {
  WallStakes.setVelocity(45, pct);
  WallStakes2.setVelocity(45, pct);
@@ -521,9 +695,9 @@ void redLeftold() {
  pid_inches(15);
  wait(0.8, sec);
  pid_inches(-20);
- turnLeft(46);
+ turnLeft(40);
  pid_inches(23);
- wait(0.9, sec);
+ wait(0.7, sec);
  stopIntaking();
  pid_inches(-40);
 }
@@ -800,8 +974,7 @@ void blueGoalRushDoinker() {
   pid_inches(10);
   turnLeft(25);
   pid_inches(12);
-  wait(0.4, sec);
-  stopIntaking();
+  wait(0.7, sec);
   turnLeft(200);
   pid_inches(-8);
   unclamp();
@@ -1281,11 +1454,18 @@ void redLeft5() {
  pid_inches(15);
  }
 
+void tuneturnpid() {
+  kp = 0.47;
+  kd = 1.6;
+  ki = 0.5;
+  pidR(90);
+}
+
 int auton = 1;
 
 //auton selector
 void autonselector() {
- int numofautons = 10;
+ int numofautons = 12;
  if (controller1.ButtonRight.pressing()) {
    auton++;
    wait(200,msec);
@@ -1322,30 +1502,38 @@ void autonselector() {
  } else if (auton == 6) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,3);
-   controller1.Screen.print("Red Left Elims 1+5");
+   controller1.Screen.print("Red Left SAWP");
  } else if (auton == 7) {
    controller1.Screen.clearScreen();
-   controller1.Screen.setCursor(2,6);
-   controller1.Screen.print("Red Left Elims 6");
+   controller1.Screen.setCursor(2,3);
+   controller1.Screen.print("Red Left Elims 1+5");
  } else if (auton == 8) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,6);
-   controller1.Screen.print("Red Goal Rush");
+   controller1.Screen.print("Red Left Elims 6");
  } else if (auton == 9) {
+   controller1.Screen.clearScreen();
+   controller1.Screen.setCursor(2,6);
+   controller1.Screen.print("Red Goal Rush");
+ } else if (auton == 10) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,4);
    controller1.Screen.print("Red Goal Rush Elims");
- } else if (auton == 10) {
+ } else if (auton == 11) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,9);
    controller1.Screen.print("Prog Skills");
+ } else if (auton == 12) {
+   controller1.Screen.clearScreen();
+   controller1.Screen.setCursor(2,9);
+   controller1.Screen.print("go forward");
  }
 }
 
 // auton
 void autonomous(void) {
  if (auton == 1) {
-   blueRight();
+   blueRightold();
  } else if (auton == 2){
    blueRightElims6();
  } else if (auton == 3){
@@ -1354,16 +1542,20 @@ void autonomous(void) {
    blueGoalRushElims();
  } else if (auton == 5) { 
    redLeftold();
- } else if (auton == 6) {
-   redleftelims1();
  } else if (auton == 7) {
-   redleftelims6();
+   redleftelims1();
  } else if (auton == 8) {
-   redGoalRushDoinker();
+   redleftelims6();
  } else if (auton == 9) {
-   redGoalRushElims();
+   redGoalRushDoinker();
  } else if (auton == 10) {
+   redGoalRushElims();
+ } else if (auton == 11) {
    progskills2();
+ } else if (auton == 6) {
+   redsawp();
+ } else if (auton == 12) {
+   tuneturnpid();
  }
 }
 
@@ -1394,6 +1586,7 @@ void wallstakesscore() {
  WallStakes.setVelocity(90, percent);
  WallStakes2.setVelocity(90, percent);
 if (controller1.ButtonY.pressing()) {
+ intake.spin(forward, 10, pct);
  WallStakes.spin(forward, 80, pct);
  WallStakes2.spin(forward, 80, pct);
 } else if (controller1.ButtonA.pressing()) {
@@ -1541,7 +1734,6 @@ while (selecting) {
 void usercontrol() {
   while (true) {
    intaking();
-   //old_arcade();
    newarcade();
    wallstakessetposition();
    //wallstakessetposition2();
