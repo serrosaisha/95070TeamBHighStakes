@@ -386,6 +386,15 @@ void stopIntaking() {
  //intake2.stop(coast);
 }
 
+void downforcornerwallStakes() {
+ WallStakes.setVelocity(90, pct);
+ WallStakes2.setVelocity(90, pct);
+ WallStakes.spinFor(forward, 185, degrees);
+ WallStakes2.spinFor(forward, 185, degrees);
+ WallStakes.stop(hold);
+ WallStakes2.stop(hold);
+}
+
 //this is our old code
 //blue right auton (4 ring)
 void blueRight5() {
@@ -561,15 +570,14 @@ void redLeft() {
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
  pid_inches(-7);
- WallStakes.spin(reverse, 90, pct);
- WallStakes2.spin(reverse, 90, pct);
- wait(0.5, sec);
- WallStakes.stop(coast);
- WallStakes2.stop(coast);
- kp = 0.1;
+ WallStakes.spin(reverse, 15, pct);
+ WallStakes2.spin(reverse, 15, pct);
+ kp = 0.15;
  turnRight(10);
  // used to be 11 if need change back
  pid_inches(-30);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
  //clamp onto first goal
  mogo.set(true);
  mogo2.set(true);
@@ -578,6 +586,7 @@ void redLeft() {
  turnRight(134);
  //intake first ring
  intakeInAuton();
+ //used to be 16.5 down
  pid_inches(16.5);
  wait(0.5, sec);
  pid_inches(-8);
@@ -593,12 +602,7 @@ void redLeft() {
  pid_inches(-15);
  turnLeft(30);
  intakeInAuton();
- WallStakes.spin(fwd, 90, pct);
- WallStakes2.spin(fwd, 90, pct);
- wait(0.313, sec);
- WallStakes.stop(hold);
- WallStakes2.stop(hold);
- //ram into stack
+ downforcornerwallStakes();
  pid_inches(35);
  kp = 0.35;
  pid_inches(15);
@@ -1541,7 +1545,7 @@ void autonomous(void) {
  } else if (auton == 4){
    blueGoalRushElims();
  } else if (auton == 5) { 
-   redLeftold();
+   redLeft();
  } else if (auton == 7) {
    redleftelims1();
  } else if (auton == 8) {
