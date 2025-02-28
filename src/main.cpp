@@ -119,51 +119,12 @@ void pid_inches (double DistanceInInches) {
  pidfwdbk(degrees);
 }
 
-void pidL(double targetDistance) {
- double error = targetDistance;
- double integral = 0;
- double lastError =  targetDistance;
- double prevDistanceError = fl.position(degrees);
- fl.setPosition(0, degrees);
- ml.setPosition(0, degrees);
- bl.setPosition(0, degrees);
- fr.setPosition(0, degrees);
- mr.setPosition(0, degrees);
- br.setPosition(0, degrees);
- while (true) {
-   double measureDistance = (fl.position(degrees) + fr.position(degrees))/2;
-   error = targetDistance - inertialSensor.rotation(deg);
-   prevDistanceError = measureDistance;
-   if (fabs(error)<30) {
-     fl.stop(brake);
-     ml.stop(brake);
-     bl.stop(brake);
-
-     fr.stop(brake);
-     mr.stop(brake);
-     br.stop(brake);
-     return;
-   }
-  
-   double speed = error * kp + integral * ki + (error - lastError) * kd;
-   fl.spin(reverse, speed, percent);
-   ml.spin(reverse, speed, percent);
-   bl.spin(reverse, speed, percent);
-
-   fr.spin(fwd, speed, percent);
-   mr.spin(fwd, speed, percent);
-   br.spin(fwd, speed, percent);
-
-   lastError = error;
-   wait(15, msec);
- }
-}
-
 void pidR(double targetDistance) {
  double error = targetDistance;
  double integral = 0;
  double lastError =  targetDistance;
  double prevDistanceError = fl.position(degrees);
+ inertialSensor.setRotation(0, degrees);
  fl.setPosition(0, degrees);
  ml.setPosition(0, degrees);
  bl.setPosition(0, degrees);
@@ -293,27 +254,35 @@ mr.spin(reverse, SpeedLeft - SpeedRight, percent);
 br.spin(reverse, SpeedLeft - SpeedRight, percent);
 }
 
-// turn left
-void turnLeft(double angle) {
-// basically the same as right except left motor spins reverse and right is forward
-inertialSensor.setRotation(0, degrees);
 
-//turning left using inertial sensor
-while (fabs(inertialSensor.rotation(deg)) < angle) {
-  double diff =  angle - fabs(inertialSensor.rotation(deg));
-  // 5 + diff * 0.3 ,pct means to slow down when reaching the precent target.
-  //You have to remember to set the minimum speed to 5 so it does not slowly move
-  fr.spin(forward, 5 + diff * 0.3, pct);
-  mr.spin(forward, 5 + diff * 0.3, pct);
-  br.spin(forward, 5 + diff * 0.3, pct);
+void turnLeft(double angle) {
+kp = 0.5;
+kd = 0.7;
+ki = 0.5;  
+pidR(angle);
+}
+
+// turn left
+// void turnLeft(double angle) {
+// // basically the same as right except left motor spins reverse and right is forward
+// inertialSensor.setRotation(0, degrees);
+
+// //turning left using inertial sensor
+// while (fabs(inertialSensor.rotation(deg)) < angle) {
+//   double diff =  angle - fabs(inertialSensor.rotation(deg));
+//   // 5 + diff * 0.3 ,pct means to slow down when reaching the precent target.
+//   //You have to remember to set the minimum speed to 5 so it does not slowly move
+//   fr.spin(forward, 5 + diff * 0.3, pct);
+//   mr.spin(forward, 5 + diff * 0.3, pct);
+//   br.spin(forward, 5 + diff * 0.3, pct);
  
-  fl.spin(reverse, 5 + diff * 0.3, pct);
-  ml.spin(reverse, 5 + diff * 0.3, pct);
-  bl.spin(reverse, 5 + diff * 0.3, pct);
-  wait(5, msec);
-}
-stopWheels();
-}
+//   fl.spin(reverse, 5 + diff * 0.3, pct);
+//   ml.spin(reverse, 5 + diff * 0.3, pct);
+//   bl.spin(reverse, 5 + diff * 0.3, pct);
+//   wait(5, msec);
+// }
+// stopWheels();
+// }
 
 // intaking in driver control
 void intaking() {
@@ -439,7 +408,7 @@ void blueRight5() {
 }
 
 void blueRight() {
- WallStakes.setVelocity(45, pct);
+WallStakes.setVelocity(45, pct);
  WallStakes2.setVelocity(45, pct);
  WallStakes.spin(forward, 90, pct);
  WallStakes2.spin(forward, 90, pct);
@@ -447,13 +416,12 @@ void blueRight() {
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
  pid_inches(-7);
- WallStakes.spin(reverse, 90, pct);
- WallStakes2.spin(reverse, 90, pct);
- wait(0.4, sec);
- WallStakes.stop(coast);
- WallStakes2.stop(coast);
+ WallStakes.spin(reverse, 15, pct);
+ WallStakes2.spin(reverse, 15, pct);
  turnLeft(11);
  pid_inches(-27);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
  mogo.set(true);
  mogo2.set(true);
  kp = 0.3;
@@ -464,10 +432,10 @@ void blueRight() {
  wait(0.7, sec);
  pid_inches(-10);
  turnRight(10.95);
- pid_inches(13);
+ pid_inches(15);
  wait(0.7, sec);
  stopIntaking();
- pid_inches(-5);
+ pid_inches(-7);
  intakeInAuton();
  pid_inches(-10);
  turnRight(54);
@@ -492,6 +460,7 @@ void blueRight() {
  wait(0.5, sec);
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
+ turnRight(13);
  pid_inches(-60);
 }
 
@@ -602,7 +571,10 @@ void redLeft() {
  pid_inches(-15);
  turnLeft(30);
  intakeInAuton();
- downforcornerwallStakes();
+ WallStakes.setVelocity(90, percent);
+ WallStakes2.setVelocity(90, percent);
+ WallStakes.spinFor(185, degrees);
+ WallStakes.spinFor(185, degrees);
  pid_inches(35);
  kp = 0.35;
  pid_inches(15);
@@ -799,14 +771,13 @@ void blueRightElims6() {
  pid_inches(-30);
  mogo.set(true);
  mogo2.set(true);
- kp = 0.34;
- wait(200, msec);
+ pid_inches(-5);
  turnLeft(116);
  intakeInAuton();
  pid_inches(14);
  wait(0.5, sec);
  pid_inches(-10);
- turnRight(9);
+ turnRight(7);
  pid_inches(14);
  wait(0.8, sec);
  pid_inches(-20);
@@ -832,12 +803,12 @@ void blueRightElims6() {
  wait(1, sec);
  pid_inches(-11.5);
  stopIntaking();
-//  lift.set(true);
-//  pid_inches(12.5);
-//  wait(1, sec);
-//  lift.set(false);
-//  kp = 0.23;
-//  pid_inches(-8);
+ lift.set(true);
+ pid_inches(12.5);
+ wait(1, sec);
+ lift.set(false);
+ kp = 0.23;
+ pid_inches(-8);
 }
 
 //blue goal rush auton with clamping
@@ -1459,9 +1430,11 @@ void redLeft5() {
  }
 
 void tuneturnpid() {
-  kp = 0.47;
-  kd = 1.6;
+  kp = 0.5;
+  kd = 0.7;
   ki = 0.5;
+  pidR(-45);
+  wait(2, sec);
   pidR(90);
 }
 
@@ -1537,7 +1510,7 @@ void autonselector() {
 // auton
 void autonomous(void) {
  if (auton == 1) {
-   blueRightold();
+   blueRight();
  } else if (auton == 2){
    blueRightElims6();
  } else if (auton == 3){
@@ -1590,7 +1563,7 @@ void wallstakesscore() {
  WallStakes.setVelocity(90, percent);
  WallStakes2.setVelocity(90, percent);
 if (controller1.ButtonY.pressing()) {
- intake.spin(forward, 10, pct);
+ intake.spin(forward, 20, pct);
  WallStakes.spin(forward, 80, pct);
  WallStakes2.spin(forward, 80, pct);
 } else if (controller1.ButtonA.pressing()) {
