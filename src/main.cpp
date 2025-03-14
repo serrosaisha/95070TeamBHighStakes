@@ -97,7 +97,6 @@ void pidfwdbk(double targetDistance) {
      br.stop(brake);
      return;
    }
-  
    double speed = error * kp + integral * ki + (error - lastError) * kd;
    fl.spin(fwd, speed, percent);
    ml.spin(fwd, speed, percent);
@@ -112,6 +111,52 @@ void pidfwdbk(double targetDistance) {
  }
 }
 
+void pidfb(double targetDistance, int timeout) {
+  double error = targetDistance;
+  double integral = 0;
+  double lastError =  targetDistance;
+  double prevDistanceError = fl.position(degrees);
+
+  int previous = time(NULL);
+  fl.setPosition(0, degrees);
+  ml.setPosition(0, degrees);
+  bl.setPosition(0, degrees);
+  fr.setPosition(0, degrees);
+  mr.setPosition(0, degrees);
+  br.setPosition(0, degrees);
+  while (true) {
+    double measureDistance = (fl.position(degrees) + fr.position(degrees))/2;
+    int current = time(NULL);
+    if (current - previous > timeout) {
+      return;
+    }
+    error = targetDistance - measureDistance;
+    prevDistanceError = measureDistance;
+    if (fabs(error)<30) {
+      fl.stop(brake);
+      ml.stop(brake);
+      bl.stop(brake);
+ 
+      fr.stop(brake);
+      mr.stop(brake);
+      br.stop(brake);
+      return;
+    }
+   
+    double speed = error * kp + integral * ki + (error - lastError) * kd;
+    fl.spin(fwd, speed, percent);
+    ml.spin(fwd, speed, percent);
+    bl.spin(fwd, speed, percent);
+ 
+    fr.spin(fwd, speed, percent);
+    mr.spin(fwd, speed, percent);
+    br.spin(fwd, speed, percent);
+ 
+    lastError = error;
+    wait(15, msec);
+  }
+ }
+
 // PID to inches
 #define INCHES_TO_DEGREES 90/5
 void pid_inches (double DistanceInInches) {
@@ -119,12 +164,22 @@ void pid_inches (double DistanceInInches) {
  pidfwdbk(degrees);
 }
 
-void pidR(double targetDistance) {
- double error = targetDistance;
+#define INCHES_TO_DEGREES 90/5
+void pidinches (double DistanceInInches) {
+ double degrees = DistanceInInches * INCHES_TO_DEGREES;
+ pidfb(degrees, 1);
+}
+
+ double tkp = 0.5;
+ double tki = 0.7;
+ double tkd = 0.5;
+
+void pidT(double targetAngle) {
+ double error = targetAngle;
  double integral = 0;
- double lastError =  targetDistance;
- double prevDistanceError = fl.position(degrees);
- inertialSensor.setRotation(0, degrees);
+ double lastError =  targetAngle;
+//  double prevDistanceError = fl.position(degrees);
+//  inertialSensor.setRotation(0, degrees);
  fl.setPosition(0, degrees);
  ml.setPosition(0, degrees);
  bl.setPosition(0, degrees);
@@ -132,10 +187,12 @@ void pidR(double targetDistance) {
  mr.setPosition(0, degrees);
  br.setPosition(0, degrees);
  while (true) {
-   double measureDistance = (fl.position(degrees) + fr.position(degrees))/2;
-   error = targetDistance - inertialSensor.rotation(deg);
-   prevDistanceError = measureDistance;
-   if (fabs(error)<30) {
+  //  double measureDistance = (fl.position(degrees) + fr.position(degrees))/2;
+   error = targetAngle - inertialSensor.rotation(deg);
+  //  prevDistanceError = measureDistance;
+  while (error > 180) error -= 360;
+  while (error < -180) error += 360;
+   if (fabs(error)<2) {
      fl.stop(brake);
      ml.stop(brake);
      bl.stop(brake);
@@ -146,7 +203,7 @@ void pidR(double targetDistance) {
      return;
    }
   
-   double speed = error * kp + integral * ki + (error - lastError) * kd;
+   double speed = error * tkp + integral * tki + (error - lastError) * tkd;
    fl.spin(fwd, speed, percent);
    ml.spin(fwd, speed, percent);
    bl.spin(fwd, speed, percent);
@@ -155,10 +212,53 @@ void pidR(double targetDistance) {
    mr.spin(reverse, speed, percent);
    br.spin(reverse, speed, percent);
 
+  //  Brain.Screen.print(inertialSensor.angle(degrees));
+
    lastError = error;
-   wait(15, msec);
+   wait(20, msec);
  }
 }
+
+// void pidL(double targetDistance) {
+//  double error = targetDistance;
+//  double integral = 0;
+//  double lastError =  targetDistance;
+//  double prevDistanceError = fl.position(degrees);
+//  inertialSensor.setRotation(0, degrees);
+//  fl.setPosition(0, degrees);
+//  ml.setPosition(0, degrees);
+//  bl.setPosition(0, degrees);
+//  fr.setPosition(0, degrees);
+//  mr.setPosition(0, degrees);
+//  br.setPosition(0, degrees);
+//  while (true) {
+//    double measureDistance = (fl.position(degrees) + fr.position(degrees))/2;
+//    error = targetDistance - inertialSensor.rotation(deg);
+//    prevDistanceError = measureDistance;
+//    if (fabs(error)<30) {
+//      fl.stop(brake);
+//      ml.stop(brake);
+//      bl.stop(brake);
+
+//      fr.stop(brake);
+//      mr.stop(brake);
+//      br.stop(brake);
+//      return;
+//    }
+  
+//    double speed = error * tkp + integral * tki + (error - lastError) * tkd;
+//    fl.spin(reverse, speed, percent);
+//    ml.spin(reverse, speed, percent);
+//    bl.spin(reverse, speed, percent);
+
+//    fr.spin(fwd, speed, percent);
+//    mr.spin(fwd, speed, percent);
+//    br.spin(fwd, speed, percent);
+
+//    lastError = error;
+//    wait(15, msec);
+//  }
+// }
 
 //stop moving (good)
 void stopWheels() {
@@ -256,10 +356,11 @@ br.spin(reverse, SpeedLeft - SpeedRight, percent);
 
 
 void turnLeft(double angle) {
-kp = 0.5;
-kd = 0.7;
-ki = 0.5;  
-pidR(angle);
+tkp = 0.5;
+tkd = 0.7;
+tki = 0.5;
+// inertialSensor.setRotation(0, degrees);  
+pidT(angle);
 }
 
 // turn left
@@ -287,7 +388,7 @@ pidR(angle);
 // intaking in driver control
 void intaking() {
 if (controller1.ButtonR2.pressing()) {
-  intake.spin(forward, 400, rpm);
+  intake.spin(forward, 85, pct);
  //  intake2.spin(forward, 395, rpm);
 } else if (controller1.ButtonR1.pressing()) {
   intake.spin(reverse, 80, pct);
@@ -298,23 +399,32 @@ if (controller1.ButtonR2.pressing()) {
 }
 }
 
-//turn right
 void turnRight(double angle) {
 // set inertial rotation to 0 degrees
-inertialSensor.setRotation(0, degrees);
-//turn right using inertial sensors
-while (inertialSensor.rotation(deg) < angle) {
-  double diff =  angle - fabs(inertialSensor.rotation(deg));
-  fl.spin(forward, 5 + diff * 0.3, pct);
-  ml.spin(forward, 5 + diff * 0.3, pct);
-  bl.spin(forward, 5 + diff * 0.3, pct);
-  fr.spin(reverse, 5 + diff * 0.3, pct);
-  mr.spin(reverse, 5 + diff * 0.3, pct);
-  br.spin(reverse, 5 + diff * 0.3, pct);
-  wait(5, msec);
+tkp = 0.5;
+tkd = 0.7;
+tki = 0.5;
+// inertialSensor.setRotation(0, degrees);
+pidT(angle);
 }
-stopWheels();
-}
+
+//turn right
+// void turnRight(double angle) {
+// // set inertial rotation to 0 degrees
+// inertialSensor.setRotation(0, degrees);
+// //turn right using inertial sensors
+// while (inertialSensor.rotation(deg) < angle) {
+//   double diff =  angle - fabs(inertialSensor.rotation(deg));
+//   fl.spin(forward, 5 + diff * 0.3, pct);
+//   ml.spin(forward, 5 + diff * 0.3, pct);
+//   bl.spin(forward, 5 + diff * 0.3, pct);
+//   fr.spin(reverse, 5 + diff * 0.3, pct);
+//   mr.spin(reverse, 5 + diff * 0.3, pct);
+//   br.spin(reverse, 5 + diff * 0.3, pct);
+//   wait(5, msec);
+// }
+// stopWheels();
+// }
 
 void stopwheels() {
  fl.stop(coast);
@@ -339,7 +449,7 @@ void setVelocity(double vel) {
 
 //intake in auton
 void intakeInAuton() {
- intake.spin(reverse, 500, rpm);
+ intake.spin(reverse, 95, percent);
  //intake2.spin(reverse, 300, rpm);
 }
 
@@ -355,14 +465,15 @@ void stopIntaking() {
  //intake2.stop(coast);
 }
 
-void downforcornerwallStakes() {
- WallStakes.setVelocity(90, pct);
- WallStakes2.setVelocity(90, pct);
- WallStakes.spinFor(forward, 185, degrees);
- WallStakes2.spinFor(forward, 185, degrees);
- WallStakes.stop(hold);
- WallStakes2.stop(hold);
-}
+// void downforcornerwallStakes() {
+//  WallStakes.setVelocity(90, pct);
+//  WallStakes2.setVelocity(90, pct);
+//  WallStakes.spin(forward, 185, pct);
+//  WallStakes2.spin(forward, 185, pct);
+//  wait(2, sec);
+//  WallStakes.stop(hold);
+//  WallStakes2.stop(hold);
+// }
 
 //this is our old code
 //blue right auton (4 ring)
@@ -464,6 +575,131 @@ WallStakes.setVelocity(45, pct);
  pid_inches(-60);
 }
 
+void blueRightnew() {
+ inertialSensor.setRotation(0, degrees);
+//  WallStakes.spin(forward, 90, pct);
+//  WallStakes2.spin(forward, 90, pct);
+//  wait(0.5, sec);
+//  WallStakes.stop(coast);
+//  WallStakes2.stop(coast);
+ pid_inches(-7);
+//  WallStakes.spin(reverse, 15, pct);
+//  WallStakes2.spin(reverse, 15, pct);
+ turnLeft(340);
+//  WallStakes.stop(coast);
+//  WallStakes2.stop(coast);
+ kp = 0.14;
+ pid_inches(-27);
+ clamp();
+ kp = 0.3;
+ wait(200, msec);
+ turnLeft(190);
+ intakeInAuton();
+ pid_inches(15);
+ wait(0.7, sec);
+ pid_inches(-10);
+ turnRight(200);
+ pid_inches(15);
+ wait(0.7, sec);
+ stopIntaking();
+ pid_inches(-7);
+ intakeInAuton();
+ pid_inches(-10);
+ turnRight(231);
+ pid_inches(17);
+ wait(0.7, sec);
+ pid_inches(-20);
+ stopIntaking();
+ outtakeInAuton();
+ turnRight(282);
+ // corner rush
+//  WallStakes.spin(fwd, 90, pct);
+//  WallStakes2.spin(fwd, 90, pct);
+//  wait(0.313, sec);
+//  WallStakes.stop(hold);
+//  WallStakes2.stop(hold);
+//  pid_inches(50);
+//  outtakeInAuton();
+//  wait(0.5, sec);
+//  intakeInAuton();
+//  wait(0.6, sec);
+//  WallStakes.spin(reverse, 90, pct);
+//  WallStakes2.spin(reverse, 90, pct);
+//  wait(0.5, sec);
+//  WallStakes.stop(coast);
+//  WallStakes2.stop(coast);
+
+//  turnRight(13);
+//  pid_inches(-60);
+}
+
+void blueRightnewnew() {
+ inertialSensor.setRotation(0, degrees);
+ kp = 0.3;
+ WallStakes.setVelocity(45, pct);
+ WallStakes2.setVelocity(45, pct);
+ WallStakes.spin(forward, 90, pct);
+ WallStakes2.spin(forward, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ WallStakes.spin(reverse, 10, pct);
+ WallStakes2.spin(reverse, 10, pct);
+ wait(2, sec);
+ pid_inches(-7);
+ kp = 0.15;
+ turnRight(360-25);//26.7
+ kp = 0.14;
+ pid_inches(-30);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ //clamp onto first goal
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.3;
+ wait(200, msec);
+ turnLeft(360-167); //used to be 174 overshooting issue
+ //intake first ring
+ intakeInAuton();
+ pid_inches(15); //used to be 16.5 
+ wait(0.5, sec);
+ pid_inches(-10);
+ //intake 2nd ring
+ turnRight(360-155);//148.38
+ pid_inches(14);
+ wait(0.8, sec);
+ pid_inches(-19.7);
+ pidT(360-126);
+ kp = 0.4;
+ pid_inches(19);
+ wait(0.9, sec);
+ pid_inches(-15);
+ turnLeft(278);
+ //corner rings
+// WallStakes.setVelocity(80, percent);
+// WallStakes2.setVelocity(80, percent);
+// WallStakes.spinFor(185, degrees);
+// WallStakes.spinFor(185, degrees);
+ pid_inches(30);
+ outtakeInAuton();
+ kp = 0.3;
+ pid_inches(21);
+ wait(0.7, sec);
+ intakeInAuton();
+ wait(0.8, sec);
+ kp = 0.1;
+ pid_inches(-10);
+ wait(1, sec);
+ kp = 0.45;
+ pid_inches(-45);
+ stopIntaking();
+//  WallStakes.spin(reverse, 90, pct);
+//  WallStakes2.spin(reverse, 90, pct);
+//  wait(0.5, sec);
+//  WallStakes.stop(coast);
+//  WallStakes2.stop(coast);
+}
+
 void blueRightold() {
  WallStakes.setVelocity(45, pct);
  WallStakes2.setVelocity(45, pct);
@@ -531,6 +767,7 @@ void blueRight1() {
 
 void redLeft() {
  kp = 0.3;
+ tkp = 0.5;
  WallStakes.setVelocity(45, pct);
  WallStakes2.setVelocity(45, pct);
  WallStakes.spin(forward, 90, pct);
@@ -542,7 +779,7 @@ void redLeft() {
  WallStakes.spin(reverse, 15, pct);
  WallStakes2.spin(reverse, 15, pct);
  kp = 0.15;
- turnRight(10);
+ turnRight(10);//26.7
  // used to be 11 if need change back
  pid_inches(-30);
  WallStakes.stop(coast);
@@ -552,18 +789,18 @@ void redLeft() {
  mogo2.set(true);
  kp = 0.3;
  wait(200, msec);
- turnRight(134);
+ turnRight(134);//172.7
  //intake first ring
  intakeInAuton();
  //used to be 16.5 down
  pid_inches(16.5);
  wait(0.5, sec);
  pid_inches(-8);
- turnLeft(7.3);
+ turnLeft(7.3);//148.38
  pid_inches(11);
  wait(0.8, sec);
  pid_inches(-18.7);
- turnLeft(30);
+ turnLeft(30);//104.75
  kp = 0.4;
  pid_inches(18);
  wait(0.9, sec);
@@ -573,8 +810,9 @@ void redLeft() {
  intakeInAuton();
  WallStakes.setVelocity(90, percent);
  WallStakes2.setVelocity(90, percent);
- WallStakes.spinFor(185, degrees);
- WallStakes.spinFor(185, degrees);
+ WallStakes.spin(forward, 185, pct);
+ WallStakes2.spin(forward, 185, pct);
+ 
  pid_inches(35);
  kp = 0.35;
  pid_inches(15);
@@ -587,6 +825,69 @@ void redLeft() {
  WallStakes.stop(coast);
  WallStakes2.stop(coast);
  pid_inches(-8);
+}
+
+void redLeftnew() {
+ inertialSensor.setRotation(0, degrees);
+ kp = 0.3;
+ WallStakes.setVelocity(45, pct);
+ WallStakes2.setVelocity(45, pct);
+ WallStakes.spin(forward, 90, pct);
+ WallStakes2.spin(forward, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ pid_inches(-7);
+ WallStakes.spin(reverse, 15, pct);
+ WallStakes2.spin(reverse, 15, pct);
+ kp = 0.15;
+ turnRight(25);//26.7
+ kp = 0.14;
+ pid_inches(-30);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
+ //clamp onto first goal
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.3;
+ wait(200, msec);
+ turnLeft(167); //used to be 174 overshooting issue
+ //intake first ring
+ intakeInAuton();
+ pid_inches(15); //used to be 16.5 
+ wait(0.5, sec);
+ pid_inches(-9);
+ //intake 2nd ring
+ turnRight(160);//148.38
+ pid_inches(14);
+ wait(0.8, sec);
+ pid_inches(-19.7);
+ pidT(126);
+ kp = 0.4;
+ pid_inches(19);
+ wait(0.9, sec);
+ pid_inches(-15);
+ turnLeft(80);
+ stopIntaking();
+ outtakeInAuton();
+ //corner rings
+// WallStakes.setVelocity(80, percent);
+// WallStakes2.setVelocity(80, percent);
+// WallStakes.spinFor(185, degrees);
+// WallStakes.spinFor(185, degrees);
+ pid_inches(49);
+ wait(0.3, sec);
+ intakeInAuton();
+ wait(0.8, sec);
+ kp = 0.45;
+ pid_inches(-30);
+ stopIntaking();
+ pid_inches(-35);
+//  WallStakes.spin(reverse, 90, pct);
+//  WallStakes2.spin(reverse, 90, pct);
+//  wait(0.5, sec);
+//  WallStakes.stop(coast);
+//  WallStakes2.stop(coast);
 }
 
 void redsawp() {
@@ -727,6 +1028,10 @@ kp = 0.3;
 
 void redleftelims6() {
  kp = 0.13;
+ tkp = 0.5;
+ tkd = 0.7;
+ tki = 0.5;
+ inertialSensor.setRotation(0, degrees);
  pid_inches(-30);
  mogo.set(true);
  mogo2.set(true);
@@ -737,18 +1042,17 @@ void redleftelims6() {
  pid_inches(16);
  wait(0.5, sec);
  pid_inches(-9);
- turnLeft(8);
+ pidT(-8);
  pid_inches(12);
  wait(0.8, sec);
  pid_inches(-20);
- turnLeft(27);
+ pidT(-27);
  kp = 0.4;
  pid_inches(18);
  wait(0.8, sec);
  pid_inches(-15);
  stopIntaking();
- outtakeInAuton();
- turnLeft(31.5);
+ pidT(-31.5);
  WallStakes.spin(fwd, 90, pct);
  WallStakes2.spin(fwd, 90, pct);
  wait(0.36, sec);
@@ -766,8 +1070,64 @@ void redleftelims6() {
  pid_inches(-8);
  }
 
+ void redleftelims6new() {
+ inertialSensor.setRotation(0, degrees);
+ kp = 0.2;
+ tkp = 0.5;
+ tkd = 0.7;
+ tki = 0.5;
+ pid_inches(-17);
+ kp = 0.1;
+ pid_inches(-5);
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.46;
+ pid_inches(-8);//used to be 8
+ wait(200, msec);
+ turnRight(125);
+ intakeInAuton();
+ pid_inches(13.5);
+ wait(0.5, sec);
+ //second ring
+ pid_inches(-8);
+ pidT(117);
+ pid_inches(13);
+ wait(0.5, sec);
+ kp = 0.28;
+ pid_inches(-25);
+ pidT(86);
+ kp = 0.4;
+ pid_inches(21);
+ wait(0.8, sec);
+ pid_inches(-18);
+ pidT(45.5);
+//  WallStakes.spin(fwd, 90, pct);
+//  WallStakes2.spin(fwd, 90, pct);
+//  wait(0.36, sec);
+//  WallStakes.stop(hold);
+//  WallStakes2.stop(hold);
+ kp = 0.32;
+ pid_inches(40);
+ stopIntaking();
+ outtakeInAuton();
+ kp = 0.13;
+ pidinches(6);//1 seconds timeout, 6 inches distance, spectial fuunction for jamming
+ wait(0.5, sec);
+ intakeInAuton();
+ pid_inches(-11.5);
+ stopwheels();
+//  lift.set(true);
+//  pid_inches(12.5);
+//  wait(1, sec);
+//  lift.set(false);
+//  pid_inches(-8);
+ }
+
 void blueRightElims6() {
  kp = 0.15;
+ tkp = 0.5;
+ tkd = 0.7;
+ tki = 0.5;
  pid_inches(-30);
  mogo.set(true);
  mogo2.set(true);
@@ -810,6 +1170,59 @@ void blueRightElims6() {
  kp = 0.23;
  pid_inches(-8);
 }
+
+void blueRightElims6new() {
+ inertialSensor.setRotation(0, degrees);
+ kp = 0.2;
+ tkp = 0.5;
+ tkd = 0.7;
+ tki = 0.5;
+ pid_inches(-15);
+ kp = 0.1;
+ pid_inches(-5);
+ mogo.set(true);
+ mogo2.set(true);
+ kp = 0.4;
+ pid_inches(-10);
+ wait(200, msec);
+ turnRight(360-125);
+ intakeInAuton();
+ pid_inches(12);
+ wait(0.8, sec);
+ //second ring
+ pid_inches(-8);
+ pidT(360-117);
+ pid_inches(11);
+ wait(0.5, sec);
+ kp = 0.28;
+ pid_inches(-25);
+ pidT(360-86);
+ kp = 0.4;
+ pid_inches(18);
+ wait(0.8, sec);
+ pid_inches(-15);
+ pidT(315);
+//  WallStakes.spin(fwd, 90, pct);
+//  WallStakes2.spin(fwd, 90, pct);
+//  wait(0.36, sec);
+//  WallStakes.stop(hold);
+//  WallStakes2.stop(hold);
+ kp = 0.32;
+ pid_inches(45);
+ stopIntaking();
+ outtakeInAuton();
+ kp = 0.13;
+ pidinches(9);
+ wait(0.1, sec);
+ intakeInAuton();
+ pid_inches(-11.5);
+ stopwheels();
+//  lift.set(true);
+//  pid_inches(12.5);
+//  wait(1, sec);
+//  lift.set(false);
+//  pid_inches(-8);
+ }
 
 //blue goal rush auton with clamping
 void blueGoalRush() {
@@ -1257,32 +1670,33 @@ void redLeft5() {
  }
 
  void progskills2() {
- kp = 0.3;
+ inertialSensor.setRotation(0, degrees);
+ kp = 0.28;
  intakeInAuton();
  wait(0.71, sec);
  stopIntaking();
- pid_inches(14);
+ pid_inches(12);
  kp = 0.115;
- turnLeft(82);
- pid_inches(-22);
+ turnLeft(90);
+ pid_inches(-20);
  clamp();
  //This clamps onto the first mogo (right side red)
  wait(20, msec);
  kp = 0.19;
  //first ring
- turnRight(80);
+ turnRight(0);
  intakeInAuton();
- pid_inches(23);
- wait(1, sec);
+ pid_inches(20);
+ wait(0.2, sec);
  //second ring
- turnRight(84);
+ turnRight(278);
  pid_inches(17);
  intakeInAuton();
  pid_inches(7);
- wait(1.5, sec);
+ wait(1, sec);
  pid_inches(5.7);
  //third ring
- turnLeft(78);
+ turnLeft(334);
  kp = 0.15;
  intakeInAuton();
  pid_inches(20);
@@ -1290,163 +1704,164 @@ void redLeft5() {
  kp = 0.19;
  //fourth ring
  pid_inches(-15);
- turnRight(170);
+ turnRight(171);
  intakeInAuton();
  pid_inches(25);
  stopWheels();
  //fifth ring
- turnLeft(15);
- pid_inches(10);
+ turnLeft(183);
+ pid_inches(5);
  intakeInAuton();
- wait(2, sec);
- turnLeft(15);
- pid_inches(-12);
+ wait(1, sec);
+ turnLeft(200);
+ pid_inches(-10);
  //sixth ring
- turnLeft(60);
- pid_inches(15);
- wait(2, sec);
+ turnLeft(264);
+ pid_inches(11.5);
+ wait(1, sec);
  pid_inches(-7);
  //unclamp in the corner
- turnLeft(116);
+ turnLeft(37);
  kp = 0.1;
- pid_inches(-12.5);
+ pid_inches(-15);
  stopIntaking();
  unclamp();
  //starts second quadrant
  kp = 0.15;
- pid_inches(10);
+ pid_inches(13);
  kp = 0.05;
- turnRight(122);
+ turnRight(270);
  kp = 0.11;
- pid_inches(-50);
+ pid_inches(-60);
  kp = 0.1;
- pid_inches(-24);
  clamp();
- kp = 0.15;
- turnLeft(65);
  //first ring
+ kp = 0.15;
+ turnRight(0);
  intakeInAuton();
  pid_inches(23);
  wait(1, sec);
  //secpnd ring
- turnLeft(90);
+ turnLeft(85);
  pid_inches(23);
  wait(0.7, sec);
  //third Ring
- turnRight(50);
+ turnRight(20);
  pid_inches(20);
  wait(1, sec);
- // fourth ring
- turnLeft(145);
- pid_inches(50);
+ //fourth ring
+ turnLeft(195);
+ pid_inches(35);
  wait(0.7, sec);
 //fifth ring
+ pidT(180);
  pid_inches(5);
  wait(0.7, sec);
- pid_inches(-18);
- //sixth ring
+ pid_inches(-7);
+//  //sixth ring
  turnRight(90);
- pid_inches(17);
- wait(1, sec);
- stopIntaking();
- pid_inches(-30);
- turnRight(115);
- pid_inches(-14);
- unclamp();
- kp = 0.15;
- pid_inches(10);
- kp = 0.05;
- turnRight(122);
- pid_inches(20);
- kp = 0.1;
- pid_inches(-61);
- turnLeft(15);
- kp = 0.07;
- kd = 0.5;
- pid_inches(-27);
- clamp();
- kd = 0;
- turnLeft(50);
- //first ring
- kp = 0.15;
- intakeInAuton();
- pid_inches(23);
- wait(1, sec);
- //secpnd ring
- turnLeft(86);
- pid_inches(23);
- wait(0.7, sec);
- //third Ring
- turnRight(55.5);
- pid_inches(20);
- wait(1, sec);
- //unclamp in corner
- turnLeft(120);
- pid_inches(40);
- wait(1, sec);
- turnRight(175);
- pid_inches(-14);
- stopwheels();
- unclamp();
- pid_inches(15);
- kp = 0.15;
- pid_inches(10);
- kp = 0.05;
- turnRight(122);
- pid_inches(20);
- kp = 0.1;
- pid_inches(-61);
- turnLeft(15);
- kp = 0.07;
- kd = 0.5;
- pid_inches(-27);
- turnLeft(5);
- clamp();
- kd = 0;
- turnLeft(45);
- //first ring
- kp = 0.15;
- intakeInAuton();
- pid_inches(23);
- wait(1, sec);
- //secpnd ring
- turnLeft(86);
- pid_inches(23);
- wait(0.7, sec);
- //third Ring
- turnRight(55.5);
  pid_inches(9);
  wait(1, sec);
- //unclamp in corner
- turnLeft(120);
- pid_inches(10);
- wait(1, sec);
- turnRight(200);
  stopIntaking();
- pid_inches(-35);
- stopwheels();
+ pid_inches(-15);
+ turnRight(315);
+ pid_inches(-14);
  unclamp();
- pid_inches(15);
+//  kp = 0.15;
+//  pid_inches(10);
+//  kp = 0.05;
+//  turnRight(122);
+//  pid_inches(20);
+//  kp = 0.1;
+//  pid_inches(-61);
+//  turnLeft(15);
+//  kp = 0.07;
+//  kd = 0.5;
+//  pid_inches(-27);
+//  clamp();
+//  kd = 0;
+//  turnLeft(50);
+//  //first ring
+//  kp = 0.15;
+//  intakeInAuton();
+//  pid_inches(23);
+//  wait(1, sec);
+//  //secpnd ring
+//  turnLeft(86);
+//  pid_inches(23);
+//  wait(0.7, sec);
+//  //third Ring
+//  turnRight(55.5);
+//  pid_inches(20);
+//  wait(1, sec);
+//  //unclamp in corner
+//  turnLeft(120);
+//  pid_inches(40);
+//  wait(1, sec);
+//  turnRight(175);
+//  pid_inches(-14);
+//  stopwheels();
+//  unclamp();
+//  pid_inches(15);
+//  kp = 0.15;
+//  pid_inches(10);
+//  kp = 0.05;
+//  turnRight(122);
+//  pid_inches(20);
+//  kp = 0.1;
+//  pid_inches(-61);
+//  turnLeft(15);
+//  kp = 0.07;
+//  kd = 0.5;
+//  pid_inches(-27);
+//  turnLeft(5);
+//  clamp();
+//  kd = 0;
+//  turnLeft(45);
+//  //first ring
+//  kp = 0.15;
+//  intakeInAuton();
+//  pid_inches(23);
+//  wait(1, sec);
+//  //secpnd ring
+//  turnLeft(86);
+//  pid_inches(23);
+//  wait(0.7, sec);
+//  //third Ring
+//  turnRight(55.5);
+//  pid_inches(9);
+//  wait(1, sec);
+//  //unclamp in corner
+//  turnLeft(120);
+//  pid_inches(10);
+//  wait(1, sec);
+//  turnRight(200);
+//  stopIntaking();
+//  pid_inches(-35);
+//  stopwheels();
+//  unclamp();
+//  pid_inches(15);
  }
 
 void tuneturnpid() {
-  kp = 0.5;
-  kd = 0.7;
-  ki = 0.5;
-  pidR(-45);
-  wait(2, sec);
-  pidR(90);
-}
+  tkp = 0.5;
+  tkd = 0.7;
+  //used to be 0.7
+  tki = 0.5;
+  kp = 0.25;  
+  inertialSensor.setRotation(0, degrees);
+pid_inches(-30);
+} 
 
 int auton = 1;
 
 //auton selector
 void autonselector() {
  int numofautons = 12;
- if (controller1.ButtonRight.pressing()) {
+ if (controller1.ButtonX.pressing()) {
    auton++;
    wait(200,msec);
- } else if (controller1.ButtonLeft.pressing()) {
+ } else if (controller1.ButtonB.pressing()) {
    auton--;
    wait(200,msec);
  }
@@ -1475,7 +1890,7 @@ void autonselector() {
  } else if (auton == 5) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,10);
-   controller1.Screen.print("Red Left");
+   controller1.Screen.print("red left");
  } else if (auton == 6) {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,3);
@@ -1504,39 +1919,45 @@ void autonselector() {
    controller1.Screen.clearScreen();
    controller1.Screen.setCursor(2,9);
    controller1.Screen.print("go forward");
+ } else if (auton == 13) {
+   controller1.Screen.clearScreen();
+   controller1.Screen.setCursor(2,7);
+   controller1.Screen.print("wallstakes test");
  }
 }
 
 // auton
 void autonomous(void) {
  if (auton == 1) {
-   blueRight();
+   blueRightnewnew();
  } else if (auton == 2){
-   blueRightElims6();
+   blueRightElims6new();
  } else if (auton == 3){
    blueGoalRushDoinker();
  } else if (auton == 4){
    blueGoalRushElims();
  } else if (auton == 5) { 
-   redLeft();
+   redLeftnew();
+ } else if (auton == 6) {
+   redsawp(); 
  } else if (auton == 7) {
    redleftelims1();
  } else if (auton == 8) {
-   redleftelims6();
+   redleftelims6new();
  } else if (auton == 9) {
    redGoalRushDoinker();
  } else if (auton == 10) {
    redGoalRushElims();
  } else if (auton == 11) {
    progskills2();
- } else if (auton == 6) {
-   redsawp();
  } else if (auton == 12) {
    tuneturnpid();
- }
+ } //else if (auton == 13) {
+// //    downforcornerwallStakes();
+// }
 }
 
-void wallstakessetposition(){
+void wallstakesmacro() {
 WallStakes.setVelocity(60, percent);
 WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
@@ -1544,9 +1965,15 @@ if (controller1.ButtonUp.pressing()){
  // controller1.Screen.print(rotationSensor.angle(degrees));
  WallStakes.spin(forward);
  WallStakes2.spin(forward);
- }
- WallStakes.stop(hold);
- WallStakes2.stop(hold);
+ }  
+ while (rotationSensor.angle(degrees)>20 && rotationSensor.angle(degrees) < 250) {
+  // controller1.Screen.print(rotationSensor.angle(degrees));
+  WallStakes.spin(reverse);
+  WallStakes2.spin(reverse);
+  } 
+ } else {
+  WallStakes.stop(hold);
+  WallStakes2.stop(hold);
  }
 }
 
@@ -1567,13 +1994,46 @@ if (controller1.ButtonY.pressing()) {
  WallStakes.spin(forward, 80, pct);
  WallStakes2.spin(forward, 80, pct);
 } else if (controller1.ButtonA.pressing()) {
- WallStakes.spin(reverse, 80, pct);
- WallStakes2.spin(reverse, 80, pct);
-} else {
- WallStakes.stop(hold);
- WallStakes2.stop(hold);
+ WallStakes.spin(reverse);
+ WallStakes2.spin(reverse);
+} else if (controller1.ButtonRight.pressing()){
+  while (rotationSensor.angle(degrees)<107 || rotationSensor.angle(degrees) > 350) {
+  // controller1.Screen.print(rotationSensor.angle(degrees));
+  WallStakes.spin(forward);
+  WallStakes2.spin(forward);
+  }
+  } else if (controller1.ButtonUp.pressing()){
+    while (rotationSensor.angle(degrees)<10 || rotationSensor.angle(degrees) > 350) {
+    // controller1.Screen.print(rotationSensor.angle(degrees));
+    WallStakes.spin(forward);
+    WallStakes2.spin(forward);
+    }  
+    while (rotationSensor.angle(degrees)>20 && rotationSensor.angle(degrees) < 250) {
+     // controller1.Screen.print(rotationSensor.angle(degrees));
+     WallStakes.spin(reverse);
+     WallStakes2.spin(reverse);
+     } 
+    } else {
+      WallStakes2.stop(hold);
+      WallStakes.stop(hold);
+    }
 }
+
+void wallStakesDescore() {
+// WallStakes2.setVelocity(70, percent);
+// WallStakes.setVelocity(70, percent);
+// if (controller1.ButtonRight.pressing()){
+//  while (rotationSensor.angle(degrees)<107 || rotationSensor.angle(degrees) > 350) {
+//  // controller1.Screen.print(rotationSensor.angle(degrees));
+//  WallStakes.spin(forward);
+//  WallStakes2.spin(forward);
+//  }
+//  WallStakes.stop(hold);
+//  WallStakes2.stop(hold);
+//  }
 }
+
+//145
 
 vex::task ColorSortRed() {
 
@@ -1712,11 +2172,12 @@ void usercontrol() {
   while (true) {
    intaking();
    newarcade();
-   wallstakessetposition();
+   //wallstakesmacro();
    //wallstakessetposition2();
-   wallstakessetposition();
+   wallstakesmacro();
    //wallstakessetposition2();
    wallstakesscore();
+   wallStakesDescore();
    //mogoControl();
    controller1.ButtonL1.pressed(mogoControl);
    controller1.ButtonL1.released(clamping);
