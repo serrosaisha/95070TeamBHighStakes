@@ -1304,9 +1304,11 @@ void blueGoalRushElims() {
 }
 
 void redGoalRushDoinker() {
+  inertialSensor.setRotation(0, degrees);
   kp = 0.3;
+  //first ring
   intake.spin(reverse, 65, pct);
-  pid_inches(35);
+  pid_inches(30);
   doinker.set(true);
   wait(100, msec);
   stopIntaking();
@@ -1315,65 +1317,72 @@ void redGoalRushDoinker() {
   doinker.set(false);
   kp = 0.21;
   pid_inches(-7);
-  turnRight(184);
+  turnRight(189);
   kp = 0.1;
   pid_inches(-13);
   clamp();
-  kp = 0.3;
   intakeInAuton();
-  pid_inches(10);
-  turnLeft(15);
-  pid_inches(11);
-  wait(0.6, sec);
-  stopIntaking();
-  pid_inches(-14);
-  turnLeft(100);
-  pid_inches(-21);
+  //second ring
+  kp = 0.24;
+  turnLeft(84);
+  kp = 0.32;
+  pid_inches(-40);
   unclamp();
-  pid_inches(9);
-  turnRight(79.5);
-  kp = 0.1;
-  pid_inches(-18);
-  clamp();
-  wait(0.5, sec);
-  kp = 0.3;
+  // pid_inches(10);
+  pidT(135);
   intakeInAuton();
+  pid_inches(30);
+  wait(0.5, sec);
+  stopIntaking();
+  pidT(165);
   pid_inches(-20);
+  kp = 0.1;
+  pid_inches(-15);
+  clamp();
+  intakeInAuton();
+  wait(0.4, sec);
+  stopIntaking();
+  pid_inches(-17);
 }
 
 void blueGoalRushDoinker() {
+  inertialSensor.setRotation(0, degrees);
   kp = 0.3;
-  intake.spin(reverse, 53, pct);
-  pid_inches(35);
+  intake.spin(reverse, 60, pct);
+  pid_inches(32.5);
   doinker.set(true);
   wait(99.9, msec);
   stopIntaking();
-  kp = 0.17;
-  pid_inches(-15);
+  pid_inches(-20);
   doinker.set(false);
-  kp = 0.21;
-  pid_inches(-7);
-  turnRight(184);
+  pid_inches(-5);
+  pidT(230);
   kp = 0.1;
-  pid_inches(-13);
+  pid_inches(-15);
   clamp();
   kp = 0.3;
   intakeInAuton();
-  pid_inches(10);
-  turnLeft(25);
-  pid_inches(12);
+  pid_inches(32);
   wait(0.7, sec);
-  turnLeft(200);
-  pid_inches(-8);
-  unclamp();
+  pid_inches(-10);
+  pidT(133);
+  lift.set(true);
+  pid_inches(15);
+  kp = 0.1;
   pid_inches(12);
-  turnLeft(66);
-  pid_inches(-12);
-  wait(100, msec);
-  clamp();
-  intakeInAuton();
-  wait(1, sec);
-  pid_inches(-9);
+  wait(0.3, sec);
+  pid_inches(-5);
+  lift.set(false);
+  wait(0.5, sec);
+  pid_inches(-10);
+  kp = 0.3;
+  pidT(305);
+  pid_inches(36);
+  pidT(225);
+  doinker.set(true);
+  pid_inches(15);
+  pidT(215);
+  pid_inches(-10);
 }
 
 void redGoalRush() {
@@ -1850,7 +1859,6 @@ void tuneturnpid() {
   tki = 0.5;
   kp = 0.25;  
   inertialSensor.setRotation(0, degrees);
-pid_inches(-30);
 } 
 
 int auton = 1;
