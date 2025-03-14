@@ -1776,6 +1776,13 @@ void redLeft5() {
  turnRight(315);
  pid_inches(-14);
  unclamp();
+ pid_inches(67.8822509939);
+ pidT(225);
+ pid_inches(16.9705627485);
+ pidT(305);
+ pid_inches(40);
+ kp = 0.22;
+ pidinches(20);
 //  kp = 0.15;
 //  pid_inches(10);
 //  kp = 0.05;
