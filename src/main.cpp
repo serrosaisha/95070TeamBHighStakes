@@ -577,17 +577,17 @@ WallStakes.setVelocity(45, pct);
 
 void blueRightnew() {
  inertialSensor.setRotation(0, degrees);
-//  WallStakes.spin(forward, 90, pct);
-//  WallStakes2.spin(forward, 90, pct);
-//  wait(0.5, sec);
-//  WallStakes.stop(coast);
-//  WallStakes2.stop(coast);
+ WallStakes.spin(forward, 90, pct);
+ WallStakes2.spin(forward, 90, pct);
+ wait(0.5, sec);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
  pid_inches(-7);
-//  WallStakes.spin(reverse, 15, pct);
-//  WallStakes2.spin(reverse, 15, pct);
+ WallStakes.spin(reverse, 15, pct);
+ WallStakes2.spin(reverse, 15, pct);
  turnLeft(340);
-//  WallStakes.stop(coast);
-//  WallStakes2.stop(coast);
+ WallStakes.stop(coast);
+ WallStakes2.stop(coast);
  kp = 0.14;
  pid_inches(-27);
  clamp();
@@ -691,8 +691,7 @@ void blueRightnewnew() {
  pid_inches(-10);
  wait(1, sec);
  kp = 0.45;
- pid_inches(-45);
- stopIntaking();
+ pid_inches(-60);
 //  WallStakes.spin(reverse, 90, pct);
 //  WallStakes2.spin(reverse, 90, pct);
 //  wait(0.5, sec);
@@ -854,10 +853,9 @@ void redLeftnew() {
  turnLeft(167); //used to be 174 overshooting issue
  //intake first ring
  intakeInAuton();
- pid_inches(15); //used to be 16.5 
+ pid_inches(16); //used to be 16.5 
  wait(0.5, sec);
  pid_inches(-9);
- //intake 2nd ring
  turnRight(160);//148.38
  pid_inches(14);
  wait(0.8, sec);
@@ -882,7 +880,7 @@ void redLeftnew() {
  kp = 0.45;
  pid_inches(-30);
  stopIntaking();
- pid_inches(-35);
+ pid_inches(-10);
 //  WallStakes.spin(reverse, 90, pct);
 //  WallStakes2.spin(reverse, 90, pct);
 //  wait(0.5, sec);
@@ -1976,12 +1974,12 @@ void wallstakesmacro() {
 WallStakes.setVelocity(60, percent);
 WallStakes2.setVelocity(60, percent);
 if (controller1.ButtonUp.pressing()){
- while (rotationSensor.angle(degrees)<10 || rotationSensor.angle(degrees) > 350) {
+ while (rotationSensor.angle(degrees)<8 || rotationSensor.angle(degrees) > 350) {
  // controller1.Screen.print(rotationSensor.angle(degrees));
  WallStakes.spin(forward);
  WallStakes2.spin(forward);
  }  
- while (rotationSensor.angle(degrees)>20 && rotationSensor.angle(degrees) < 250) {
+ while (rotationSensor.angle(degrees)>12 && rotationSensor.angle(degrees) < 250) {
   // controller1.Screen.print(rotationSensor.angle(degrees));
   WallStakes.spin(reverse);
   WallStakes2.spin(reverse);
@@ -2011,19 +2009,20 @@ if (controller1.ButtonY.pressing()) {
 } else if (controller1.ButtonA.pressing()) {
  WallStakes.spin(reverse);
  WallStakes2.spin(reverse);
-} else if (controller1.ButtonRight.pressing()){
-  while (rotationSensor.angle(degrees)<107 || rotationSensor.angle(degrees) > 350) {
-  // controller1.Screen.print(rotationSensor.angle(degrees));
-  WallStakes.spin(forward);
-  WallStakes2.spin(forward);
-  }
-  } else if (controller1.ButtonUp.pressing()){
-    while (rotationSensor.angle(degrees)<10 || rotationSensor.angle(degrees) > 350) {
+// } else if (controller1.ButtonRight.pressing()){
+//   while (rotationSensor.angle(degrees)<110 || rotationSensor.angle(degrees) > 350) {
+//   // controller1.Screen.print(rotationSensor.angle(degrees));
+//   WallStakes.spin(forward);
+//   WallStakes2.spin(forward);
+//   }
+//   } 
+} else if (controller1.ButtonUp.pressing()){
+    while (rotationSensor.angle(degrees)<8 || rotationSensor.angle(degrees) > 350) {
     // controller1.Screen.print(rotationSensor.angle(degrees));
     WallStakes.spin(forward);
     WallStakes2.spin(forward);
     }  
-    while (rotationSensor.angle(degrees)>20 && rotationSensor.angle(degrees) < 250) {
+    while (rotationSensor.angle(degrees)>25 && rotationSensor.angle(degrees) < 250) {
      // controller1.Screen.print(rotationSensor.angle(degrees));
      WallStakes.spin(reverse);
      WallStakes2.spin(reverse);
